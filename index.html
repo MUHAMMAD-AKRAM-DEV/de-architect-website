@@ -132,51 +132,37 @@
   </div>
 </section>
 
-<!-- ============ STATEMENT + LINE-ART BUILDINGS ============ -->
-<!-- Scroll-driven pinned scene: construction video → video changes + colour + headline → services pop in.
-     The tall <section> is the scroll track; .scrolly-stage pins (sticky) while the scenes change.
-     Drop your clips in assets/video/  (construction-1.mp4, construction-2.mp4). Posters show until then. -->
-<section class="scrolly" id="work" aria-label="Your space, your vision, your home">
-  <div class="scrolly-stage">
-    <!-- video layer A: construction -->
-    <div class="sv-layer sv-a is-on">
-      <video class="sv-vid" autoplay muted loop playsinline preload="auto"
-             poster="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=2000&q=80">
-        <source src="assets/video/construction-1.mp4" type="video/mp4">
-      </video>
-    </div>
-    <!-- video layer B: the finished space -->
-    <div class="sv-layer sv-b">
-      <video class="sv-vid" autoplay muted loop playsinline preload="auto"
-             poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80">
-        <source src="assets/video/construction-2.mp4" type="video/mp4">
-      </video>
-    </div>
-    <!-- colour wash that fades in on the second scene -->
-    <div class="scrolly-tint"></div>
+<!-- ============ DRONE FLY-THROUGH (scroll-driven WebGL) ============ -->
+<!-- The tall <section> is the scroll track; .flight-stage pins while the drone
+     flies the house: approach over the garden, arc round the facade, in the
+     front door, past the six service walls, out the back over the pool.
+     The whole scene is generated in js/drone.js — there are no assets. -->
+<section class="flight" id="work" aria-label="Your space, your vision, your home">
+  <div class="flight-stage">
+    <canvas class="flight-canvas" id="flightCanvas" aria-hidden="true"></canvas>
 
-    <!-- scene 1: headline -->
-    <div class="scrolly-scene scene-text">
+    <!-- opening headline — same design as before, now over the flight -->
+    <div class="scrolly-scene scene-text is-on">
       <span class="eyebrow">This is architecture that reflects all of you</span>
       <h2 class="display"><span>Your space.</span><span>Your vision.</span><span>Your home.</span></h2>
     </div>
 
-    <!-- scene 2: services pop up one by one -->
-    <div class="scrolly-scene scene-services">
-      <span class="eyebrow" style="color:var(--pink)">From the ground up, we do it all</span>
-      <div class="svc-grid">
-        <article class="svc"><span class="svc-n">01</span><h3>Residential Architecture</h3><p>Complete home design, concept to keys.</p></article>
-        <article class="svc"><span class="svc-n">02</span><h3>Interior Design</h3><p>Spaces styled to feel like you.</p></article>
-        <article class="svc"><span class="svc-n">03</span><h3>Commercial &amp; Workspaces</h3><p>Offices, retail and hospitality.</p></article>
-        <article class="svc"><span class="svc-n">04</span><h3>Renovation &amp; Restoration</h3><p>Older buildings, brought back to life.</p></article>
-        <article class="svc"><span class="svc-n">05</span><h3>Landscape &amp; Exteriors</h3><p>Where the design meets the outdoors.</p></article>
-        <article class="svc"><span class="svc-n">06</span><h3>3D Visualisation</h3><p>Walk your space before it's built.</p></article>
-      </div>
-    </div>
+    <div class="flight-progress" aria-hidden="true"><i></i></div>
+    <div class="flight-hint" aria-hidden="true"><span>Scroll to fly</span><span class="bar"></span></div>
+  </div>
 
-    <!-- progress rail + hint -->
-    <div class="scrolly-progress" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="scrolly-hint" aria-hidden="true"><span>Keep scrolling</span><span class="bar"></span></div>
+  <!-- Shown when WebGL is unavailable or motion is reduced; kept in the DOM
+       otherwise so screen readers still get the six services. -->
+  <div class="flight-fallback">
+    <span class="eyebrow">From the ground up, we do it all</span>
+    <div class="ff-grid">
+      <article class="ff"><span class="ff-n">01</span><h3>Residential Architecture</h3><p>Complete home design, concept to keys.</p></article>
+      <article class="ff"><span class="ff-n">02</span><h3>Interior Design</h3><p>Spaces styled to feel like you.</p></article>
+      <article class="ff"><span class="ff-n">03</span><h3>Commercial &amp; Workspaces</h3><p>Offices, retail and hospitality.</p></article>
+      <article class="ff"><span class="ff-n">04</span><h3>Renovation &amp; Restoration</h3><p>Older buildings, brought back to life.</p></article>
+      <article class="ff"><span class="ff-n">05</span><h3>Landscape &amp; Exteriors</h3><p>Where the design meets the outdoors.</p></article>
+      <article class="ff"><span class="ff-n">06</span><h3>3D Visualisation</h3><p>Walk your space before it's built.</p></article>
+    </div>
   </div>
 </section>
 
@@ -578,5 +564,11 @@
 <!-- Bootstrap JS (offcanvas) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- Section 3: the drone fly-through. three.js is only pulled in for this scene. -->
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js" } }
+  </script>
+  <script type="module" src="js/drone.js"></script>
 </body>
 </html>

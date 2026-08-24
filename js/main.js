@@ -126,51 +126,6 @@
     if (nextB) nextB.addEventListener('click', () => nudge(1));
   }
 
-  // ---- Scroll-driven pinned scene: video → video change + colour + headline → services pop in ----
-  const scrolly = document.querySelector('.scrolly');
-  if (scrolly && !reduceMotion){
-    const svA = scrolly.querySelector('.sv-a');
-    const svB = scrolly.querySelector('.sv-b');
-    const tint = scrolly.querySelector('.scrolly-tint');
-    const sceneText = scrolly.querySelector('.scene-text');
-    const sceneSvc  = scrolly.querySelector('.scene-services');
-    const svcs = Array.from(scrolly.querySelectorAll('.svc'));
-    const dots = Array.from(scrolly.querySelectorAll('.scrolly-progress i'));
-    let sTicking = false;
-
-    function renderScrolly(){
-      sTicking = false;
-      const rect = scrolly.getBoundingClientRect();
-      const total = scrolly.offsetHeight - window.innerHeight;
-      const p = Math.min(Math.max(-rect.top / (total || 1), 0), 1);   // 0 → 1 through the section
-      const s1 = p >= 0.26;   // scene 2: video changes, colour washes in, headline appears
-      const s2 = p >= 0.58;   // scene 3: headline clears, services pop up one by one
-
-      svA.classList.toggle('is-on', !s1);
-      svB.classList.toggle('is-on', s1);
-      tint.style.opacity = s1 ? (s2 ? '0.94' : '0.82') : '0';
-      sceneText.classList.toggle('is-on', s1 && !s2);
-      sceneSvc.classList.toggle('is-on', s2);
-      scrolly.classList.toggle('hide-hint', p > 0.06);
-
-      if (s2){
-        const sp = (p - 0.58) / 0.42;                       // progress within the services scene
-        svcs.forEach((el, i) => el.classList.toggle('is-in', sp >= (i / svcs.length) * 0.85));
-      } else {
-        svcs.forEach(el => el.classList.remove('is-in'));
-      }
-      const stage = s2 ? 2 : (s1 ? 1 : 0);
-      dots.forEach((d, i) => d.classList.toggle('on', i <= stage));
-    }
-    const reqScrolly = () => { if(!sTicking){ sTicking = true; requestAnimationFrame(renderScrolly); } };
-    window.addEventListener('scroll', reqScrolly, { passive:true });
-    window.addEventListener('resize', reqScrolly);
-    renderScrolly();
-
-    // nudge both clips to play (muted autoplay can be blocked until interaction)
-    scrolly.querySelectorAll('video').forEach(v => v.play().catch(()=>{}));
-  }
-
   // ---- Service tiers: accordion + synced media panel ----
   const acc = document.getElementById('tiersAcc');
   if (acc){
