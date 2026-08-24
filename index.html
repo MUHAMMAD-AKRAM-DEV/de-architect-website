@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DE Architects — Consulting Engineers | Architecture &amp; Interior Design</title>
+<meta name="description" content="DE Architects is an architecture and interior design agency — from complete home design to interiors, commercial spaces and renovations. Spaces designed for how you live." />
+
+<!-- Bootstrap 5 (used for the off-canvas menu + a few JS components) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Tailwind Play CDN (used for layout utilities) -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts: Anton (heavy display), Archivo (mid headings), Inter (body), Caveat (handwritten annotations), Fraunces (wordmark) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+
+<script>
+  if (window.tailwind) tailwind.config = { corePlugins: { preflight: false } }; // let Bootstrap own the reset, Tailwind adds utilities
+</script>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/icons/favicon.png" type="image/png">
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top" aria-label="DE Architects — Consulting Engineers">
+    <img class="brand-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
+  </a>
+
+  <nav class="nav-actions">
+    <a class="pill contact" href="#contact">Contact</a>
+    <button class="icon-btn search" aria-label="Search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+    </button>
+    <button class="pill menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
+      Menu
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
+    </button>
+  </nav>
+</header>
+
+<a class="side-tab" href="#work">Our Projects</a>
+
+<!-- ============ OFFCANVAS MENU (Bootstrap) ============ -->
+<div class="offcanvas offcanvas-end menu-oc" tabindex="-1" id="menu">
+  <div class="offcanvas-header px-4 pt-4">
+    <img src="assets/img/logo-nav.png" alt="DE Architects" style="height:30px;width:auto;">
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="oc-links">
+    <a href="#work" data-bs-dismiss="offcanvas">Projects<small>Selected work &amp; case studies</small></a>
+    <a href="#services" data-bs-dismiss="offcanvas">Services<small>Homes, interiors, commercial &amp; more</small></a>
+    <a href="#studio" data-bs-dismiss="offcanvas">Studio<small>Who we are and how we work</small></a>
+    <a href="#contact" data-bs-dismiss="offcanvas">Contact<small>Start your project with us</small></a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <!-- background video layer (moves upward on scroll). Poster = architecture still, shown before the
+       video loads or if no source is available, so the hero always looks right.
+       To use your own clip, drop a file named hero.mp4 next to this page. -->
+  <div class="hero-media" id="heroMedia">
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto"
+           poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+      <source src="https://cdn.coverr.co/videos/coverr-a-modern-house-3038/1080p.mp4" type="video/mp4">
+    </video>
+  </div>
+  <!-- fixed gradient that fades the video into the cream lower band (keeps the two-tone headline) -->
+  <div class="hero-veil"></div>
+
+  <div class="hero-inner">
+    <h1 class="display" id="heroText">
+      <span class="l1"><span class="reveal-word c-cream">As you</span> <span class="reveal-word c-crimson">dream</span></span>
+      <span class="l2"><span class="reveal-word c-plum">and</span> <span class="reveal-word c-crimson">will live.</span></span>
+      <svg class="underline-draw" viewBox="0 0 560 26" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M8 14 C 150 26, 410 26, 552 12" />
+        <path d="M18 20 C 170 8, 400 8, 540 20" />
+      </svg>
+    </h1>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="bar"></span></div>
+</section>
+
+<!-- ============ PROFOUND IMPACT / PHILOSOPHY ============ -->
+<section class="impact grain" id="studio">
+  <span class="impact-circle" aria-hidden="true"></span>
+
+  <div class="impact-grid">
+    <div class="impact-copy r">
+      <span class="impact-eyebrow"><span class="tick"></span>Our philosophy</span>
+      <h2>The profound impact of a <em>home</em> that <span class="u">grows with you.<svg class="scribble" viewBox="0 0 260 24" aria-hidden="true"><path d="M5 15 C 70 25, 190 25, 255 7"/></svg></span></h2>
+      <p class="lead">DE Architects designs for who you are and who you are becoming. We start with how you live — light, movement, the small rituals of a day — and shape spaces that hold all of it. From a complete new home to a single reimagined room, the work is personal, precise, and built to last.</p>
+      <ul class="impact-pillars">
+        <li><span class="pi"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M4 12l5 5L20 6"/></svg></span>Designed around your daily life</li>
+        <li><span class="pi"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M4 12l5 5L20 6"/></svg></span>Personal, precise and considered</li>
+        <li><span class="pi"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M4 12l5 5L20 6"/></svg></span>Built to last a lifetime</li>
+      </ul>
+      <a class="impact-link" href="#services">See how we work
+        <svg width="20" height="13" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="impact-media r d1" id="impactMedia">
+      <!-- three circular images that rotate through the slots (transform-driven = smooth) -->
+      <div class="imedia" data-slot="0" data-caption="Timeless &amp; modern"
+        style="transform:translate(0%,0%) scale(.72);z-index:3;background-image:url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="imedia" data-slot="1" data-caption="Warm &amp; liveable"
+        style="transform:translate(19%,-18%) scale(.8);z-index:1;background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="imedia imedia-logo" data-slot="2" data-caption="Crafted by DE"
+        style="transform:translate(-30%,30%) scale(.34);z-index:5">
+        <img src="assets/img/logo-icon.png" alt="DE Architects">
+      </div>
+
+      <svg class="impact-ring" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/></svg>
+
+      <span class="impact-annot hand"><span class="annot-text">Timeless &amp; modern</span>
+        <svg viewBox="0 0 70 44" aria-hidden="true"><path d="M4 40 C 20 10, 46 6, 64 14 M64 14 L54 10 M64 14 L58 24"/></svg>
+      </span>
+    </div>
+  </div>
+
+  <div class="impact-stats">
+    <div class="stat r"><b data-count="480" data-suffix="+">0</b><span>Projects delivered</span></div>
+    <div class="stat r d1"><b data-count="16" data-suffix="+">0</b><span>Years of practice</span></div>
+    <div class="stat r d2"><b data-count="27" data-suffix="+">0</b><span>Design awards</span></div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT + LINE-ART BUILDINGS ============ -->
+<!-- Scroll-driven pinned scene: construction video → video changes + colour + headline → services pop in.
+     The tall <section> is the scroll track; .scrolly-stage pins (sticky) while the scenes change.
+     Drop your clips in assets/video/  (construction-1.mp4, construction-2.mp4). Posters show until then. -->
+<section class="scrolly" id="work" aria-label="Your space, your vision, your home">
+  <div class="scrolly-stage">
+    <!-- video layer A: construction -->
+    <div class="sv-layer sv-a is-on">
+      <video class="sv-vid" autoplay muted loop playsinline preload="auto"
+             poster="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=2000&q=80">
+        <source src="assets/video/construction-1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <!-- video layer B: the finished space -->
+    <div class="sv-layer sv-b">
+      <video class="sv-vid" autoplay muted loop playsinline preload="auto"
+             poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80">
+        <source src="assets/video/construction-2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <!-- colour wash that fades in on the second scene -->
+    <div class="scrolly-tint"></div>
+
+    <!-- scene 1: headline -->
+    <div class="scrolly-scene scene-text">
+      <span class="eyebrow">This is architecture that reflects all of you</span>
+      <h2 class="display"><span>Your space.</span><span>Your vision.</span><span>Your home.</span></h2>
+    </div>
+
+    <!-- scene 2: services pop up one by one -->
+    <div class="scrolly-scene scene-services">
+      <span class="eyebrow" style="color:var(--pink)">From the ground up, we do it all</span>
+      <div class="svc-grid">
+        <article class="svc"><span class="svc-n">01</span><h3>Residential Architecture</h3><p>Complete home design, concept to keys.</p></article>
+        <article class="svc"><span class="svc-n">02</span><h3>Interior Design</h3><p>Spaces styled to feel like you.</p></article>
+        <article class="svc"><span class="svc-n">03</span><h3>Commercial &amp; Workspaces</h3><p>Offices, retail and hospitality.</p></article>
+        <article class="svc"><span class="svc-n">04</span><h3>Renovation &amp; Restoration</h3><p>Older buildings, brought back to life.</p></article>
+        <article class="svc"><span class="svc-n">05</span><h3>Landscape &amp; Exteriors</h3><p>Where the design meets the outdoors.</p></article>
+        <article class="svc"><span class="svc-n">06</span><h3>3D Visualisation</h3><p>Walk your space before it's built.</p></article>
+      </div>
+    </div>
+
+    <!-- progress rail + hint -->
+    <div class="scrolly-progress" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="scrolly-hint" aria-hidden="true"><span>Keep scrolling</span><span class="bar"></span></div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE / PHILOSOPHY ============ -->
+<section class="experience" id="philosophy">
+  <div class="exp-bg" aria-hidden="true">
+    <svg class="exp-arch" viewBox="0 0 600 600" preserveAspectRatio="xMidYMax meet">
+      <path d="M60 600 L60 300 A240 240 0 0 1 540 300 L540 600"/>
+      <path d="M150 600 L150 340 A150 150 0 0 1 450 340 L450 600" opacity=".55"/>
+    </svg>
+  </div>
+
+  <div class="exp-inner">
+    <div class="exp-copy r">
+      <span class="ghost" aria-hidden="true">Home</span>
+      <span class="exp-eyebrow"><span class="tick"></span>The feeling of home</span>
+      <h3 class="display">
+        <span class="ln">Love what you <em>build.</em></span>
+        <span class="ln">Live what you <em class="u">love.<svg class="scribble" viewBox="0 0 200 24" aria-hidden="true"><path d="M4 15 C 52 25, 150 25, 196 7"/></svg></em></span>
+      </h3>
+      <p class="lead">A home should feel like it was always meant to be yours. We shape every project around your daily life — the way light moves through a room, where you gather, how you want to feel walking in the door. The result is architecture that is unmistakably, comfortably <em>you</em>.</p>
+      <a class="exp-link" href="#services">See how we work
+        <svg width="24" height="14" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="exp-media r d1">
+      <div class="exp-frame">
+        <div class="exp-photo"></div>
+        <span class="exp-tag">Riverside House · 2024</span>
+      </div>
+      <figure class="exp-quote">
+        <blockquote>"The first house that has ever truly felt like ours."</blockquote>
+        <figcaption>— A DE Architects client</figcaption>
+      </figure>
+      <span class="exp-annot hand">feels like you
+        <svg viewBox="0 0 60 40" aria-hidden="true"><path d="M6 6 C 34 2, 54 16, 40 34 M40 34 L49 28 M40 34 L31 31"/></svg>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECENT PROJECTS (smooth auto-scroll marquee) ============ -->
+<section class="looks" id="services">
+  <div class="looks-head">
+    <div class="looks-head-l r">
+      <span class="looks-eyebrow"><span class="tick"></span>Selected work</span>
+      <h2 class="display"><span class="c-plum">Recent</span> <span class="c-crimson">projects.</span></h2>
+    </div>
+    <div class="looks-nav r d1">
+      <button class="pm-btn" id="pmPrev" type="button" aria-label="Previous projects">
+        <svg width="22" height="16" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 8H2M9 1L2 8l7 7"/></svg>
+      </button>
+      <button class="pm-btn" id="pmNext" type="button" aria-label="Next projects">
+        <svg width="22" height="16" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 8h20M15 1l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="pmarquee" id="pmarquee">
+    <div class="pmarquee-track">
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Residential</span>
+      <div class="pcard-info"><h4>Riverside House</h4><p>Brooklyn, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Interior</span>
+      <div class="pcard-info"><h4>Copper Loft</h4><p>Manhattan, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Commercial</span>
+      <div class="pcard-info"><h4>Studio North</h4><p>Queens, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Renovation</span>
+      <div class="pcard-info"><h4>The Warehouse</h4><p>Brooklyn, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Residential</span>
+      <div class="pcard-info"><h4>Hillside Villa</h4><p>Hudson Valley</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Commercial</span>
+      <div class="pcard-info"><h4>Meridian Offices</h4><p>Manhattan, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Interior</span>
+      <div class="pcard-info"><h4>Slate Kitchen</h4><p>Brooklyn, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Residential</span>
+      <div class="pcard-info"><h4>Cedar Retreat</h4><p>Catskills, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Renovation</span>
+      <div class="pcard-info"><h4>The Foundry</h4><p>Queens, NY</p></div>
+    </article>
+    <article class="pcard">
+      <div class="pcard-img" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=700&q=80')"></div>
+      <span class="pcard-tag">Residential</span>
+      <div class="pcard-info"><h4>Harbour Penthouse</h4><p>Manhattan, NY</p></div>
+    </article>
+    </div>
+  </div>
+  <p class="pmarquee-hint">Auto-scrolling &middot; hover to pause</p>
+</section>
+
+<!-- ============ SERVICE TIERS (accordion + synced media) ============ -->
+<section class="tiers grain" id="tiers">
+  <div class="tiers-head r">
+    <span class="tiers-eyebrow"><span class="tick"></span>Our services</span>
+    <h2 class="display"><span class="c-plum">From the ground up,</span> <span class="c-crimson">we do it all.</span></h2>
+  </div>
+
+  <div class="tiers-grid">
+    <!-- left: media that swaps to the open service -->
+    <div class="tiers-media r">
+      <div class="tmedia is-on" data-i="0" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="tmedia" data-i="1" style="background-image:url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="tmedia" data-i="2" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="tmedia" data-i="3" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80')"></div>
+      <div class="tiers-veil" aria-hidden="true"></div>
+      <span class="tmedia-cap" id="tiersCap">Residential Architecture</span>
+      <div class="badge-stamp seal" aria-hidden="true">
+        <div class="disc"></div>
+        <svg class="ringtext" viewBox="0 0 360 360">
+          <defs><path id="circlePath" d="M180,180 m-140,0 a140,140 0 1,1 280,0 a140,140 0 1,1 -280,0"/></defs>
+          <text><textPath href="#circlePath" startOffset="0">TIMELESS · &amp; · FUNCTIONAL · &amp; · BEAUTIFUL · &amp; · TIMELESS · &amp; · FUNCTIONAL · &amp; · BEAUTIFUL · </textPath></text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- right: accordion -->
+    <div class="tiers-acc r d1" id="tiersAcc">
+      <div class="tier is-open" data-i="0">
+        <button class="tier-head" type="button" aria-expanded="true">
+          <span class="tier-n">01</span>
+          <span class="tier-title"><h3>Residential Architecture</h3><span class="tier-sub">From concept to keys</span></span>
+          <span class="tier-toggle" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <div class="tier-panel"><div class="tier-panel-inner">
+          <p>Complete home design — custom houses, villas and additions drawn around your site, your light and your life.</p>
+          <div class="tier-tags"><span>New builds</span><span>Extensions</span></div>
+          <a class="tier-link" href="#contact">Start a project<svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg></a>
+        </div></div>
+      </div>
+
+      <div class="tier" data-i="1">
+        <button class="tier-head" type="button" aria-expanded="false">
+          <span class="tier-n">02</span>
+          <span class="tier-title"><h3>Interior Design</h3><span class="tier-sub">Spaces that feel like you</span></span>
+          <span class="tier-toggle" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <div class="tier-panel"><div class="tier-panel-inner">
+          <p>Layouts, materials, joinery and furnishing that turn a house into a home you never want to leave.</p>
+          <div class="tier-tags"><span>Full fit-out</span><span>Styling</span></div>
+          <a class="tier-link" href="#contact">Start a project<svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg></a>
+        </div></div>
+      </div>
+
+      <div class="tier" data-i="2">
+        <button class="tier-head" type="button" aria-expanded="false">
+          <span class="tier-n">03</span>
+          <span class="tier-title"><h3>Commercial &amp; Workspaces</h3><span class="tier-sub">Where business takes shape</span></span>
+          <span class="tier-toggle" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <div class="tier-panel"><div class="tier-panel-inner">
+          <p>Functional, memorable environments for the places people work, shop and gather.</p>
+          <div class="tier-tags"><span>Offices</span><span>Retail</span><span>Hospitality</span></div>
+          <a class="tier-link" href="#contact">Start a project<svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg></a>
+        </div></div>
+      </div>
+
+      <div class="tier" data-i="3">
+        <button class="tier-head" type="button" aria-expanded="false">
+          <span class="tier-n">04</span>
+          <span class="tier-title"><h3>Renovation &amp; 3D Visualisation</h3><span class="tier-sub">See it before it's built</span></span>
+          <span class="tier-toggle" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <div class="tier-panel"><div class="tier-panel-inner">
+          <p>Bring older buildings back to life, and walk through your future space in photoreal 3D first.</p>
+          <div class="tier-tags"><span>Restoration</span><span>Renders</span></div>
+          <a class="tier-link" href="#contact">Start a project<svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg></a>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLIENT REVIEWS ============ -->
+<section class="reviews" id="reviews">
+
+  <div class="rev-decor" aria-hidden="true">
+    <svg class="rev-arch" viewBox="0 0 600 600" preserveAspectRatio="xMidYMax meet">
+      <path d="M60 600 L60 300 A240 240 0 0 1 540 300 L540 600"/>
+    </svg>
+  </div>
+
+  <div class="rev-head r">
+    <span class="rev-eyebrow"><span class="tick"></span>Client stories</span>
+    <h2 class="display">Work with caring, passionate, and talented architects.</h2>
+  </div>
+
+  <div class="rev-stage r d1">
+    <span class="rev-mark" aria-hidden="true">&rdquo;</span>
+
+    <div class="rev-slides" id="revSlides">
+      <blockquote class="rev-slide is-on">
+        <span class="rev-stars" aria-label="5 out of 5">★★★★★</span>
+        <p>They listened to how we actually live, then gave us a home that fits us perfectly — every room has a reason to be there.</p>
+        <footer><span class="rev-av" style="--c:var(--wine)"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy" onerror="this.remove()">AK</span><span class="rev-who"><b>Aisha &amp; Omar Khan</b><small>Riverside House · New build</small></span></footer>
+      </blockquote>
+      <blockquote class="rev-slide">
+        <span class="rev-stars" aria-label="5 out of 5">★★★★★</span>
+        <p>From the first sketch to the final key, the whole process felt calm and completely in hand. We never once felt lost.</p>
+        <footer><span class="rev-av" style="--c:var(--navy)"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy" onerror="this.remove()">DM</span><span class="rev-who"><b>Daniel Meyer</b><small>Hillside Villa · Architecture</small></span></footer>
+      </blockquote>
+      <blockquote class="rev-slide">
+        <span class="rev-stars" aria-label="5 out of 5">★★★★★</span>
+        <p>Our office finally feels like us — warm, functional, and the kind of place people actually want to come to work in.</p>
+        <footer><span class="rev-av" style="--c:var(--teal-ink)"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy" onerror="this.remove()">PN</span><span class="rev-who"><b>Priya Nair</b><small>Studio North · Commercial</small></span></footer>
+      </blockquote>
+      <blockquote class="rev-slide">
+        <span class="rev-stars" aria-label="5 out of 5">★★★★★</span>
+        <p>They breathed new life into a tired old building without losing an ounce of its character. Genuinely remarkable work.</p>
+        <footer><span class="rev-av" style="--c:var(--crimson-deep)"><img src="https://randomuser.me/api/portraits/men/76.jpg" alt="" loading="lazy" onerror="this.remove()">AF</span><span class="rev-who"><b>The Alvarez Family</b><small>Warehouse · Renovation</small></span></footer>
+      </blockquote>
+      <blockquote class="rev-slide">
+        <span class="rev-stars" aria-label="5 out of 5">★★★★★</span>
+        <p>The 3D walkthrough sold us instantly — we could feel the light and the space before a single wall went up.</p>
+        <footer><span class="rev-av" style="--c:var(--magenta-deep)"><img src="https://randomuser.me/api/portraits/women/29.jpg" alt="" loading="lazy" onerror="this.remove()">SR</span><span class="rev-who"><b>Sofia Rossi</b><small>Lakeview Home · 3D &amp; build</small></span></footer>
+      </blockquote>
+    </div>
+
+    <div class="rev-nav">
+      <button class="rev-btn" id="revPrev" type="button" aria-label="Previous review">
+        <svg width="20" height="16" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 8H2M9 1L2 8l7 7"/></svg>
+      </button>
+      <div class="rev-dots" id="revDots" role="tablist">
+        <button class="rev-dot is-on" style="--c:var(--wine)" aria-label="Aisha &amp; Omar Khan"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy" onerror="this.remove()">AK</button>
+        <button class="rev-dot" style="--c:var(--navy)" aria-label="Daniel Meyer"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy" onerror="this.remove()">DM</button>
+        <button class="rev-dot" style="--c:var(--teal-ink)" aria-label="Priya Nair"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy" onerror="this.remove()">PN</button>
+        <button class="rev-dot" style="--c:var(--crimson-deep)" aria-label="Alvarez Family"><img src="https://randomuser.me/api/portraits/men/76.jpg" alt="" loading="lazy" onerror="this.remove()">AF</button>
+        <button class="rev-dot" style="--c:var(--magenta-deep)" aria-label="Sofia Rossi"><img src="https://randomuser.me/api/portraits/women/29.jpg" alt="" loading="lazy" onerror="this.remove()">SR</button>
+      </div>
+      <button class="rev-btn" id="revNext" type="button" aria-label="Next review">
+        <svg width="20" height="16" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 8h20M15 1l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="rev-agg r d2">
+    <div class="rev-stat"><b data-count="4.9" data-decimals="1">0</b><span><i class="rev-stars">★★★★★</i>average rating</span></div>
+    <div class="rev-stat"><b data-count="120" data-suffix="+">0</b><span>homes &amp; spaces<br>delivered</span></div>
+    <div class="rev-stat"><b data-count="98" data-suffix="%">0</b><span>would recommend<br>DE Architects</span></div>
+  </div>
+</section>
+
+<!-- ============ YOU / NAVY BENTO ============ -->
+<section class="become">
+  <span class="eyebrow">Be confident in what you'll build</span>
+  <div class="you-line">
+    <span class="y">Y</span>
+    <img class="o-photo" src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80" alt="A calm, sunlit interior" onerror="this.style.display='none'">
+    <span class="y">U</span>
+  </div>
+  <p class="sub2">will love where you live</p>
+
+  <div class="bento">
+    <div class="cell photo c-a" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80')">
+      <span class="t">Homes &amp; Villas</span>
+    </div>
+    <div class="cell tint-teal big c-b">
+      <span class="t">Interiors<br>&amp; Décor</span>
+      <span class="doodle" style="right:18px;bottom:12px;color:var(--wine);transform:rotate(-8deg)">crafted for you ↝</span>
+    </div>
+    <div class="cell photo c-c" style="background-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80')">
+      <span class="t">Offices<br>&amp; Retail</span>
+    </div>
+    <div class="cell tint-lime c-d big">
+      <span class="t">Landscapes<br>&amp; Exteriors</span>
+    </div>
+    <div class="cell photo c-e" style="background-image:url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80')">
+      <span class="t">Renovation<br>&amp; Restoration</span>
+    </div>
+    <div class="cell tint-pink c-f">
+      <span class="t">3D &amp;<br>Visualisation</span>
+    </div>
+  </div>
+
+  <div class="portfolio-cta">
+    <a class="pill" href="#work">Portrait of a project
+      <svg width="20" height="14" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/><path d="M8 1l6 6-6 6" opacity=".5"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>Timeless.</span><span>Functional.</span><span>Beautiful.</span><span>Timeless.</span><span>Functional.</span><span>Beautiful.</span>
+    <span>Timeless.</span><span>Functional.</span><span>Beautiful.</span><span>Timeless.</span><span>Functional.</span><span>Beautiful.</span>
+  </div>
+</div>
+
+<!-- ============ CTA + FOOTER ============ -->
+<footer class="footer" id="contact">
+  <div class="cta-grid">
+    <div class="foot-brand" style="grid-column:1/-1;display:none;"></div>
+    <div class="r">
+      <img class="foot-logo" src="assets/img/logo-footer.png" alt="DE Architects — Consulting Engineers">
+      <p class="foot-blurb">We are an architecture and interior design studio shaping homes, workspaces and everything in between — designed for how you actually live.</p>
+    </div>
+    <div class="r d1">
+      <h2 class="big display">Architecture that reflects all of you.</h2>
+      <div class="cta-buttons">
+        <a class="pill solid" href="#contact">Inquire
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill" href="#contact">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-contact">
+    <div class="fc-form">
+      <h3 class="foot-h">Start a conversation</h3>
+      <p class="fc-lede">Tell us about your project and we'll get back to you within two business days.</p>
+      <form class="fc-fields" onsubmit="this.querySelector('.fc-note').hidden=false; this.reset(); return false;" novalidate>
+        <div class="fc-row">
+          <input type="text" placeholder="Your name" aria-label="Your name" required>
+          <input type="email" placeholder="Email address" aria-label="Email address" required>
+        </div>
+        <input type="text" placeholder="Project type — e.g. new home, interior" aria-label="Project type">
+        <textarea rows="4" placeholder="A little about your project" aria-label="About your project"></textarea>
+        <button type="submit" class="fc-submit">Send enquiry
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </button>
+        <span class="fc-note" hidden>Thanks! This is a demo form — connect it to your email service to receive messages.</span>
+      </form>
+    </div>
+
+    <div class="fc-info">
+      <h3 class="foot-h">Get in touch</h3>
+      <a class="fc-item" href="tel:+10000000000">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.6 9.8a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
+        <span><b>Call us</b>+1 (000) 000-0000</span>
+      </a>
+      <a class="fc-item" href="mailto:studio@dearchitect.com">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+        <span><b>Email</b>studio@dearchitect.com</span>
+      </a>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><b>Design Office</b>24 Foundry Lane, Design District</span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><b>Site Studio</b>9 Meridian Court, Riverside</span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <span><b>Studio hours</b>Mon–Fri · 9:00–18:00</span>
+      </div>
+      <div class="fc-links">
+        <a href="#work">Projects</a><a href="#services">Services</a><a href="#studio">Careers</a><a href="#contact">Client login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
+      <a href="#" aria-label="Pinterest"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+    </div>
+    <div class="foot-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Site Map</a>
+    </div>
+  </div>
+
+  <p class="legal">DE Architects is an independent design studio. All project imagery is illustrative. We design across residential, interior, commercial and landscape work, and welcome projects of every size — from a single room to a whole building.</p>
+</footer>
+
+<!-- Bootstrap JS (offcanvas) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASIA GEMS | Rare & Ethical Gemstones</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,100..900;1,100..900&family=Caveat:wght@400..700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Guard configuration to ensure it runs cleanly
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                corePlugins: { preflight: false },
+                theme: {
+                    extend: {
+                        colors: {
+                            ivory: '#F5F1E8',
+                            emerald: '#0E5C4A',
+                            'emerald-deep': '#093A2F',
+                            sapphire: '#142A4C',
+                            ruby: '#B0143A',
+                            gold: '#C9A227',
+                            amethyst: '#4A1E5C',
+                            jade: '#A9DED4',
+                            ink: '#221A12'
+                        },
+                        fontFamily: {
+                            display: ['Anton', 'sans-serif'],
+                            heading: ['Archivo', 'sans-serif'],
+                            body: ['Inter', 'sans-serif'],
+                            hand: ['Caveat', 'cursive'],
+                            serif: ['Fraunces', 'serif']
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --ivory: #F5F1E8;
+            --emerald: #0E5C4A;
+            --emerald-deep: #093A2F;
+            --sapphire: #142A4C;
+            --ruby: #B0143A;
+            --gold: #C9A227;
+            --amethyst: #4A1E5C;
+            --jade: #A9DED4;
+            --ink: #221A12;
+            
+            --noise-bg: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            --dots-bg: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        }
+
+        body {
+            background-color: var(--ivory);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Textures */
+        .texture-noise { background-image: var(--noise-bg); }
+        .texture-dots { background-size: 20px 20px; background-image: var(--dots-bg); }
+
+        /* Typography */
+        .text-huge { font-size: clamp(3rem, 12vw, 12rem); line-height: 0.9; text-transform: uppercase; }
+        .text-shadow-sm { text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .stroke-text {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--ivory);
+        }
+        
+        /* Layout & Utilities */
+        .side-tab {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+        
+        .arch-img { border-radius: 50% 50% 0 0 / 20% 20% 0 0; }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Nav Transition */
+        #main-nav { transition: background-color 0.4s ease, padding 0.4s ease; }
+        #main-nav.scrolled { background-color: var(--emerald); padding-top: 0.5rem; padding-bottom: 0.5rem; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+
+        /* Carousel */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+            padding-bottom: 2rem;
+            cursor: grab;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+        .carousel-container:active { cursor: grabbing; }
+        
+        .carousel-card {
+            flex: 0 0 85%;
+            max-width: 400px;
+            scroll-snap-align: center;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+            opacity: 0.4;
+            transform: scale(0.85);
+        }
+        @media (min-width: 768px) { .carousel-card { flex: 0 0 40%; max-width: 500px; } }
+        
+        .carousel-card.active { opacity: 1; transform: scale(1); }
+        .carousel-card .card-content { max-height: 0; opacity: 0; transition: all 0.5s ease; overflow: hidden; }
+        .carousel-card.active .card-content { max-height: 200px; opacity: 1; margin-top: 1rem; }
+
+        /* Accordion Grid Animation */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .accordion-inner { overflow: hidden; }
+        .accordion-row.active .accordion-content { grid-template-rows: 1fr; }
+        .accordion-row.active .toggle-icon { transform: rotate(45deg); color: var(--gold); }
+
+        /* Marquee */
+        .marquee-container { overflow: hidden; white-space: nowrap; width: 100vw; max-width: 100%; }
+        .marquee-track {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Animations */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .animate-spin-slow { animation: spin 15s linear infinite; }
+        
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Scrollytelling Pinned Section */
+        #pin-container { height: 300vh; position: relative; }
+        #pin-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+        .pin-layer { position: absolute; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: opacity 0.1s; }
+        
+        /* Mobile overrides for specific elements */
+        @media (max-width: 640px) {
+            .mobile-stats-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 10px; }
+            .mobile-stats-row::-webkit-scrollbar { height: 4px; }
+            .mobile-stats-row::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-ivory">
+
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas offcanvas-end bg-emerald-deep text-ivory border-0" tabindex="-1" id="menuOffcanvas">
+        <div class="offcanvas-header pt-12 px-8">
+            <h5 class="font-serif italic text-gold text-2xl">Asia Gems</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body px-8 flex flex-col justify-center pb-24 texture-noise relative z-10">
+            <nav class="flex flex-col gap-6 relative z-20">
+                <a href="#" class="font-display text-5xl md:text-7xl hover:text-gold transition-colors no-underline text-ivory">COLLECTION</a>
+                <p class="font-body text-sm text-jade -mt-4 mb-2">Explore our rare, curated selection.</p>
+                
+                <a href="#" class="font-display text-5xl md:text-7xl hover:text-gold transition-colors no-underline text-ivory">BESPOKE</a>
+                <p class="font-body text-sm text-jade -mt-4 mb-2">Custom heirloom designs.</p>
+                
+                <a href="#" class="font-display text-5xl md:text-7xl hover:text-gold transition-colors no-underline text-ivory">HERITAGE</a>
+                <p class="font-body text-sm text-jade -mt-4 mb-2">Our sourcing philosophy & history.</p>
+                
+                <a href="#" class="font-display text-5xl md:text-7xl hover:text-gold transition-colors no-underline text-ivory">JOURNAL</a>
+            </nav>
+            <div class="mt-auto pt-12 border-t border-emerald/30 relative z-20">
+                <a href="mailto:concierge@asiagems.com" class="font-serif italic text-gold text-xl hover:text-ivory no-underline">concierge@asiagems.com</a>
+            </div>
+            <!-- BG Decor -->
+            <svg class="absolute bottom-0 right-0 w-64 h-64 text-emerald opacity-20 pointer-events-none z-0" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Sticky Nav -->
+    <nav id="main-nav" class="fixed w-full top-0 z-50 py-6 px-6 md:px-12 flex justify-between items-center">
+        <div class="logo font-serif font-bold italic text-3xl tracking-tight text-ivory">
+            <a href="#" class="no-underline text-inherit drop-shadow-md">ASIA GEMS</a>
+            <!-- Placeholder for real logo: <img src="assets/img/logo.png" alt="Asia Gems" class="h-8"> -->
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <a href="#" class="hidden lg:block text-ivory hover:text-gold font-body text-sm uppercase tracking-widest no-underline transition-colors font-semibold drop-shadow-md">Search</a>
+            <a href="#" class="hidden lg:block bg-gold text-ink font-body text-sm uppercase tracking-widest px-6 py-2 rounded-full font-bold hover:bg-ivory hover:text-emerald-deep transition-all">Enquire</a>
+            <button class="text-ivory font-body text-sm uppercase tracking-widest font-semibold flex items-center gap-2 hover:text-gold transition-colors drop-shadow-md" data-bs-toggle="offcanvas" data-bs-target="#menuOffcanvas">
+                Menu
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="8" x2="20" y2="8"></line><line x1="4" y1="16" x2="20" y2="16"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Side Tab -->
+    <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:block mix-blend-difference text-ivory">
+        <div class="side-tab font-body text-xs tracking-[0.3em] uppercase opacity-60">
+            Our Collection
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="hero" class="relative min-h-screen w-full overflow-hidden bg-ink flex items-center">
+        <!-- Background Video / Poster -->
+        <div id="hero-media" class="absolute inset-0 w-full h-full transform scale-110">
+            <div class="absolute inset-0 bg-ink"></div> <!-- Fallback bg -->
+            <img src="https://images.unsplash.com/photo-1599696848652-f0ff23bc911f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Gems poster" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay">
+            <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-70">
+                <!-- <source src="assets/video/hero.mp4" type="video/mp4"> -->
+                <!-- Provide your hero.mp4 here -->
+            </video>
+            <!-- Gradient Veil to transition into next section -->
+            <div class="absolute inset-0 bg-gradient-to-b from-ink/30 via-transparent to-ivory"></div>
+        </div>
+
+        <div id="hero-content" class="relative z-10 w-full px-6 md:px-12 mt-32 md:mt-48 text-center md:text-left pointer-events-none">
+            <h1 class="font-display text-huge text-ivory flex flex-col md:inline-flex drop-shadow-2xl">
+                <span class="text-shadow-sm transform -translate-y-4">AS RARE</span>
+                <span class="text-ink md:text-ivory md:mix-blend-overlay">AS YOU ARE.</span>
+            </h1>
+            <!-- Hand-drawn underline -->
+            <div class="w-full max-w-lg mx-auto md:mx-0 -mt-4 md:-mt-8 relative z-20">
+                <svg viewBox="0 0 400 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full text-gold drop-shadow-md">
+                    <path d="M5 25 Q 150 -5, 395 15" stroke="currentColor" stroke-width="8" stroke-linecap="round" class="animate-pulse" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 text-ink font-body text-xs uppercase tracking-widest flex flex-col items-center gap-2">
+            Scroll to discover
+            <div class="w-[1px] h-12 bg-ink overflow-hidden relative">
+                <div class="w-full h-full bg-gold absolute top-0 left-0 animate-[bounce_2s_infinite]"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Philosophy Section -->
+    <section class="py-24 md:py-32 bg-ivory texture-noise relative z-20" id="philosophy">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                
+                <!-- Left Text -->
+                <div class="lg:col-span-6 reveal">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-6 h-6 rounded-full bg-gold flex items-center justify-center text-ivory">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <span class="font-serif italic text-emerald-deep text-lg">Our philosophy</span>
+                    </div>
+                    
+                    <h2 class="font-heading font-black text-5xl md:text-7xl text-emerald-deep leading-tight mb-8 relative">
+                        Mastering the <br>
+                        <span class="text-ruby relative inline-block">
+                            provenance
+                            <!-- Caveat Annotation -->
+                            <span class="absolute -bottom-8 -right-8 font-hand text-3xl text-gold rotate-[-10deg] whitespace-nowrap">trusted globally ↝</span>
+                        </span>
+                    </h2>
+                    
+                    <p class="font-body text-lg text-ink/80 leading-relaxed mb-10 max-w-lg">
+                        For over four decades, Asia Gems has navigated the world’s most exclusive mines. From Ceylon sapphires to Burmese rubies, we procure, certify, and craft heirloom pieces with uncompromising integrity and absolute transparency.
+                    </p>
+                    
+                    <ul class="space-y-4 mb-10 font-heading font-bold text-emerald-deep tracking-wide">
+                        <li class="flex items-center gap-3"><span class="text-gold">✦</span> GIA-Certified Master Stones</li>
+                        <li class="flex items-center gap-3"><span class="text-gold">✦</span> Ethical Sourcing & Procurement</li>
+                        <li class="flex items-center gap-3"><span class="text-gold">✦</span> Bespoke Design & Commissions</li>
+                    </ul>
+                    
+                    <a href="#" class="inline-flex items-center gap-2 font-body font-bold text-sm uppercase tracking-widest text-emerald hover:text-ruby transition-colors group">
+                        How we work 
+                        <span class="group-hover:translate-x-2 transition-transform">→</span>
+                    </a>
+                </div>
+
+                <!-- Right Visual -->
+                <div class="lg:col-span-6 relative flex justify-center reveal" style="transition-delay: 200ms;">
+                    <!-- Jade Blob -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-jade rounded-[40%_60%_70%_30%] opacity-40 mix-blend-multiply blur-3xl -z-10 animate-[spin_30s_linear_infinite]"></div>
+                    
+                    <!-- Circular Image -->
+                    <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-full p-2 border border-emerald/20 bg-ivory shadow-2xl">
+                        <div class="w-full h-full rounded-full overflow-hidden bg-sapphire">
+                            <img src="https://images.unsplash.com/photo-1605100804763-247f66150587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Emerald Ring" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-1000">
+                        </div>
+                        
+                        <!-- Rotating Dashed Ring -->
+                        <div class="absolute inset-0 rounded-full border-2 border-dashed border-gold opacity-50 animate-spin-slow pointer-events-none scale-105"></div>
+                        
+                        <!-- Seal Badge -->
+                        <div class="absolute -bottom-4 -right-4 md:bottom-10 md:-right-10 w-32 h-32 bg-ivory rounded-full shadow-xl flex items-center justify-center p-2 z-20 group cursor-pointer">
+                            <div class="w-full h-full rounded-full border border-emerald relative flex items-center justify-center">
+                                <svg viewBox="0 0 100 100" class="w-full h-full animate-spin-slow">
+                                    <path id="curve" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
+                                    <text font-family="Inter" font-weight="700" font-size="11" letter-spacing="2.5" fill="#0E5C4A">
+                                        <textPath href="#curve">ETHICAL • RARE • CERTIFIED •</textPath>
+                                    </text>
+                                </svg>
+                                <!-- Center Icon -->
+                                <svg class="absolute w-8 h-8 text-ruby" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12l4 7-10 11L2 10z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Strip -->
+            <div class="mt-24 pt-12 border-t border-emerald/20 flex flex-nowrap mobile-stats-row justify-between lg:justify-around gap-8 text-center reveal">
+                <div class="flex-shrink-0">
+                    <div class="font-display text-4xl md:text-5xl text-emerald"><span class="counter" data-target="40">0</span>+</div>
+                    <div class="font-body text-xs uppercase tracking-widest text-ink/70 mt-2">Years in Trade</div>
+                </div>
+                <div class="flex-shrink-0">
+                    <div class="font-display text-4xl md:text-5xl text-emerald"><span class="counter" data-target="10">0</span>k+</div>
+                    <div class="font-body text-xs uppercase tracking-widest text-ink/70 mt-2">Stones Sourced</div>
+                </div>
+                <div class="flex-shrink-0">
+                    <div class="font-display text-4xl md:text-5xl text-emerald"><span class="counter" data-target="100">0</span>%</div>
+                    <div class="font-body text-xs uppercase tracking-widest text-ink/70 mt-2">GIA Certified</div>
+                </div>
+                <div class="flex-shrink-0">
+                    <div class="font-display text-4xl md:text-5xl text-emerald"><span class="counter" data-target="3">0</span></div>
+                    <div class="font-body text-xs uppercase tracking-widest text-ink/70 mt-2">Generations</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scrollytelling Section -->
+    <section id="pin-container" class="bg-ink text-ivory">
+        <div id="pin-sticky">
+            <!-- Stage 1: Rough Stones Video -->
+            <div class="pin-layer z-10 bg-ink" id="stage-1">
+                <img src="https://images.unsplash.com/photo-1596704017254-9b121068fb31?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Rough stone" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-luminosity">
+                <!-- <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-40"><source src="assets/video/rough-mining.mp4" type="video/mp4"></video> -->
+                <h2 class="font-display text-5xl md:text-8xl relative z-10 text-center tracking-wide px-4">FROM THE EARTH.</h2>
+            </div>
+            
+            <!-- Stage 2: Polished Video & Headline -->
+            <div class="pin-layer z-20 bg-emerald/90 opacity-0 texture-dots" id="stage-2">
+                <img src="https://images.unsplash.com/photo-1616047648356-0773d9e4a395?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Polished gems" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30">
+                <div class="text-center px-4 max-w-5xl mx-auto transform translate-y-10 transition-transform duration-700" id="stage-2-text">
+                    <h2 class="font-display text-huge text-ivory drop-shadow-lg leading-[0.85]">
+                        YOUR STONE.<br>
+                        <span class="text-jade">YOUR STORY.</span><br>
+                        YOUR HEIRLOOM.
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Stage 3: Services Grid Pop -->
+            <div class="pin-layer z-30 opacity-0 bg-sapphire/95 texture-dots backdrop-blur-sm" id="stage-3">
+                <div class="container mx-auto px-6 w-full transform scale-95 transition-transform duration-700" id="stage-3-grid">
+                    <div class="text-center mb-16">
+                        <span class="font-serif italic text-gold text-2xl">Our Expertise</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto">
+                        <!-- Items -->
+                        <div class="border border-ivory/20 p-6 md:p-8 rounded-xl hover:bg-ivory/10 transition-colors group cursor-pointer text-center bg-ink/20">
+                            <div class="text-gold mb-4 group-hover:scale-110 transition-transform inline-block"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                            <h3 class="font-heading font-bold text-lg md:text-xl text-ivory mb-2">Loose Gemstones</h3>
+                            <p class="font-body text-xs text-jade/70 hidden md:block">Unset, pristine stones ready for custom creation.</p>
+                        </div>
+                        <div class="border border-ivory/20 p-6 md:p-8 rounded-xl hover:bg-ivory/10 transition-colors group cursor-pointer text-center bg-ink/20">
+                            <div class="text-gold mb-4 group-hover:scale-110 transition-transform inline-block"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+                            <h3 class="font-heading font-bold text-lg md:text-xl text-ivory mb-2">Bespoke Design</h3>
+                            <p class="font-body text-xs text-jade/70 hidden md:block">Hand-crafted jewellery built around your stone.</p>
+                        </div>
+                        <div class="border border-ivory/20 p-6 md:p-8 rounded-xl hover:bg-ivory/10 transition-colors group cursor-pointer text-center bg-ink/20">
+                            <div class="text-gold mb-4 group-hover:scale-110 transition-transform inline-block"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg></div>
+                            <h3 class="font-heading font-bold text-lg md:text-xl text-ivory mb-2">Appraisal</h3>
+                            <p class="font-body text-xs text-jade/70 hidden md:block">Independent verification and market valuation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Rail -->
+            <div class="absolute right-6 top-1/2 -translate-y-1/2 h-32 w-1 bg-ivory/20 rounded-full z-50 hidden md:block">
+                <div id="pin-progress" class="w-full bg-gold rounded-full transition-all duration-75" style="height: 0%;"></div>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-ivory/50 font-body text-xs tracking-widest uppercase">
+                Keep Scrolling
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Split -->
+    <section class="py-24 md:py-32 bg-amethyst relative overflow-hidden texture-dots">
+        <div class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 text-[25vw] font-display text-ivory opacity-[0.03] pointer-events-none select-none">
+            LEGACY
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Left Image & Shape -->
+                <div class="relative reveal">
+                    <!-- Background Shape -->
+                    <div class="absolute inset-0 bg-gold/20 transform rotate-[-5deg] rounded-3xl -z-10 translate-x-4 translate-y-4"></div>
+                    
+                    <img src="https://images.unsplash.com/photo-1596515822396-d8f99e3a6288?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Colombian Emeralds" class="w-full arch-img shadow-2xl object-cover h-[500px] md:h-[700px] bg-emerald">
+                    
+                    <!-- Glass Card -->
+                    <div class="glass-panel absolute -bottom-10 -right-4 md:-right-10 p-6 md:p-8 rounded-2xl w-5/6 md:w-2/3 shadow-2xl">
+                        <div class="font-serif italic text-gold text-4xl leading-none mb-4">"</div>
+                        <p class="font-body text-sm md:text-base text-ivory leading-relaxed">
+                            "Every gem carries the fingerprint of the earth. We don't just sell stones; we connect families with legacy assets that hold intrinsic beauty and immense value."
+                        </p>
+                        <div class="mt-4 flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-ivory">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full rounded-full object-cover" alt="Founder">
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-bold text-ivory text-sm">A. Rahman</h4>
+                                <p class="font-body text-jade text-xs">Master Gemologist</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Copy -->
+                <div class="mt-16 lg:mt-0 lg:pl-12 reveal">
+                    <span class="inline-block py-1 px-3 border border-gold text-gold font-body text-xs uppercase tracking-widest rounded-full mb-6">Investment Grade</span>
+                    
+                    <h2 class="font-heading font-black text-5xl md:text-7xl text-ivory leading-tight mb-8">
+                        Beyond the <br>
+                        <span class="text-jade font-display text-6xl md:text-8xl font-normal italic tracking-wide">SURFACE</span>
+                    </h2>
+                    
+                    <p class="font-body text-lg text-ivory/80 leading-relaxed mb-8">
+                        We specialise in untreated Burmese rubies, vivid Colombian emeralds, and unheated Ceylon sapphires. Sourced directly from trusted artisinal mines, each stone undergoes rigorous examination by our master cutters and is accompanied by full GIA certification.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-8 mb-10 border-t border-ivory/20 pt-8">
+                        <div>
+                            <h4 class="font-heading font-bold text-jade text-xl mb-2">Clarity</h4>
+                            <p class="font-body text-sm text-ivory/70">Flawless structure selected for maximum light return.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-heading font-bold text-jade text-xl mb-2">Cut</h4>
+                            <p class="font-body text-sm text-ivory/70">Proportions mathematically aligned by master artisans.</p>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn-primary inline-block bg-gold text-ink font-body text-sm uppercase tracking-widest px-8 py-4 rounded-full font-bold hover:bg-jade hover:text-emerald-deep transition-all">
+                        View Certifications
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Carousel -->
+    <section class="py-24 md:py-32 bg-ivory relative z-20 texture-noise" id="collection">
+        <div class="container mx-auto px-6 md:px-12 mb-12 flex flex-col md:flex-row justify-between items-end gap-6 reveal">
+            <div>
+                <span class="font-serif italic text-emerald-deep text-xl block mb-2">Curated selection</span>
+                <h2 class="font-display text-6xl md:text-8xl text-ink leading-none">
+                    THE <span class="text-ruby">VAULT</span>
+                </h2>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="font-display text-2xl text-emerald-deep tracking-widest" id="carousel-counter">01 / 04</div>
+                <div class="flex gap-2">
+                    <button class="w-12 h-12 rounded-full border border-emerald-deep flex items-center justify-center text-emerald-deep hover:bg-emerald hover:text-ivory transition-colors" id="btn-prev" aria-label="Previous">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button class="w-12 h-12 rounded-full border border-emerald-deep flex items-center justify-center text-emerald-deep hover:bg-emerald hover:text-ivory transition-colors" id="btn-next" aria-label="Next">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel -->
+        <div class="carousel-container pl-6 md:pl-12 reveal" id="carousel">
+            <!-- Card 1 -->
+            <div class="carousel-card active relative rounded-2xl overflow-hidden bg-ink shadow-2xl flex-shrink-0">
+                <img src="https://images.unsplash.com/photo-1615655406736-b3f50efce878?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ruby" class="w-full h-[500px] md:h-[650px] object-cover opacity-80 mix-blend-screen bg-ruby">
+                <div class="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent"></div>
+                <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <span class="font-display text-6xl text-ivory/50">01</span>
+                        <span class="bg-ivory text-ink font-body text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">Rubies</span>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="font-heading font-black text-4xl md:text-5xl text-ivory mb-2">Burmese Pigeon Blood</h3>
+                        <div class="card-content">
+                            <p class="font-body text-sm text-ivory/80 mb-6">Exceedingly rare unheated rubies sourced directly from the Mogok Valley, known for their intense fluorescence and rich crimson hue.</p>
+                            <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:text-ivory transition-colors">Explore Category →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="carousel-card relative rounded-2xl overflow-hidden bg-ink shadow-2xl flex-shrink-0 ml-4 md:ml-8">
+                <img src="https://images.unsplash.com/photo-1599643477873-195b22b6473f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sapphire" class="w-full h-[500px] md:h-[650px] object-cover opacity-80 mix-blend-screen bg-sapphire">
+                <div class="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent"></div>
+                <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <span class="font-display text-6xl text-ivory/50">02</span>
+                        <span class="bg-ivory text-ink font-body text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">Sapphires</span>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="font-heading font-black text-4xl md:text-5xl text-ivory mb-2">Ceylon Royal Blue</h3>
+                        <div class="card-content">
+                            <p class="font-body text-sm text-ivory/80 mb-6">Luminous, velvety blue sapphires from Sri Lanka. Unheated and meticulously cut to display exceptional brilliance and depth of color.</p>
+                            <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:text-ivory transition-colors">Explore Category →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="carousel-card relative rounded-2xl overflow-hidden bg-ink shadow-2xl flex-shrink-0 ml-4 md:ml-8">
+                <img src="https://images.unsplash.com/photo-1634560421272-bc3f7fc47b0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Emerald" class="w-full h-[500px] md:h-[650px] object-cover opacity-80 mix-blend-screen bg-emerald">
+                <div class="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent"></div>
+                <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <span class="font-display text-6xl text-ivory/50">03</span>
+                        <span class="bg-ivory text-ink font-body text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">Emeralds</span>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="font-heading font-black text-4xl md:text-5xl text-ivory mb-2">Colombian Muzo</h3>
+                        <div class="card-content">
+                            <p class="font-body text-sm text-ivory/80 mb-6">The global standard for emeralds. Vibrant, glowing greens with minor to no oil treatment, reflecting the highest purity available.</p>
+                            <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:text-ivory transition-colors">Explore Category →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="carousel-card relative rounded-2xl overflow-hidden bg-ink shadow-2xl flex-shrink-0 ml-4 md:ml-8 mr-6 md:mr-12">
+                <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bespoke Jewellery" class="w-full h-[500px] md:h-[650px] object-cover opacity-80 mix-blend-screen bg-gold">
+                <div class="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent"></div>
+                <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <span class="font-display text-6xl text-ivory/50">04</span>
+                        <span class="bg-ivory text-ink font-body text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">Bespoke</span>
+                    </div>
+                    <div class="mt-auto">
+                        <h3 class="font-heading font-black text-4xl md:text-5xl text-ivory mb-2">High Jewellery</h3>
+                        <div class="card-content">
+                            <p class="font-body text-sm text-ivory/80 mb-6">Commission a one-of-a-kind setting. Our designers and goldsmiths work with you to create heirloom pieces tailored to your chosen stone.</p>
+                            <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold flex items-center gap-2 hover:text-ivory transition-colors">Explore Category →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="container mx-auto px-6 md:px-12 mt-8">
+            <div class="w-full h-[2px] bg-emerald/20 relative">
+                <div class="absolute top-0 left-0 h-full bg-emerald transition-all duration-300" id="carousel-progress" style="width: 25%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Accordion -->
+    <section class="py-24 bg-emerald text-ivory relative border-t border-emerald-deep" id="services">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+                <!-- Left Media Panel -->
+                <div class="lg:col-span-5 relative h-[400px] lg:h-[700px] rounded-2xl overflow-hidden reveal">
+                    <!-- Image container -->
+                    <div id="accordion-image-wrapper" class="w-full h-full relative bg-emerald-deep">
+                        <img src="https://images.unsplash.com/photo-1596515822396-d8f99e3a6288?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" id="accordion-img" class="w-full h-full object-cover transition-opacity duration-500" alt="Service Image">
+                    </div>
+                    
+                    <!-- Spinning Seal on Image -->
+                    <div class="absolute top-6 right-6 w-24 h-24 bg-gold rounded-full flex items-center justify-center p-1 shadow-lg pointer-events-none">
+                        <div class="w-full h-full rounded-full border border-ink relative flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-full h-full animate-spin-slow">
+                                <path id="curve2" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
+                                <text font-family="Inter" font-weight="700" font-size="11" letter-spacing="2" fill="#221A12">
+                                    <textPath href="#curve2">MASTER CUTTERS • </textPath>
+                                </text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Accordion -->
+                <div class="lg:col-span-7 flex flex-col justify-center reveal" style="transition-delay: 200ms;">
+                    <div class="mb-12">
+                        <h2 class="font-display text-5xl md:text-7xl text-ivory">SERVICES &<br><span class="text-jade">COMMISSIONS</span></h2>
+                    </div>
+
+                    <div class="border-t border-ivory/20" id="accordion-container">
+                        
+                        <!-- Row 1 -->
+                        <div class="accordion-row active border-b border-ivory/20 cursor-pointer group" data-img="https://images.unsplash.com/photo-1596515822396-d8f99e3a6288?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80">
+                            <div class="py-6 flex justify-between items-center pr-4">
+                                <div class="flex items-baseline gap-6">
+                                    <span class="font-display text-2xl text-ivory/40">01</span>
+                                    <div>
+                                        <h3 class="font-heading font-bold text-2xl text-ivory group-hover:text-gold transition-colors">Loose Gemstone Sourcing</h3>
+                                        <p class="font-body text-sm text-jade mt-1">Direct from mine to market.</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-icon text-ivory/50 transition-transform duration-300">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-inner pb-8 pl-14">
+                                    <p class="font-body text-ivory/80 max-w-lg mb-6">We maintain a vast, exclusive inventory of unmounted precious stones. Whether you are looking for an investment-grade sapphire or a vivid ruby for a custom ring, our gemologists will source the perfect specimen.</p>
+                                    <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold hover:text-ivory transition-colors">Enquire →</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="accordion-row border-b border-ivory/20 cursor-pointer group" data-img="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80">
+                            <div class="py-6 flex justify-between items-center pr-4">
+                                <div class="flex items-baseline gap-6">
+                                    <span class="font-display text-2xl text-ivory/40">02</span>
+                                    <div>
+                                        <h3 class="font-heading font-bold text-2xl text-ivory group-hover:text-gold transition-colors">Bespoke Jewellery Design</h3>
+                                        <p class="font-body text-sm text-jade mt-1">Heirlooms crafted by hand.</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-icon text-ivory/50 transition-transform duration-300">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-inner pb-8 pl-14">
+                                    <p class="font-body text-ivory/80 max-w-lg mb-6">Collaborate with our award-winning designers to create a custom setting. From initial sketches to 3D rendering and final forging in gold or platinum, we bring your vision to life around the central stone.</p>
+                                    <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold hover:text-ivory transition-colors">Enquire →</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="accordion-row border-b border-ivory/20 cursor-pointer group" data-img="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80">
+                            <div class="py-6 flex justify-between items-center pr-4">
+                                <div class="flex items-baseline gap-6">
+                                    <span class="font-display text-2xl text-ivory/40">03</span>
+                                    <div>
+                                        <h3 class="font-heading font-bold text-2xl text-ivory group-hover:text-gold transition-colors">Certification & Appraisal</h3>
+                                        <p class="font-body text-sm text-jade mt-1">Uncompromising transparency.</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-icon text-ivory/50 transition-transform duration-300">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </div>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-inner pb-8 pl-14">
+                                    <p class="font-body text-ivory/80 max-w-lg mb-6">Every stone we sell is accompanied by certification from the GIA (Gemological Institute of America) or equivalent premier laboratories, ensuring its natural origin, treatments (if any), and specifications.</p>
+                                    <a href="#" class="text-gold font-body text-xs uppercase tracking-widest font-bold hover:text-ivory transition-colors">Enquire →</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="py-24 md:py-32 bg-ruby text-ivory relative texture-dots">
+        <div class="container mx-auto px-6 md:px-12 text-center reveal">
+            
+            <div class="flex justify-center items-center gap-2 mb-8">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+
+            <!-- Big Quote Area -->
+            <div class="relative max-w-4xl mx-auto h-[250px] md:h-[200px] flex items-center justify-center">
+                <span class="absolute top-0 left-0 -translate-x-4 md:-translate-x-12 -translate-y-8 font-serif italic text-[150px] text-ink/20 leading-none pointer-events-none">"</span>
+                
+                <h3 id="review-quote" class="font-serif italic text-3xl md:text-5xl leading-tight transition-opacity duration-500">
+                    "The 4-carat unheated sapphire we sourced for my engagement ring is beyond words. The level of education and transparency provided by the team was remarkable."
+                </h3>
+            </div>
+
+            <!-- Client Info Area -->
+            <div class="mt-8 mb-16 h-20 transition-opacity duration-500" id="review-author">
+                <div class="font-heading font-bold text-xl uppercase tracking-widest text-gold mb-1">Eleanor V.</div>
+                <div class="font-body text-sm text-ivory/80">Commissioned: Bespoke Sapphire Ring</div>
+            </div>
+
+            <!-- Avatars (Controls) -->
+            <div class="flex justify-center items-center gap-4" id="review-controls">
+                <button class="review-btn active w-14 h-14 rounded-full p-1 border-2 border-gold transition-all" data-index="0">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Client" class="w-full h-full rounded-full object-cover" onerror="this.outerHTML='<div class=\'w-full h-full rounded-full bg-ivory text-ink flex items-center justify-center font-bold font-heading\'>EV</div>'">
+                </button>
+                <button class="review-btn w-12 h-12 rounded-full p-1 border-2 border-transparent hover:border-gold/50 transition-all opacity-50 hover:opacity-100" data-index="1">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Client" class="w-full h-full rounded-full object-cover" onerror="this.outerHTML='<div class=\'w-full h-full rounded-full bg-ivory text-ink flex items-center justify-center font-bold font-heading\'>JW</div>'">
+                </button>
+                <button class="review-btn w-12 h-12 rounded-full p-1 border-2 border-transparent hover:border-gold/50 transition-all opacity-50 hover:opacity-100" data-index="2">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Client" class="w-full h-full rounded-full object-cover" onerror="this.outerHTML='<div class=\'w-full h-full rounded-full bg-ivory text-ink flex items-center justify-center font-bold font-heading\'>SM</div>'">
+                </button>
+            </div>
+            
+            <!-- Horizontal Stats -->
+            <div class="mt-20 pt-8 border-t border-ivory/20 flex flex-nowrap mobile-stats-row justify-between lg:justify-center lg:gap-32 text-center text-ivory">
+                <div class="flex-shrink-0">
+                    <div class="font-heading font-black text-2xl md:text-3xl">4.9/5</div>
+                    <div class="font-body text-[10px] md:text-xs uppercase tracking-widest opacity-70 mt-1">Average Rating</div>
+                </div>
+                <div class="flex-shrink-0">
+                    <div class="font-heading font-black text-2xl md:text-3xl">10k+</div>
+                    <div class="font-body text-[10px] md:text-xs uppercase tracking-widest opacity-70 mt-1">Stones Placed</div>
+                </div>
+                <div class="flex-shrink-0">
+                    <div class="font-heading font-black text-2xl md:text-3xl">98%</div>
+                    <div class="font-body text-[10px] md:text-xs uppercase tracking-widest opacity-70 mt-1">Would Recommend</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid Section -->
+    <section class="py-24 md:py-32 bg-sapphire text-ivory texture-noise relative">
+        <div class="container mx-auto px-6 md:px-12">
+            
+            <div class="mb-16 reveal">
+                <span class="font-serif italic text-jade text-xl block mb-2">Curated for you</span>
+                <h2 class="font-display text-huge text-ivory leading-none flex flex-wrap items-center">
+                    ALL ABOUT
+                    <!-- Image set into letter concept -->
+                    <span class="inline-block w-[15vw] max-w-[200px] h-[10vw] max-h-[140px] rounded-full overflow-hidden mx-2 bg-emerald border-4 border-ivory/20 shadow-xl transform -rotate-3">
+                        <img src="https://images.unsplash.com/photo-1605100804763-247f66150587?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ring" class="w-full h-full object-cover">
+                    </span>
+                    YOU.
+                </h2>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[250px] reveal">
+                
+                <!-- Tile 1 (Large Image) -->
+                <div class="md:col-span-2 lg:col-span-2 md:row-span-2 rounded-3xl overflow-hidden relative group cursor-pointer bg-ink">
+                    <img src="https://images.unsplash.com/photo-1615655406736-b3f50efce878?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Rings">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h3 class="font-heading font-black text-3xl mb-1">Rings & Solitaires</h3>
+                        <p class="font-body text-sm text-ivory/80 mb-4">Engagement, cocktail, and statement rings.</p>
+                        <span class="text-gold font-body text-xs uppercase tracking-widest font-bold group-hover:translate-x-2 inline-block transition-transform">Explore →</span>
+                    </div>
+                </div>
+                
+                <!-- Tile 2 (Solid Color) -->
+                <div class="rounded-3xl p-6 bg-jade text-emerald-deep relative group cursor-pointer hover:bg-ivory transition-colors flex flex-col justify-between">
+                    <div class="self-end text-emerald opacity-30 group-hover:opacity-100 transition-opacity"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l4 7-10 11L2 10z"></path></svg></div>
+                    <div>
+                        <h3 class="font-heading font-black text-2xl mb-1">Loose Stones</h3>
+                        <p class="font-body text-xs text-emerald-deep/70">Unmounted perfection.</p>
+                    </div>
+                    <!-- Caveat annotation -->
+                    <div class="absolute top-4 left-4 font-hand text-xl text-ruby rotate-[-15deg]">start here!</div>
+                </div>
+
+                <!-- Tile 3 (Image) -->
+                <div class="rounded-3xl overflow-hidden relative group cursor-pointer bg-amethyst">
+                    <img src="https://images.unsplash.com/photo-1599643477873-195b22b6473f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 group-hover:scale-105 transition-transform duration-700" alt="Necklaces">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6">
+                        <h3 class="font-heading font-black text-2xl">Necklaces</h3>
+                    </div>
+                </div>
+
+                <!-- Tile 4 (Solid Gold) -->
+                <div class="md:col-span-2 rounded-3xl p-6 md:p-8 bg-gold text-ink relative group cursor-pointer flex justify-between items-end overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 rotate-12 scale-150">
+                        <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"></path><path d="M2 12h20"></path></svg>
+                    </div>
+                    <div class="relative z-10 w-2/3">
+                        <h3 class="font-heading font-black text-3xl mb-2">Certification & Origin</h3>
+                        <p class="font-body text-sm text-ink/80">Every piece is verified.</p>
+                    </div>
+                    <div class="w-12 h-12 bg-ink text-gold rounded-full flex items-center justify-center relative z-10 group-hover:rotate-45 transition-transform">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="#" class="inline-block bg-ruby text-ivory font-body text-sm uppercase tracking-widest px-10 py-5 rounded-full font-bold hover:bg-ivory hover:text-ruby transition-all shadow-xl hover:shadow-ruby/50">
+                    View the full collection →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="bg-gold text-ink py-4 border-y-2 border-ink marquee-container">
+        <div class="marquee-track font-display text-4xl md:text-5xl uppercase tracking-wider">
+            <!-- Repeated text for seamless looping -->
+            RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ 
+            RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ RARE. ETHICAL. TIMELESS. ✦ 
+        </div>
+    </div>
+
+    <!-- Footer / CTA -->
+    <footer class="bg-emerald text-ivory pt-24 md:pt-32 pb-8 texture-dots" id="contact">
+        <div class="container mx-auto px-6 md:px-12 text-center mb-24 reveal">
+            <h2 class="font-display text-5xl md:text-7xl lg:text-9xl text-ivory leading-[0.9] mb-10">
+                GEMS THAT REFLECT <br>
+                <span class="stroke-text text-emerald bg-emerald">ALL OF YOU.</span>
+            </h2>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#" class="w-full sm:w-auto bg-ivory text-emerald-deep font-body text-sm uppercase tracking-widest px-8 py-4 rounded-full font-bold hover:bg-gold transition-colors">Book a Viewing</a>
+                <a href="#" class="w-full sm:w-auto bg-transparent border-2 border-ivory/30 text-ivory font-body text-sm uppercase tracking-widest px-8 py-4 rounded-full font-bold hover:border-ivory transition-colors">Enquire Now</a>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 pb-16 border-b border-ivory/20 text-center md:text-left">
+                
+                <!-- Brand Info -->
+                <div class="lg:col-span-4 flex flex-col items-center md:items-start">
+                    <div class="font-serif font-bold italic text-3xl tracking-tight text-gold mb-6">ASIA GEMS</div>
+                    <p class="font-body text-sm text-ivory/70 max-w-xs leading-relaxed">
+                        Ethically sourcing the world's most exceptional colored gemstones. Crafting heirlooms for generations.
+                    </p>
+                </div>
+
+                <!-- Get in Touch -->
+                <div class="lg:col-span-3">
+                    <h4 class="font-heading font-bold text-lg mb-6 text-gold">Get in Touch</h4>
+                    <ul class="space-y-4 font-body text-sm text-ivory/80">
+                        <li><a href="mailto:concierge@asiagems.com" class="hover:text-gold transition-colors no-underline text-inherit">concierge@asiagems.com</a></li>
+                        <li><a href="tel:+442071234567" class="hover:text-gold transition-colors no-underline text-inherit">+44 (0) 207 123 4567</a></li>
+                        <li class="pt-2 text-jade">By Appointment Only</li>
+                    </ul>
+                </div>
+
+                <!-- Showrooms -->
+                <div class="lg:col-span-3">
+                    <h4 class="font-heading font-bold text-lg mb-6 text-gold">Showrooms</h4>
+                    <ul class="space-y-4 font-body text-sm text-ivory/80">
+                        <li>Mayfair, London, UK</li>
+                        <li>Geneva, Switzerland</li>
+                        <li>Dubai, UAE</li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="lg:col-span-2">
+                    <h4 class="font-heading font-bold text-lg mb-6 text-gold">Explore</h4>
+                    <ul class="space-y-4 font-body text-sm text-ivory/80">
+                        <li><a href="#" class="hover:text-gold transition-colors no-underline text-inherit">Collection</a></li>
+                        <li><a href="#" class="hover:text-gold transition-colors no-underline text-inherit">Bespoke</a></li>
+                        <li><a href="#" class="hover:text-gold transition-colors no-underline text-inherit">Our Story</a></li>
+                        <li><a href="#" class="hover:text-gold transition-colors no-underline text-inherit">Journal</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Legal Bar -->
+            <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 font-body text-xs text-ivory/50 uppercase tracking-widest">
+                <div>&copy; <span id="year">2026</span> ASIA GEMS. ALL RIGHTS RESERVED.</div>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-ivory transition-colors no-underline text-inherit">Privacy Policy</a>
+                    <a href="#" class="hover:text-ivory transition-colors no-underline text-inherit">Terms of Service</a>
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-gold transition-colors text-ivory/50" aria-label="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="#" class="hover:text-gold transition-colors text-ivory/50" aria-label="Pinterest">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.2 2.6 7.8 6.4 9.3-.1-.8-.1-2 0-2.8.2-.8 1.4-5.8 1.4-5.8s-.3-.7-.3-1.6c0-1.5.9-2.6 2-2.6 1 0 1.5.7 1.5 1.6 0 1-.6 2.5-.9 3.9-.3 1.1.6 2 1.6 2 1.9 0 3.5-2 3.5-5 0-2.6-1.9-4.5-4.6-4.5-3.1 0-5 2.3-5 4.8 0 1 .4 2.1.9 2.7.1.1.1.2 0 .3l-.3 1.1c-.1.2-.2.2-.4.1-1.4-.7-2.3-2.8-2.3-4.5 0-3.6 2.6-7 7.6-7 4 0 7 2.9 7 6.6 0 4-2.5 7.2-6 7.2-1.2 0-2.3-.6-2.7-1.3l-.7 2.8c-.2.9-.9 2-1.3 2.7C10.4 21.8 11.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2z"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper (Required for Offcanvas) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Set current year
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // Null-safe Utility
+            const $ = (id) => document.getElementById(id);
+            const $$ = (sel) => document.querySelectorAll(sel);
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // --- 1. Sticky Nav Transition ---
+            const nav = $('main-nav');
+            window.addEventListener('scroll', () => {
+                if(!nav) return;
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }, { passive: true });
+
+            // --- 2. Scroll Reveal Animations (Intersection Observer) ---
+            const revealElements = $$('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { root: null, threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+            
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // --- 3. Number Counter Animation ---
+            const counters = $$('.counter');
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = +entry.target.getAttribute('data-target');
+                        let count = 0;
+                        const inc = target / 50; // speed
+                        const updateCount = () => {
+                            count += inc;
+                            if (count < target) {
+                                entry.target.innerText = Math.ceil(count);
+                                requestAnimationFrame(updateCount);
+                            } else {
+                                entry.target.innerText = target;
+                            }
+                        };
+                        updateCount();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            counters.forEach(c => counterObserver.observe(c));
+
+            // --- 4. Hero Parallax (Throttled) ---
+            const heroMedia = $('hero-media');
+            const heroContent = $('hero-content');
+            let ticking = false;
+
+            if (!prefersReducedMotion && heroMedia && heroContent) {
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            const scrolled = window.scrollY;
+                            // Only animate if hero is in view
+                            if (scrolled < window.innerHeight) {
+                                heroMedia.style.transform = `scale(1.1) translateY(-${scrolled * 0.3}px)`;
+                                heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
+                                heroContent.style.opacity = 1 - (scrolled / (window.innerHeight * 0.8));
+                            }
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+            }
+
+            // --- 5. Scrollytelling Section Logic ---
+            const pinContainer = $('pin-container');
+            const stage1 = $('stage-1');
+            const stage2 = $('stage-2');
+            const stage2Text = $('stage-2-text');
+            const stage3 = $('stage-3');
+            const stage3Grid = $('stage-3-grid');
+            const pinProgress = $('pin-progress');
+
+            if (pinContainer && !prefersReducedMotion) {
+                window.addEventListener('scroll', () => {
+                    requestAnimationFrame(() => {
+                        const rect = pinContainer.getBoundingClientRect();
+                        const scrollDist = -rect.top; // How far we've scrolled into the container
+                        const scrollRange = rect.height - window.innerHeight; // Total scrollable distance
+                        
+                        if (scrollDist >= 0 && scrollDist <= scrollRange) {
+                            const progress = scrollDist / scrollRange; // 0.0 to 1.0
+                            
+                            if(pinProgress) pinProgress.style.height = `${progress * 100}%`;
+
+                            // Stage calculations
+                            // 0.0 to 0.33: Stage 1 active, fade in Stage 2
+                            if (progress < 0.33) {
+                                const localP = progress / 0.33;
+                                if(stage2) stage2.style.opacity = localP;
+                                if(stage2Text) stage2Text.style.transform = `translateY(${10 - (localP * 10)}px)`;
+                                if(stage3) stage3.style.opacity = 0;
+                            } 
+                            // 0.33 to 0.66: Stage 2 active, hold text, start fading text out at end
+                            else if (progress >= 0.33 && progress < 0.66) {
+                                if(stage2) stage2.style.opacity = 1;
+                                if(stage2Text) stage2Text.style.transform = `translateY(0px)`;
+                                if(stage3) stage3.style.opacity = 0;
+                            }
+                            // 0.66 to 1.0: Fade in Stage 3, scale up grid
+                            else {
+                                const localP = (progress - 0.66) / 0.34;
+                                if(stage3) stage3.style.opacity = localP;
+                                if(stage3Grid) stage3Grid.style.transform = `scale(${0.95 + (localP * 0.05)})`;
+                            }
+                        } else if (scrollDist < 0) {
+                            // Reset if above
+                            if(pinProgress) pinProgress.style.height = '0%';
+                            if(stage2) stage2.style.opacity = 0;
+                            if(stage3) stage3.style.opacity = 0;
+                        } else {
+                            // Max out if below
+                            if(pinProgress) pinProgress.style.height = '100%';
+                            if(stage3) stage3.style.opacity = 1;
+                            if(stage3Grid) stage3Grid.style.transform = 'scale(1)';
+                        }
+                    });
+                }, { passive: true });
+            } else if (prefersReducedMotion && pinContainer) {
+                // Fallback for reduced motion
+                pinContainer.style.height = 'auto';
+                $('pin-sticky').style.position = 'relative';
+                $('pin-sticky').style.height = 'auto';
+                [stage1, stage2, stage3].forEach(el => {
+                    if(el) {
+                        el.style.position = 'relative';
+                        el.style.opacity = 1;
+                        el.style.padding = '100px 20px';
+                    }
+                });
+                if(pinProgress) pinProgress.parentElement.style.display = 'none';
+            }
+
+            // --- 6. Carousel Logic ---
+            const carousel = $('carousel');
+            const cards = $$('.carousel-card');
+            const btnPrev = $('btn-prev');
+            const btnNext = $('btn-next');
+            const counterDisplay = $('carousel-counter');
+            const progressBar = $('carousel-progress');
+
+            if (carousel && cards.length > 0) {
+                const updateCarouselUI = () => {
+                    const scrollLeft = carousel.scrollLeft;
+                    const centerPoint = scrollLeft + carousel.clientWidth / 2;
+                    let activeIndex = 0;
+                    let minDistance = Infinity;
+
+                    cards.forEach((card, index) => {
+                        const cardCenter = card.offsetLeft + card.clientWidth / 2 - carousel.offsetLeft;
+                        const distance = Math.abs(centerPoint - cardCenter);
+                        
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            activeIndex = index;
+                        }
+                        card.classList.remove('active');
+                    });
+
+                    cards[activeIndex].classList.add('active');
+                    
+                    // Update counter
+                    if(counterDisplay) {
+                        counterDisplay.textContent = `0${activeIndex + 1} / 0${cards.length}`;
+                    }
+                    // Update progress bar
+                    if(progressBar) {
+                        const percent = ((activeIndex + 1) / cards.length) * 100;
+                        progressBar.style.width = `${percent}%`;
+                    }
+                };
+
+                carousel.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            updateCarouselUI();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                const scrollToIndex = (index) => {
+                    if (index >= 0 && index < cards.length) {
+                        const card = cards[index];
+                        // Calculate position to center the card
+                        const scrollPos = card.offsetLeft - carousel.offsetLeft - (carousel.clientWidth - card.clientWidth) / 2;
+                        carousel.scrollTo({ left: scrollPos, behavior: 'smooth' });
+                    }
+                };
+
+                if(btnPrev) {
+                    btnPrev.addEventListener('click', () => {
+                        const activeCard = document.querySelector('.carousel-card.active');
+                        const index = Array.from(cards).indexOf(activeCard);
+                        scrollToIndex(index - 1);
+                    });
+                }
+
+                if(btnNext) {
+                    btnNext.addEventListener('click', () => {
+                        const activeCard = document.querySelector('.carousel-card.active');
+                        const index = Array.from(cards).indexOf(activeCard);
+                        scrollToIndex(index + 1);
+                    });
+                }
+                
+                // Initial set
+                updateCarouselUI();
+            }
+
+            // --- 7. Accordion Logic ---
+            const accRows = $$('.accordion-row');
+            const accImg = $('accordion-img');
+            const accImgWrapper = $('accordion-image-wrapper');
+
+            accRows.forEach(row => {
+                row.addEventListener('click', () => {
+                    const isActive = row.classList.contains('active');
+                    
+                    // Close all
+                    accRows.forEach(r => r.classList.remove('active'));
+                    
+                    // Open clicked if it wasn't already open
+                    if (!isActive) {
+                        row.classList.add('active');
+                        
+                        // Swap image with fade effect
+                        if (accImg && accImgWrapper) {
+                            const newSrc = row.getAttribute('data-img');
+                            if(accImg.src !== newSrc) {
+                                accImg.style.opacity = 0;
+                                setTimeout(() => {
+                                    accImg.src = newSrc;
+                                    accImg.onload = () => { accImg.style.opacity = 1; };
+                                }, 300);
+                            }
+                        }
+                    }
+                });
+            });
+
+            // --- 8. Testimonials Logic ---
+            const reviews = [
+                {
+                    quote: "The 4-carat unheated sapphire we sourced for my engagement ring is beyond words. The level of education and transparency provided by the team was remarkable.",
+                    author: "Eleanor V.",
+                    commission: "Commissioned: Bespoke Sapphire Ring"
+                },
+                {
+                    quote: "Investing in Colombian emeralds requires absolute trust. Asia Gems delivered not only on the flawless clarity of the stones but provided complete GIA traceability.",
+                    author: "James W.",
+                    commission: "Purchased: Loose Muzo Emeralds"
+                },
+                {
+                    quote: "From sketch to final setting, their artisans translated my vision perfectly. The ruby necklace is a family heirloom that will be passed down for generations.",
+                    author: "Sarah M.",
+                    commission: "Commissioned: High Jewellery Necklace"
+                }
+            ];
+
+            const reviewQuote = $('review-quote');
+            const reviewAuthor = $('review-author');
+            const reviewBtns = $$('.review-btn');
+            let currentReview = 0;
+            let reviewInterval;
+
+            const updateReview = (index) => {
+                if(!reviewQuote || !reviewAuthor) return;
+                
+                // Fade out
+                reviewQuote.style.opacity = 0;
+                reviewAuthor.style.opacity = 0;
+                
+                setTimeout(() => {
+                    // Update content
+                    reviewQuote.textContent = `"${reviews[index].quote}"`;
+                    reviewAuthor.innerHTML = `
+                        <div class="font-heading font-bold text-xl uppercase tracking-widest text-gold mb-1">${reviews[index].author}</div>
+                        <div class="font-body text-sm text-ivory/80">${reviews[index].commission}</div>
+                    `;
+                    
+                    // Update buttons
+                    reviewBtns.forEach((btn, i) => {
+                        if (i === index) {
+                            btn.classList.add('active', 'border-gold');
+                            btn.classList.remove('border-transparent', 'opacity-50');
+                        } else {
+                            btn.classList.remove('active', 'border-gold');
+                            btn.classList.add('border-transparent', 'opacity-50');
+                        }
+                    });
+                    
+                    // Fade in
+                    reviewQuote.style.opacity = 1;
+                    reviewAuthor.style.opacity = 1;
+                    currentReview = index;
+                }, 500); // Wait for fade out
+            };
+
+            const nextReview = () => {
+                const nextIdx = (currentReview + 1) % reviews.length;
+                updateReview(nextIdx);
+            };
+
+            // Auto rotate
+            const startReviewRotation = () => {
+                reviewInterval = setInterval(nextReview, 6000);
+            };
+            const stopReviewRotation = () => {
+                clearInterval(reviewInterval);
+            };
+
+            if (reviewBtns.length > 0) {
+                startReviewRotation();
+                
+                reviewBtns.forEach((btn, idx) => {
+                    btn.addEventListener('click', () => {
+                        stopReviewRotation();
+                        updateReview(idx);
+                        startReviewRotation();
+                    });
+                });
+                
+                // Pause on hover
+                const reviewSection = $('review-quote').parentElement.parentElement;
+                if(reviewSection) {
+                    reviewSection.addEventListener('mouseenter', stopReviewRotation);
+                    reviewSection.addEventListener('mouseleave', startReviewRotation);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

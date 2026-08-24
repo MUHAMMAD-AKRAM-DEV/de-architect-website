@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projects — DE Architects</title>
+<meta name="description" content="Selected architecture and interior design projects by DE Architects." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>if (window.tailwind) tailwind.config = { corePlugins: { preflight: false } };</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/icons/favicon.png" type="image/png">
+<style>
+  /* small page-header helper reused by inner pages */
+  .page-head{ background:var(--wine);color:#fff;padding:clamp(120px,18vh,190px) clamp(18px,5vw,80px) clamp(50px,7vw,90px);text-align:center; }
+  .page-head .eyebrow{ color:var(--pink);display:block;margin-bottom:14px; }
+  .page-head h1{ font-size:clamp(2.6rem,7vw,5.5rem);margin:0; }
+  .page-body{ padding:clamp(60px,8vw,110px) clamp(18px,5vw,80px);max-width:1180px;margin:0 auto; }
+  .placeholder-note{ border:2px dashed rgba(62,14,44,.28);border-radius:16px;padding:30px;color:#6a4a56;background:#fff; }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" aria-label="DE Architects — Consulting Engineers">
+    <img class="brand-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
+  </a>
+
+  <nav class="nav-actions">
+    <a class="pill contact" href="contact.html">Contact</a>
+    <button class="icon-btn search" aria-label="Search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+    </button>
+    <button class="pill menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
+      Menu
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
+    </button>
+  </nav>
+</header>
+
+<a class="side-tab" href="projects.html">Our Projects</a>
+
+<div class="offcanvas offcanvas-end menu-oc" tabindex="-1" id="menu">
+  <div class="offcanvas-header px-4 pt-4">
+    <img src="assets/img/logo-nav.png" alt="DE Architects" style="height:30px;width:auto;">
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="oc-links">
+    <a href="projects.html" data-bs-dismiss="offcanvas">Projects<small>Selected work &amp; case studies</small></a>
+    <a href="services.html" data-bs-dismiss="offcanvas">Services<small>Homes, interiors, commercial &amp; more</small></a>
+    <a href="about.html" data-bs-dismiss="offcanvas">Studio<small>Who we are and how we work</small></a>
+    <a href="contact.html" data-bs-dismiss="offcanvas">Contact<small>Start your project with us</small></a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+
+
+<main>
+  <section class="page-head">
+    <span class="eyebrow">Selected work</span>
+    <h1 class="display">Projects</h1>
+  </section>
+
+  <section class="page-body">
+    <div class="r"><p style="font-size:1.15rem;line-height:1.75;max-width:60ch;color:#4a2c3a;">A gallery of completed projects. Add a grid of project cards linking to individual case-study pages.</p></div>
+    <div class="r" style="margin-top:40px;"><div class="placeholder-note">Reuse the <code>.fcard</code> or <code>.bento</code> styles for a project grid. Each project can link to its own case-study page in a <code>projects/</code> folder.</div></div>
+  </section>
+</main>
+
+<footer class="footer" >
+  <div class="cta-grid">
+    <div class="foot-brand" style="grid-column:1/-1;display:none;"></div>
+    <div class="r">
+      <img class="foot-logo" src="assets/img/logo-footer.png" alt="DE Architects — Consulting Engineers">
+      <p class="foot-blurb">We are an architecture and interior design studio shaping homes, workspaces and everything in between — designed for how you actually live.</p>
+    </div>
+    <div class="r d1">
+      <h2 class="big display">Architecture that reflects all of you.</h2>
+      <div class="cta-buttons">
+        <a class="pill solid" href="contact.html">Inquire
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-contact">
+    <div class="fc-form">
+      <h3 class="foot-h">Start a conversation</h3>
+      <p class="fc-lede">Tell us about your project and we'll get back to you within two business days.</p>
+      <form class="fc-fields" onsubmit="this.querySelector('.fc-note').hidden=false; this.reset(); return false;" novalidate>
+        <div class="fc-row">
+          <input type="text" placeholder="Your name" aria-label="Your name" required>
+          <input type="email" placeholder="Email address" aria-label="Email address" required>
+        </div>
+        <input type="text" placeholder="Project type — e.g. new home, interior" aria-label="Project type">
+        <textarea rows="4" placeholder="A little about your project" aria-label="About your project"></textarea>
+        <button type="submit" class="fc-submit">Send enquiry
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </button>
+        <span class="fc-note" hidden>Thanks! This is a demo form — connect it to your email service to receive messages.</span>
+      </form>
+    </div>
+
+    <div class="fc-info">
+      <h3 class="foot-h">Get in touch</h3>
+      <a class="fc-item" href="tel:+10000000000">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.6 9.8a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
+        <span><b>Call us</b>+1 (000) 000-0000</span>
+      </a>
+      <a class="fc-item" href="mailto:studio@dearchitect.com">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+        <span><b>Email</b>studio@dearchitect.com</span>
+      </a>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><b>Design Office</b>24 Foundry Lane, Design District</span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><b>Site Studio</b>9 Meridian Court, Riverside</span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <span><b>Studio hours</b>Mon–Fri · 9:00–18:00</span>
+      </div>
+      <div class="fc-links">
+        <a href="projects.html">Projects</a><a href="services.html">Services</a><a href="about.html">Careers</a><a href="contact.html">Client login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
+      <a href="#" aria-label="Pinterest"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+    </div>
+    <div class="foot-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Site Map</a>
+    </div>
+  </div>
+
+  <p class="legal">DE Architects is an independent design studio. All project imagery is illustrative. We design across residential, interior, commercial and landscape work, and welcome projects of every size — from a single room to a whole building.</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
