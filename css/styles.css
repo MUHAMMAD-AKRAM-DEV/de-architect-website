@@ -2804,7 +2804,7 @@ a.fc-item:hover b {
 /* ============ Section 3: scroll-driven image sequence ============ */
 .flight {
   position: relative;
-  height: 460vh;
+  height: 560vh;
   background: #0E0A10;
 }
 
@@ -2813,6 +2813,26 @@ a.fc-item:hover b {
   top: 0;
   height: 100vh;
   overflow: hidden;
+}
+
+/* Only one engine is ever live: whichever script ran added its class.
+   The other's markup stays in the DOM but is never painted. */
+.flight-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.flight.has-webgl .flight-canvas {
+  display: block;
+}
+
+.flight.has-webgl .flight-reel,
+.flight.has-webgl .flight-caps,
+.flight:not(.has-reel):not(.has-webgl) .flight-reel {
+  display: none;
 }
 
 /* the reel: every shot stacked, only opacity + transform ever change */
@@ -3077,7 +3097,8 @@ a.fc-item:hover b {
 }
 
 /* when the reel is live the fallback stays for screen readers only */
-.flight.has-reel .flight-fallback {
+.flight.has-reel .flight-fallback,
+.flight.has-webgl .flight-fallback {
   position: absolute;
   width: 1px;
   height: 1px;

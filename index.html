@@ -142,6 +142,10 @@
      .fshot elements are here. No WebGL, so it costs next to nothing to run. -->
 <section class="flight" id="work" aria-label="Your space, your vision, your home">
   <div class="flight-stage">
+    <!-- 3D fly-through (js/drone.js). Shown when that script is loaded. -->
+    <canvas class="flight-canvas" id="flightCanvas" aria-hidden="true"></canvas>
+
+    <!-- image reel (js/flight.js). Shown when that script is loaded instead. -->
     <div class="flight-reel" aria-hidden="true">
       <figure class="fshot" data-pan="in"><img src="assets/img/flight/shot-01.jpg" alt="" decoding="async" fetchpriority="high"></figure>
       <figure class="fshot" data-pan="left"><img src="assets/img/flight/shot-02.jpg" alt="" decoding="async" fetchpriority="high"></figure>
@@ -596,7 +600,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/main.js"></script>
 
-  <!-- Section 3: the drone fly-through image sequence. -->
-  <script src="js/flight.js"></script>
+  <!-- ====== Section 3: pick ONE of the two fly-through engines ======
+       A) js/drone.js  — the live 3D scene. Richer, real camera move, costs GPU.
+       B) js/flight.js — the pre-rendered image reel. Nearly free to run.
+       Both read the same markup above; swap by commenting one block out. -->
+
+  <!-- A) live 3D (active) -->
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+  } }
+  </script>
+  <script type="module" src="js/drone.js"></script>
+
+  <!-- B) image reel (inactive) -->
+  <!-- <script src="js/flight.js"></script> -->
 </body>
 </html>

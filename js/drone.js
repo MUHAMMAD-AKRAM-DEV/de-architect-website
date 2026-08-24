@@ -14,6 +14,7 @@
    is what keeps the interior — where the services are — from flashing past.
    ========================================================================== */
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const section  = document.getElementById('work');
 const canvas   = document.getElementById('flightCanvas');
@@ -64,7 +65,13 @@ async function boot(){
   const small = window.innerWidth < 900;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias:!small, powerPreference:'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1.5 : 2));
+  /* Fill rate is what limits this scene — measured, not guessed: halving the
+     resolution took it from 40fps to a capped 60, while turning shadows off
+     bought only 5. So the renderer starts modest and adapts (see adapt()). */
+  const DPR_MAX = Math.min(window.devicePixelRatio, small ? 1.0 : 1.25);
+  const DPR_MIN = 0.62;
+  let dpr = DPR_MAX;
+  renderer.setPixelRatio(dpr);
   renderer.shadowMap.enabled = !small;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -175,7 +182,7 @@ async function boot(){
   sun.position.set(-60, 26, -46);
   if (!small){
     sun.castShadow = true;
-    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.mapSize.set(1024, 1024);
     const s = sun.shadow.camera;
     s.left = -60; s.right = 60; s.top = 60; s.bottom = -60; s.near = 1; s.far = 220;
     sun.shadow.bias = -0.0008;
@@ -184,7 +191,7 @@ async function boot(){
   scene.add(sun);
 
   // keep real lights few — everything else glows via emissive materials
-  [-9, -3, 3, 9].forEach(z => {
+  [-8, 0, 8].forEach(z => {
     const l = new THREE.PointLight(0xFFE0B4, 38, 28, 2);
     l.position.set(0, H1 - 1.0, z);
     scene.add(l);
@@ -270,31 +277,39 @@ async function boot(){
   [-8.4, 8.4].forEach(x => { box(1.6, 4.2, 1.6, M.stoneDark, x, 2.1, -50); box(1.9, 0.3, 1.9, M.bronze, x, 4.3, -50); });
   for (let i = 0; i < 14; i++) box(0.12, 2.4, 0.12, M.bronze, -7.4 + i * 1.14, 1.2, -50, true, false);
 
+  // Same treatment for the planting: collect, merge once. Was ~150 meshes.
+  const trunkGeo = [], leafGeo = [];
   function tree(x, z, s, tall){
-    const g = new THREE.Group();
     const base = tall ? 3.4 : 2.2;
-    const t = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.2, base, 8), M.bark);
-    t.position.y = base / 2; t.castShadow = true; g.add(t);
+    const place = new THREE.Matrix4().makeTranslation(x, 0, z)
+      .multiply(new THREE.Matrix4().makeScale(s, s, s));
+    const t = new THREE.CylinderGeometry(0.13, 0.2, base, 8);
+    t.translate(0, base / 2, 0); t.applyMatrix4(place);
+    trunkGeo.push(t);
     for (let i = 0; i < 3; i++){
-      const f = new THREE.Mesh(new THREE.IcosahedronGeometry(1.5 - i * 0.34, 0), M.leaf);
-      f.position.y = base + 0.5 + i * 0.95;
-      f.rotation.set(Math.random(), Math.random(), Math.random());
-      f.castShadow = true; g.add(f);
+      const f = new THREE.IcosahedronGeometry(1.5 - i * 0.34, 0);
+      f.rotateX(Math.random()); f.rotateY(Math.random()); f.rotateZ(Math.random());
+      f.translate(0, base + 0.5 + i * 0.95, 0);
+      f.applyMatrix4(place);
+      leafGeo.push(f);
     }
-    g.position.set(x, 0, z); g.scale.setScalar(s); world.add(g);
   }
   for (let i = 0; i < 9; i++) tree(-56 + i * 14, -56, 1.1, true);
 
   /* ---------- the city around the plot ---------- */
+  // Buildings are collected as geometry and merged once, at the end. Built as
+  // individual meshes this was ~120 draw calls and ~60 separate materials —
+  // by far the most expensive thing in the scene, and all of it static.
+  const cityBuckets = new Map();          // facade texture → geometry[]
+  const cityCaps = [];
   function building(x, z, w, d, h, face){
-    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d),
-      new THREE.MeshStandardMaterial({
-        map:face, emissiveMap:face, emissive:new THREE.Color(0xFFFFFF),
-        emissiveIntensity:0.9, roughness:0.9, metalness:0
-      }));
-    m.position.set(x, h / 2, z);
-    world.add(m);
-    box(w + 0.6, 0.5, d + 0.6, M.stoneDark, x, h + 0.2, z, false, false);
+    const g = new THREE.BoxGeometry(w, h, d);
+    g.translate(x, h / 2, z);
+    if (!cityBuckets.has(face)) cityBuckets.set(face, []);
+    cityBuckets.get(face).push(g);
+    const c = new THREE.BoxGeometry(w + 0.6, 0.5, d + 0.6);
+    c.translate(x, h + 0.2, z);
+    cityCaps.push(c);
   }
   // immediate neighbours, hard against the boundary walls
   [[-36, -34, 16, 22, 10, facadeB], [-38, -4, 18, 26, 12, facadeA], [-36, 30, 16, 24, 9, facadeB],
@@ -637,6 +652,26 @@ async function boot(){
   }
   [[-16, 16], [16, 16], [-17, 38], [17, 38]].forEach(p => tree(p[0], p[1], 1.15, false));
 
+  /* ---------- collapse the static scenery into a handful of draws ---------- */
+  function mergeInto(geos, material, cast, receive){
+    if (!geos.length) return;
+    const merged = mergeGeometries(geos);
+    geos.forEach(g => g.dispose());
+    if (!merged) return;
+    const m = new THREE.Mesh(merged, material);
+    m.castShadow = !!cast; m.receiveShadow = !!receive;
+    world.add(m);
+  }
+  cityBuckets.forEach((geos, face) => mergeInto(geos,
+    new THREE.MeshStandardMaterial({
+      map:face, emissiveMap:face, emissive:new THREE.Color(0xFFFFFF),
+      emissiveIntensity:0.9, roughness:0.9, metalness:0
+    }), false, false));
+  cityBuckets.clear();
+  mergeInto(cityCaps, M.stoneDark, false, false);
+  mergeInto(trunkGeo, M.bark, true, true);
+  mergeInto(leafGeo, M.leaf, true, true);
+
   /* ---------- the flight path ---------- */
   const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
@@ -663,6 +698,31 @@ async function boot(){
   let targetP = 0, curP = 0, running = false, raf = null, lastFov = -1;
   const pos = new THREE.Vector3(), look = new THREE.Vector3();
   const t0 = performance.now();
+
+  /* ---------- adaptive resolution ----------
+     Trade pixels to hold a smooth frame rate, the way a game does. On a strong
+     machine this never fires; on a weak one it quietly steps the buffer down
+     instead of letting the scroll go rough. Shadows are the last thing to go. */
+  let acc = 0, ticks = 0, lastT = performance.now(), shadowsOn = renderer.shadowMap.enabled;
+  function adapt(now){
+    acc += now - lastT; lastT = now; ticks++;
+    if (acc < 700) return;
+    const avg = acc / ticks; acc = 0; ticks = 0;
+    const target = 1000 / 55;
+    if (avg > target * 1.3){
+      if (dpr > DPR_MIN){
+        dpr = Math.max(DPR_MIN, dpr - 0.14);
+        renderer.setPixelRatio(dpr); resize();
+      } else if (shadowsOn){
+        shadowsOn = false;
+        renderer.shadowMap.enabled = false;
+        scene.traverse(o => { if (o.isMesh) o.material.needsUpdate = true; });
+      }
+    } else if (avg < target * 0.8 && dpr < DPR_MAX){
+      dpr = Math.min(DPR_MAX, dpr + 0.08);
+      renderer.setPixelRatio(dpr); resize();
+    }
+  }
 
   function readScroll(){
     const r = section.getBoundingClientRect();
@@ -706,7 +766,9 @@ async function boot(){
       p.mesh.material.emissiveIntensity = e * 0.8;
     }
 
-    const et = (performance.now() - t0) / 1000;
+    const nowMs = performance.now();
+    adapt(nowMs);
+    const et = (nowMs - t0) / 1000;
     camera.position.copy(pos);
     camera.position.x += Math.sin(et * 0.7) * 0.07;
     camera.position.y += Math.sin(et * 1.13) * 0.05;
@@ -725,7 +787,7 @@ async function boot(){
     renderer.render(scene, camera);
   }
 
-  function start(){ if (!running){ running = true; raf = requestAnimationFrame(frame); } }
+  function start(){ if (!running){ running = true; lastT = performance.now(); acc = ticks = 0; raf = requestAnimationFrame(frame); } }
   function stop(){ if (running){ running = false; cancelAnimationFrame(raf); } }
 
   resize();
