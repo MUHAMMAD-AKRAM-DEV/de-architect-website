@@ -2801,10 +2801,10 @@ a.fc-item:hover b {
   }
 }
 
-/* ============ Section 3: scroll-driven drone fly-through ============ */
+/* ============ Section 3: scroll-driven image sequence ============ */
 .flight {
   position: relative;
-  height: 560vh;
+  height: 460vh;
   background: #0E0A10;
 }
 
@@ -2815,12 +2815,104 @@ a.fc-item:hover b {
   overflow: hidden;
 }
 
-.flight-canvas {
+/* the reel: every shot stacked, only opacity + transform ever change */
+.flight-reel {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.flight.is-ready .flight-reel {
+  opacity: 1;
+}
+
+.fshot {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+.fshot img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
   display: block;
+}
+
+/* a quiet holding tone behind the reel while the first shots decode */
+.flight-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #241019, #0E0A10 60%);
+}
+
+/* ---- per-shot service caption ---- */
+.flight-caps {
+  position: absolute;
+  inset: auto auto 12vh clamp(18px, 5vw, 88px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.fcap {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(520px, 78vw);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.2, .8, .25, 1);
+}
+
+.fcap.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.fcap .fc-n {
+  display: block;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .72rem;
+  letter-spacing: .28em;
+  color: var(--crimson);
+  margin-bottom: 10px;
+}
+
+.fcap h3 {
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(1.9rem, 4.4vw, 3.4rem);
+  line-height: .96;
+  color: #fff;
+  margin: 0 0 10px;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, .55);
+}
+
+.fcap p {
+  margin: 0;
+  color: rgba(255, 255, 255, .82);
+  font-size: 1rem;
+  max-width: 42ch;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .6);
+}
+
+/* ---- the studio mark, held over the whole flight ---- */
+.flight-logo {
+  position: absolute;
+  z-index: 4;
+  right: clamp(18px, 5vw, 96px);
+  bottom: clamp(64px, 9vh, 104px);
+  height: clamp(24px, 2.6vw, 34px);
+  width: auto;
+  opacity: .82;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, .6));
+  pointer-events: none;
 }
 
 /* soft vignette so the type always has something to sit on */
@@ -2830,7 +2922,9 @@ a.fc-item:hover b {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 44%, transparent 42%, rgba(20, 8, 16, .58) 100%);
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 40%, rgba(20, 8, 16, .62) 100%),
+    linear-gradient(to top, rgba(14, 10, 16, .72), transparent 42%);
 }
 
 /* ---- opening headline: unchanged from the previous section ---- */
@@ -2982,8 +3076,8 @@ a.fc-item:hover b {
   margin: 0;
 }
 
-/* when the scene is live the fallback stays for screen readers only */
-.flight.has-webgl .flight-fallback {
+/* when the reel is live the fallback stays for screen readers only */
+.flight.has-reel .flight-fallback {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -2995,7 +3089,11 @@ a.fc-item:hover b {
 
 @media (max-width:900px) {
   .flight {
-    height: 460vh;
+    height: 400vh;
+  }
+
+  .flight-caps {
+    bottom: 16vh;
   }
 
   .ff-grid {
@@ -3011,11 +3109,11 @@ a.fc-item:hover b {
 
 @media (prefers-reduced-motion: reduce) {
   .flight {
-    height: auto;
+    height: 300vh;
   }
 
-  .flight-stage {
-    display: none;
+  .fshot {
+    transform: none !important;
   }
 }
 
