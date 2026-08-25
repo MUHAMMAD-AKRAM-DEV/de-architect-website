@@ -63,16 +63,17 @@ async function boot(){
   } catch (e){ /* fall through with whatever is available */ }
 
   const small = window.innerWidth < 900;
+  let visible = false, settled = false;   // declared early: texture callbacks call wake()
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias:!small, powerPreference:'high-performance' });
-  const DPR_MAX = Math.min(window.devicePixelRatio, small ? 1.0 : 1.25);
+  const DPR_MAX = Math.min(window.devicePixelRatio, small ? 1.0 : 1.1);
   const DPR_MIN = 0.62;
   let dpr = DPR_MAX;
   renderer.setPixelRatio(dpr);
   renderer.shadowMap.enabled = !small;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.22;
+  renderer.toneMappingExposure = 1.12;
 
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.3, 900);
@@ -100,7 +101,8 @@ async function boot(){
   const pmrem = new THREE.PMREMGenerator(renderer);
   const envScene = new THREE.Scene();
   envScene.add(new THREE.Mesh(new THREE.SphereGeometry(700, 32, 16), skyMat));
-  scene.environment = pmrem.fromScene(envScene, 0.02).texture;
+  const envTex = pmrem.fromScene(envScene, 0.02).texture;
+  pmrem.dispose();          // the render target is not needed once baked
   scene.fog = new THREE.FogExp2(0xC9CFD6, 0.0022);
 
   /* ---------- canvas texture helper ---------- */
@@ -400,7 +402,7 @@ async function boot(){
   const FAC = { A:facade(8, 14, '#B9B3A9'), B:facade(6, 10, '#A9A9A6'), C:facade(10, 20, '#C2BCB2') };
 
   /* ---------- light ---------- */
-  scene.add(new THREE.HemisphereLight(0xD6E4F6, 0xA89E8C, 2.0));
+  scene.add(new THREE.HemisphereLight(0xDCE8F8, 0xB0A692, 3.15));
   const sun = new THREE.DirectionalLight(0xFFE7C6, 2.6);
   sun.position.set(-48, 40, -34);
   if (!small){
@@ -410,20 +412,31 @@ async function boot(){
     s.left = -46; s.right = 46; s.top = 46; s.bottom = -46; s.near = 1; s.far = 190;
     sun.shadow.bias = -0.0008; sun.shadow.normalBias = 0.03;
   }
+  // nothing in the scene moves, so the shadow map is rendered once, not every frame
+  sun.shadow.autoUpdate = false;
+  sun.shadow.needsUpdate = true;
   scene.add(sun);
-  [0, 10, 20].forEach(z => {
-    const l = new THREE.PointLight(0xFFF2DE, 24, 32, 2);
+  [2, 16].forEach(z => {
+    const l = new THREE.PointLight(0xFFF2DE, 30, 34, 2);
     l.position.set(0, GH - 1.0, z); scene.add(l);
   });
-  // daylight flooding in off the front glazing
-  const day = new THREE.PointLight(0xFFE9CC, 26, 40, 2);
-  day.position.set(0, 4.0, FRONT + 6); scene.add(day);
+  // the front daylight is folded into the hemisphere rather than costing
+  // another punctual light
 
   /* ---------- materials ---------- */
-  const mat = (color, rough = 0.9, o = {}) =>
-    new THREE.MeshStandardMaterial({ color, roughness:rough, metalness:0, ...o });
+  /* Measured on the target hardware (Intel UHD): a scene-wide environment map
+     cost about half the frame time. Plaster, concrete, timber, paper and fabric
+     have no specular worth paying for — Lambert renders them the same for a
+     fraction of the fragment cost. Standard, with the env map attached
+     individually, is kept for the few surfaces that read as glass or metal. */
+  const mat = (color, rough = 0.9, o = {}) => {
+    const { metalness, roughness, envMapIntensity, ...rest } = o;
+    return new THREE.MeshLambertMaterial({ color, ...rest });
+  };
+  const smat = (color, rough = 0.5, o = {}) =>
+    new THREE.MeshStandardMaterial({ color, roughness:rough, metalness:0, envMap:envTex, ...o });
   const glow = (color, i = 1) =>
-    new THREE.MeshStandardMaterial({ color:0x151515, emissive:new THREE.Color(color), emissiveIntensity:i, roughness:1 });
+    new THREE.MeshLambertMaterial({ color:0x151515, emissive:new THREE.Color(color), emissiveIntensity:i });
 
   const M = {
     concrete : mat(0xFFFFFF, 0.94, { map:concrete }),
@@ -431,8 +444,8 @@ async function boot(){
     slab     : mat(0x3E0E2C, 0.8),
     floor    : mat(0xFFFFFF, 0.7, { map:boards }),
     screed   : mat(0xC9C4BB, 0.92),
-    steel    : mat(0x3A3B40, 0.45, { metalness:0.7 }),
-    bronze   : mat(0x9A7B4F, 0.36, { metalness:0.8 }),
+    steel    : smat(0x3A3B40, 0.45, { metalness:0.7 }),
+    bronze   : smat(0x9A7B4F, 0.36, { metalness:0.8 }),
     oak      : mat(0xB08A5E, 0.7),
     walnut   : mat(0x6B4526, 0.6),
     white    : mat(0xF6F4EF, 0.85),
@@ -440,16 +453,19 @@ async function boot(){
     figure   : mat(0xD8D4CA, 0.98),
     fabric   : mat(0x6E5F63, 0.98),
     crimson  : mat(0xC2183F, 0.8),
-    leaf     : new THREE.MeshStandardMaterial({ color:0x4E6E45, roughness:1, flatShading:true }),
+    leaf     : new THREE.MeshLambertMaterial({ color:0x4E6E45, flatShading:true }),
     bark     : mat(0x4A3627, 1),
     paper    : mat(0xF5F1E7, 0.96),
-    glass    : new THREE.MeshPhysicalMaterial({
-      color:0xCFE0E6, roughness:0.03, metalness:0, transparent:true,
-      opacity:0.13, envMapIntensity:2.4, side:THREE.DoubleSide
+    glass    : new THREE.MeshStandardMaterial({
+      color:0xCFE0E6, roughness:0.06, metalness:0.1, transparent:true, envMap:envTex,
+      opacity:0.15, envMapIntensity:2.0, side:THREE.DoubleSide, depthWrite:false
     }),
     strip    : glow(0xFFF6E6, 1.8),
     screen   : glow(0xBFD8E6, 1.1)
   };
+
+  const SAMPLE_MATS = [0xE4DCCC, 0xCFC6B4, 0xB9AE99, 0xD8D2C6].map(c => mat(c, 0.95));
+  const BOOK_MATS = [0x6E3A4E, 0x3E4E6B, 0x7A5B3A, 0x4A5C4A, 0x8A4A3C, 0x40404E].map(c => mat(c, 0.95));
 
   const world = new THREE.Group();
   scene.add(world);
@@ -489,7 +505,7 @@ async function boot(){
   Object.keys(cityGeo).forEach(k => {
     if (!cityGeo[k].length) return;
     const m = new THREE.Mesh(mergeGeometries(cityGeo[k]),
-      new THREE.MeshStandardMaterial({ map:FAC[k], roughness:0.86, metalness:0.05 }));
+      new THREE.MeshLambertMaterial({ map:FAC[k] }));
     world.add(m);
   });
   world.add(new THREE.Mesh(mergeGeometries(capGeo), mat(0x6E6C68, 0.94)));
@@ -547,10 +563,11 @@ async function boot(){
   new THREE.TextureLoader().load('assets/img/logo-nav.png', t => {
     t.colorSpace = THREE.SRGBColorSpace;
     const sign = new THREE.Mesh(new THREE.PlaneGeometry(7.6, 1.05),
-      new THREE.MeshStandardMaterial({ map:t, transparent:true, roughness:0.9,
+      new THREE.MeshLambertMaterial({ map:t, transparent:true,
         emissive:new THREE.Color(0xFFFFFF), emissiveMap:t, emissiveIntensity:0.35 }));
     sign.position.set(0, 6.6, FRONT - 0.8);
     world.add(sign);
+    wake();
   }, undefined, () => { signBand.material = M.crimson; });
 
   // ceiling strip lights down the hall
@@ -583,10 +600,11 @@ async function boot(){
   new THREE.TextureLoader().load('assets/img/logo-nav.png', t => {
     t.colorSpace = THREE.SRGBColorSpace;
     const m = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 1.5),
-      new THREE.MeshStandardMaterial({ map:t, transparent:true, roughness:0.95,
+      new THREE.MeshLambertMaterial({ map:t, transparent:true,
         emissive:new THREE.Color(0xFFFFFF), emissiveMap:t, emissiveIntensity:0.25 }));
     m.position.set(0, 4.0, BACK - 0.28); m.rotation.y = Math.PI;
     world.add(m);
+    wake();
   });
   box(9.0, 2.4, 0.16, M.slab, 0, 4.0, BACK - 0.2);
 
@@ -597,9 +615,10 @@ async function boot(){
   new THREE.TextureLoader().load('assets/img/logo-icon.png', t => {
     t.colorSpace = THREE.SRGBColorSpace;
     const m = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.9),
-      new THREE.MeshStandardMaterial({ map:t, transparent:true, roughness:0.95 }));
+      new THREE.MeshLambertMaterial({ map:t, transparent:true }));
     m.position.set(-8.08, 2.4, -8.0); m.rotation.y = Math.PI / 2;
     world.add(m);
+    wake();
   });
   box(2.6, 0.42, 0.9, M.fabric, 5.5, 0.72, -9.0);                              // waiting bench
   box(2.6, 0.5, 0.24, M.fabric, 5.5, 1.1, -9.4, true, false);
@@ -645,7 +664,7 @@ async function boot(){
     box(0.9, 0.5, 1.2, M.walnut, sx + s.side * 0.85, 0.87, s.z);     // drawer stack
     [0, 1, 2].forEach(k => box(0.06, 0.03, 0.8, M.bronze, sx + s.side * 1.31, 0.72 + k * 0.16, s.z, true, false));
     const tilt = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.06, 1.5),
-      new THREE.MeshStandardMaterial({ map:sheet(s, 1024, 724), roughness:0.92, metalness:0 }));
+      new THREE.MeshLambertMaterial({ map:sheet(s, 640, 452) }));
     tilt.position.set(sx, 1.52, s.z - 0.05);
     tilt.rotation.x = -0.24;
     tilt.rotation.y = s.side < 0 ? 0.06 : -0.06;
@@ -675,12 +694,12 @@ async function boot(){
     // the wall board behind, plus a pin rail of sketches
     const bt = board(s, 1024, 640);
     const b = new THREE.Mesh(new THREE.PlaneGeometry(6.8, 4.25),
-      new THREE.MeshStandardMaterial({
-        map:bt, emissiveMap:bt, emissive:new THREE.Color(0xFFFFFF), emissiveIntensity:0.22,
-        roughness:0.95, metalness:0
+      new THREE.MeshLambertMaterial({
+        map:bt, emissiveMap:bt, emissive:new THREE.Color(0xFFFFFF), emissiveIntensity:0.22
       }));
     b.position.set(wx, 2.95, s.z);
     b.rotation.y = s.side < 0 ? Math.PI / 2 : -Math.PI / 2;
+    b.userData.dynamic = true;
     world.add(b);
     boardsOut.push({ mesh:b, z:s.z, side:s.side, x:wx, y:3.35 });
 
@@ -750,11 +769,9 @@ async function boot(){
   box(0.5, 3.0, 5.0, M.walnut, HW - 0.35, 1.9, 21.5);
   for (let r = 0; r < 5; r++){
     box(0.56, 0.05, 4.8, M.oak, HW - 0.4, 0.7 + r * 0.58, 21.5, true, false);
-    for (let c = 0; c < 8; c++){
-      const g = 0.45 + Math.random() * 0.4;
-      box(0.3, 0.34, 0.34, mat(new THREE.Color(g * 0.95, g * 0.88, g * 0.78).getHex(), 0.95),
+    for (let c = 0; c < 8; c++)
+      box(0.3, 0.34, 0.34, SAMPLE_MATS[(r * 3 + c) % SAMPLE_MATS.length],
           HW - 0.52, 0.92 + r * 0.58, 19.5 + c * 0.56, true, false);
-    }
   }
 
   // plan chest + plotter on the west wall
@@ -788,9 +805,8 @@ async function boot(){
   for (let r = 0; r < 4; r++){
     box(0.56, 0.06, 7.8, M.oak, -HW + 0.4, UY + 0.8 + r * 0.62, 14.0, true, false);
     for (let c = 0; c < 26; c++){
-      const hh = 0.34 + Math.random() * 0.16;
-      box(0.3, hh, 0.06 + Math.random() * 0.05,
-          mat(new THREE.Color(0.3 + Math.random() * 0.4, 0.26 + Math.random() * 0.2, 0.3 + Math.random() * 0.2).getHex(), 0.95),
+      const hh = 0.34 + ((r * 7 + c * 3) % 5) * 0.04;
+      box(0.3, hh, 0.06 + ((c * 5) % 3) * 0.025, BOOK_MATS[(r * 5 + c) % BOOK_MATS.length],
           -HW + 0.52, UY + 0.83 + r * 0.62 + hh / 2, 10.3 + c * 0.28, true, false);
     }
   }
@@ -827,9 +843,10 @@ async function boot(){
   new THREE.TextureLoader().load('assets/img/logo-stacked-color.png', t => {
     t.colorSpace = THREE.SRGBColorSpace;
     const m = new THREE.Mesh(new THREE.PlaneGeometry(0.86, 0.86),
-      new THREE.MeshStandardMaterial({ map:t, transparent:true, roughness:0.9 }));
+      new THREE.MeshLambertMaterial({ map:t, transparent:true }));
     m.position.set(-6.4, 2.3, -19.27);
     world.add(m);
+    wake();
   });
   box(0.7, 0.12, 0.4, M.bronze, -6.4, 1.15, -19.28, true, false);
 
@@ -866,7 +883,7 @@ async function boot(){
   });
   function car(x, z, body){
     const g = new THREE.Group();
-    const b1 = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.6, 4.5), mat(body, 0.3, { metalness:0.6 }));
+    const b1 = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.6, 4.5), smat(body, 0.3, { metalness:0.6 }));
     b1.position.y = 0.66; b1.castShadow = true; g.add(b1);
     const b2 = new THREE.Mesh(new THREE.BoxGeometry(1.76, 0.54, 2.3), mat(0x22242A, 0.15, { metalness:0.4 }));
     b2.position.set(0, 1.17, -0.2); b2.castShadow = true; g.add(b2);
@@ -877,6 +894,36 @@ async function boot(){
     g.position.set(x, 0.15, z); world.add(g);
   }
   car(-20, -20, 0x2A3340); car(-20, -25, 0x6E1230); car(20, -22, 0xE8E4DC);
+
+  /* ---------- bake ----------
+     The scene is completely static, so there is no reason to pay 900-odd draw
+     calls a frame for it. Flatten every static mesh into one merged mesh per
+     material. Anything that animates opts out with userData.dynamic. */
+  function bake(root){
+    root.updateMatrixWorld(true);
+    const byMat = new Map(), drop = [];
+    root.traverse(o => {
+      if (!o.isMesh || o.userData.dynamic) return;
+      let g = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone();
+      for (const name of Object.keys(g.attributes))
+        if (name !== 'position' && name !== 'normal' && name !== 'uv') g.deleteAttribute(name);
+      g.applyMatrix4(o.matrixWorld);
+      if (!byMat.has(o.material)) byMat.set(o.material, []);
+      byMat.get(o.material).push(g);
+      drop.push(o);
+    });
+    drop.forEach(o => { o.parent.remove(o); o.geometry.dispose(); });
+    byMat.forEach((list, material) => {
+      const merged = list.length === 1 ? list[0] : mergeGeometries(list);
+      list.forEach(g => { if (g !== merged) g.dispose(); });
+      const m = new THREE.Mesh(merged, material);
+      m.castShadow = true; m.receiveShadow = true;
+      m.matrixAutoUpdate = false;
+      root.add(m);
+    });
+    return byMat.size;
+  }
+  const bakedGroups = bake(world);
 
   /* ---------- the flight path ---------- */
   const V = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -905,7 +952,6 @@ async function boot(){
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   let targetP = 0, curP = 0, running = false, raf = null, lastFov = -1;
   const pos = new THREE.Vector3(), look = new THREE.Vector3(), boardAt = new THREE.Vector3();
-  const t0 = performance.now();
 
   /* adaptive resolution — trade pixels to hold the frame rate, as in drone.js */
   let acc = 0, ticks = 0, lastT = performance.now(), shadowsOn = renderer.shadowMap.enabled;
@@ -930,17 +976,33 @@ async function boot(){
     const total = section.offsetHeight - window.innerHeight;
     targetP = clamp(-r.top / (total || 1), 0, 1);
   }
+  /* A vertical FOV that looks right at 16:9 goes uselessly narrow on a
+     portrait phone. Hold the HORIZONTAL field instead and derive the vertical
+     one from the actual aspect. */
+  const BASE_ASPECT = 16 / 9;
+  function vFov(base, aspect){
+    if (aspect >= BASE_ASPECT) return base;
+    const hor = 2 * Math.atan(Math.tan(base * Math.PI / 360) * BASE_ASPECT);
+    // Fully preserving the horizontal field would push a 9:19 phone past 120
+    // degrees vertical, which fisheyes the shot into mostly floor and ceiling.
+    // Cap it and accept a little less width instead.
+    return Math.min(80, 2 * Math.atan(Math.tan(hor / 2) / aspect) * 180 / Math.PI);
+  }
+
   function resize(){
     const w = canvas.clientWidth || window.innerWidth;
     const h = canvas.clientHeight || window.innerHeight;
     renderer.setSize(w, h, false);
-    camera.aspect = w / h; camera.updateProjectionMatrix();
+    camera.aspect = w / h;
+    lastFov = -1;                       // force the next frame to re-derive it
+    camera.updateProjectionMatrix();
   }
 
   function frame(){
-    raf = requestAnimationFrame(frame);
     readScroll();
-    curP += (targetP - curP) * 0.085;
+    const delta = targetP - curP;
+    curP += delta * 0.085;
+    if (Math.abs(delta) < 0.0002){ curP = targetP; settled = true; }
     const u = clamp(curP, 0, 1);
 
     path.getPoint(u, pos);
@@ -966,16 +1028,12 @@ async function boot(){
       b.mesh.material.emissiveIntensity = 0.18 + a * a * (3 - 2 * a) * 0.34;
     }
 
-    const nowMs = performance.now();
-    adapt(nowMs);
-    const et = (nowMs - t0) / 1000;
+    adapt(performance.now());
     camera.position.copy(pos);
-    camera.position.x += Math.sin(et * 0.7) * 0.05;
-    camera.position.y += Math.sin(et * 1.13) * 0.04;
     camera.lookAt(look);
 
     const inside = clamp(1 - Math.abs(pos.z - 7) / 22, 0, 1);
-    const fov = 50 + inside * 16;
+    const fov = vFov(50 + inside * 16, camera.aspect);
     if (Math.abs(fov - lastFov) > 0.05){ camera.fov = fov; camera.updateProjectionMatrix(); lastFov = fov; }
 
     if (headline) headline.classList.toggle('is-on', u < 0.12);
@@ -983,14 +1041,32 @@ async function boot(){
     if (railFill) railFill.style.transform = `scaleX(${u.toFixed(4)})`;
 
     renderer.render(scene, camera);
+
+    // Once the damped camera has caught up with the scroll there is nothing
+    // left to draw, so stop the loop entirely rather than burning the GPU on
+    // identical frames. A scroll or resize wakes it again.
+    if (settled){ running = false; raf = null; return; }
+    raf = requestAnimationFrame(frame);
   }
 
-  function start(){ if (!running){ running = true; lastT = performance.now(); acc = ticks = 0; raf = requestAnimationFrame(frame); } }
-  function stop(){ if (running){ running = false; cancelAnimationFrame(raf); } }
+  function wake(){
+    if (!visible) return;
+    settled = false;
+    if (!running){ running = true; lastT = performance.now(); acc = ticks = 0; raf = requestAnimationFrame(frame); }
+  }
+  function stop(){ if (running){ running = false; cancelAnimationFrame(raf); raf = null; } }
 
   resize();
-  window.addEventListener('resize', resize, { passive:true });
-  new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? start() : stop()), { rootMargin:'200px' }).observe(section);
+  window.addEventListener('scroll', wake, { passive:true });
+  window.addEventListener('resize', () => { resize(); wake(); }, { passive:true });
+  window.addEventListener('orientationchange', () => { resize(); wake(); });
+  new IntersectionObserver(es => es.forEach(e => {
+    visible = e.isIntersecting;
+    visible ? wake() : stop();
+  }), { rootMargin:'200px' }).observe(section);
+
+  // opt-in diagnostics: /?debug=1 exposes the renderer for the perf harness
+  if (location.search.includes('debug')) window.__deStudio = { renderer, scene, camera };
 
   section.classList.add('has-webgl');
   readScroll();

@@ -2812,6 +2812,7 @@ a.fc-item:hover b {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh;
   overflow: hidden;
 }
 
@@ -3110,7 +3111,7 @@ a.fc-item:hover b {
 
 @media (max-width:900px) {
   .flight {
-    height: 400vh;
+    height: 420vh;
   }
 
   .flight-caps {
@@ -3120,17 +3121,81 @@ a.fc-item:hover b {
   .ff-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-}
 
-@media (max-width:560px) {
-  .ff-grid {
-    grid-template-columns: 1fr;
+  .flight-logo {
+    bottom: clamp(56px, 8vh, 88px);
+    height: 22px;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (max-width:560px) {
+  .flight {
+    height: 340vh;
+  }
+
+  .ff-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flight-progress {
+    width: 64vw;
+    bottom: 22px;
+  }
+
+  .flight-hint {
+    bottom: 40px;
+  }
+}
+
+/* a phone on its side: almost no vertical room, so shed the furniture */
+@media (max-height:520px) and (orientation:landscape) {
   .flight {
     height: 300vh;
+  }
+
+  .scene-text h2 {
+    font-size: clamp(1.7rem, 5.6vw, 3rem);
+  }
+
+  .flight-logo,
+  .flight-hint {
+    display: none;
+  }
+}
+
+/* No WebGL here: the stage would otherwise be several screens of empty dark,
+   so collapse it and let the plain service list stand on its own. */
+@media (prefers-reduced-motion: reduce) {
+  .flight {
+    height: auto;
+  }
+
+  .flight-stage {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+
+  .flight-canvas,
+  .flight-progress,
+  .flight-hint,
+  .flight-stage::after {
+    display: none;
+  }
+
+  .flight-stage .scrolly-scene {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    transform: none;
+    padding: clamp(70px, 12vw, 130px) clamp(18px, 5vw, 80px);
+  }
+
+  .flight-logo {
+    position: static;
+    display: block;
+    margin: 0 auto clamp(28px, 5vw, 44px);
+    height: 30px;
   }
 
   .fshot {
