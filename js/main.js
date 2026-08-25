@@ -146,8 +146,35 @@
     }
     tiers.forEach((t, i) => {
       const head = t.querySelector('.tier-head');
-      if (head) head.addEventListener('click', () => openTier(i));
+      if (head) head.addEventListener('click', () => { manual = true; openTier(i); });
     });
+
+    /* ---- scroll drives the accordion ----
+       The section is a tall track with the grid pinned inside it (see .tiers
+       in styles.css). Progress through that track maps to a tier, so scrolling
+       down closes one service and opens the next — with its image — and
+       scrolling back up reverses it. A click takes over until the next scroll,
+       so the two never fight each other. */
+    const section = acc.closest('.tiers');
+    const pinned = () => section && getComputedStyle(section).getPropertyValue('--tiers-pinned').trim() === '1';
+    let current = 0, manual = false, ticking = false;
+
+    function syncToScroll(){
+      ticking = false;
+      if (!section || !pinned()) return;
+      const r = section.getBoundingClientRect();
+      const travel = section.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+      const p = Math.min(Math.max(-r.top / travel, 0), 1);
+      // a small lead-in and run-out so the first and last tier both hold
+      const idx = Math.min(tiers.length - 1,
+                  Math.max(0, Math.floor(((p - 0.06) / 0.88) * tiers.length)));
+      if (idx !== current){ manual = false; current = idx; openTier(idx); }
+    }
+    const req = () => { if (!ticking){ ticking = true; requestAnimationFrame(syncToScroll); } };
+    window.addEventListener('scroll', () => { if (!manual) req(); else req(); }, { passive:true });
+    window.addEventListener('resize', req);
+    syncToScroll();
   }
 
   // ---- Client reviews slider (avatars + arrows + auto-rotate) ----

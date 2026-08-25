@@ -238,7 +238,7 @@ a {
 /* vertical side tab */
 .side-tab {
   position: fixed;
-  right: 0;
+  left: 0;
   top: 38%;
   z-index: 1030;
   background: var(--crimson);
@@ -251,15 +251,15 @@ a {
   text-transform: uppercase;
   font-size: .72rem;
   padding: 22px 12px;
-  border-radius: 0 12px 12px 0;
+  border-radius: 12px 0 0 12px;
   cursor: pointer;
-  box-shadow: 6px -6px 20px rgba(0, 0, 0, .18);
+  box-shadow: -6px -6px 20px rgba(0, 0, 0, .18);
   transition: background .25s, padding .25s;
 }
 
 .side-tab:hover {
   background: var(--crimson-deep);
-  padding-right: 18px;
+  padding-left: 18px;
 }
 
 /* ---------- HERO ---------- */
@@ -313,6 +313,7 @@ a {
   text-align: center;
   will-change: transform, opacity;
 }
+
 
 .hero h1 {
   font-size: clamp(3.4rem, 13vw, 11rem);
@@ -1025,14 +1026,19 @@ a {
   content: "";
   position: absolute;
   z-index: 0;
-  right: -7%;
-  top: 6%;
-  width: 74%;
-  height: 74%;
-  background: var(--teal);
-  border-radius: 44px;
-  transform: rotate(6deg);
+  left: 0;
+  top: 0;
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 260px 260px 26px 26px;
+  background: linear-gradient(158deg, var(--teal) 0%, var(--magenta) 52%, var(--wine) 100%);
+  transform: translate(5.5%, 4.5%) rotate(2.6deg);
   opacity: .55;
+  transition: transform .8s cubic-bezier(.2, .8, .25, 1);
+}
+
+.exp-media:hover::before {
+  transform: translate(8%, 6.5%) rotate(3.6deg);
 }
 
 .exp-frame {
@@ -1265,7 +1271,8 @@ a {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(30, 8, 22, .04) 38%, rgba(30, 8, 22, .86));
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(30, 8, 22, .04) 34%, rgba(30, 8, 22, .9));
 }
 
 .pcard-tag {
@@ -1310,6 +1317,55 @@ a {
   color: rgba(255, 255, 255, .82);
 }
 
+/* per-card call to action — always legible, lifts on hover */
+.pcard-btn {
+  position: absolute;
+  z-index: 3;
+  left: 18px;
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .14);
+  border: 1.5px solid rgba(255, 255, 255, .42);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .6rem;
+  transition: background .25s, color .25s, border-color .25s, transform .25s;
+}
+
+.pcard-info {
+  bottom: 66px;
+}
+
+.pcard-btn:hover {
+  background: #fff;
+  color: var(--wine);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* sits on cream here, so it needs its own colours rather than the dark-ground pill */
+.looks-all {
+  align-self: center;
+  white-space: nowrap;
+  border: 2px solid rgba(62, 14, 44, .2);
+  color: var(--wine);
+  background: #fff;
+}
+
+.looks-all:hover {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: #fff;
+}
+
 .pmarquee-hint {
   text-align: center;
   margin-top: 24px;
@@ -1329,9 +1385,16 @@ a {
 
 /* ---------- Section: service tiers (accordion + synced media) ---------- */
 .tiers {
+  --tiers-pinned: 1;
   background: var(--paper-2);
   padding: clamp(70px, 9vw, 130px) clamp(18px, 5vw, 80px);
   position: relative;
+  min-height: 300vh;
+}
+
+.tiers-grid {
+  position: sticky;
+  top: clamp(74px, 9vh, 104px);
 }
 
 .tiers-head {
@@ -2159,10 +2222,36 @@ a {
 }
 
 .foot-blurb {
-  color: rgba(255, 255, 255, .82);
-  line-height: 1.7;
-  margin: 22px 0 0;
-  max-width: 44ch;
+  color: rgba(255, 255, 255, .88);
+  font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+  line-height: 1.75;
+  margin: 24px 0 0;
+  max-width: 46ch;
+}
+
+/* socials now sit with the brand block rather than in the bottom bar */
+.foot-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.foot-social a {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, .4);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  transition: background .25s, color .25s, border-color .25s, transform .25s;
+}
+
+.foot-social a:hover {
+  background: #fff;
+  color: var(--wine);
+  border-color: #fff;
+  transform: translateY(-2px);
 }
 
 .foot-info {
@@ -2413,24 +2502,41 @@ a.fc-item:hover b {
   flex-wrap: wrap;
 }
 
-.socials {
-  display: flex;
-  gap: 12px;
+.dev-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px 9px 10px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, .28);
+  background: rgba(255, 255, 255, .06);
+  color: rgba(255, 255, 255, .8);
+  font-family: 'Archivo';
+  font-weight: 700;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  transition: background .25s, border-color .25s, color .25s, transform .25s;
 }
 
-.socials a {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, .4);
-  display: grid;
-  place-items: center;
-  transition: .25s;
-}
-
-.socials a:hover {
+.dev-by img {
+  height: 24px;
+  width: 24px;
+  border-radius: 6px;
+  object-fit: contain;
   background: #fff;
-  color: var(--wine);
+  padding: 2px;
+}
+
+.dev-by b {
+  font-weight: 800;
+  color: #fff;
+}
+
+.dev-by:hover {
+  background: rgba(255, 255, 255, .14);
+  border-color: rgba(255, 255, 255, .5);
+  color: #fff;
+  transform: translateY(-2px);
 }
 
 .foot-links {
@@ -2442,15 +2548,6 @@ a.fc-item:hover b {
   text-transform: uppercase;
   font-size: .66rem;
   flex-wrap: wrap;
-}
-
-.legal {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 22px 0 34px;
-  color: rgba(255, 255, 255, .55);
-  font-size: .78rem;
-  line-height: 1.6;
 }
 
 /* ---------- offcanvas menu ---------- */
@@ -2523,8 +2620,15 @@ a.fc-item:hover b {
     gap: 44px;
   }
 
+  .tiers {
+    --tiers-pinned: 0;
+    min-height: 0;
+  }
+
   .tiers-grid {
     grid-template-columns: 1fr;
+    position: relative;
+    top: auto;
   }
 
   .tiers-media {
@@ -2731,17 +2835,12 @@ a.fc-item:hover b {
     gap: 16px;
   }
 
-  .socials {
+  .foot-social {
     justify-content: center;
   }
 
   .foot-links {
     justify-content: center;
-  }
-
-  .legal {
-    text-align: center;
-    padding-bottom: 30px;
   }
 }
 
@@ -3222,7 +3321,7 @@ a.fc-item:hover b {
 }
 
 .foot-logo {
-  height: clamp(58px, 8vw, 78px);
+  height: clamp(76px, 10vw, 108px);
   width: auto;
   display: block;
   margin-bottom: 20px;
