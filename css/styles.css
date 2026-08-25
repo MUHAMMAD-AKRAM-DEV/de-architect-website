@@ -302,10 +302,30 @@ a {
      masked here: this layer is 150% tall and glides on scroll, so a vertical
      mask would travel with it. The bottom blend stays on .hero-veil, which is
      pinned to the hero box. */
-  -webkit-mask-image: linear-gradient(90deg,
-      transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%);
-  mask-image: linear-gradient(90deg,
-      transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 6%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 6%);
+  mask-composite: intersect;
+}
+
+/* The top feather needs something dark to dissolve into, or it would fade to
+   cream and take the white nav lettering with it. This lays a plum ground
+   behind the still that fades out by the time the picture is fully opaque. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+      #24101d 0%,
+      #24101d 7%,
+      rgba(36, 16, 29, .58) 20%,
+      rgba(36, 16, 29, 0) 40%);
 }
 
 .hero-video {
@@ -535,7 +555,6 @@ a {
   padding: clamp(76px, 10vw, 150px) clamp(18px, 5vw, 80px);
   position: relative;
   overflow: hidden;
-  z-index: -2;
 }
 
 .impact-circle {
@@ -2616,8 +2635,24 @@ a.fc-item:hover b {
   display: block;
 }
 
+.dev-by span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.14;
+  text-align: left;
+}
+
+.dev-by small {
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  opacity: .72;
+}
+
 .dev-by b {
+  font-size: .84rem;
   font-weight: 800;
+  letter-spacing: .02em;
   color: #fff;
 }
 
