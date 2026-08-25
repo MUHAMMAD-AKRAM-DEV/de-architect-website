@@ -1053,8 +1053,9 @@ a {
 .exp-photo {
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, #5b2a6a, #2a2a55),
-    url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80");
+  background-image:
+    linear-gradient(150deg, rgba(91, 42, 106, .34), rgba(42, 42, 85, .5)),
+    url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=82");
   background-size: cover;
   background-position: center;
   transform: scale(1.03);
@@ -1443,7 +1444,7 @@ a {
   align-self: start;
   border-radius: 26px;
   overflow: hidden;
-  height: min(64vh, 470px);
+  height: min(78vh, 620px);
   box-shadow: 0 34px 60px rgba(62, 14, 44, .2);
   background: #2a1622;
 }
@@ -1525,7 +1526,24 @@ a {
   z-index: 3;
   top: 18px;
   right: 18px;
-  width: clamp(96px, 14vw, 132px);
+  width: clamp(74px, 9vw, 96px);
+}
+
+.badge-stamp .seal-mark {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 46%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* the ring text has to shrink with the smaller disc or it stops fitting */
+.badge-stamp.seal .ringtext text {
+  font-size: 17px;
+  letter-spacing: .1em;
 }
 
 .badge-stamp.seal .disc {
