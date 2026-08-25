@@ -2537,12 +2537,11 @@ a.fc-item:hover b {
 }
 
 .dev-by img {
-  height: 24px;
-  width: 24px;
-  border-radius: 6px;
-  object-fit: contain;
-  background: #fff;
-  padding: 2px;
+  height: 30px;
+  width: 30px;
+  border-radius: 8px;
+  object-fit: cover;   /* the mark ships with its own gradient ground */
+  display: block;
 }
 
 .dev-by b {
