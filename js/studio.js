@@ -65,15 +65,25 @@ async function boot(){
   const small = window.innerWidth < 900;
   let visible = false, settled = false;   // declared early: texture callbacks call wake()
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias:!small, powerPreference:'high-performance' });
-  const DPR_MAX = Math.min(window.devicePixelRatio, small ? 1.0 : 1.1);
-  const DPR_MIN = 0.62;
+  /* MSAA earns its keep at 1:1, but on a hi-dpi screen the extra samples cost
+     fill that buys more clarity if spent on resolution instead. So above 1.4
+     device pixels the multisampling comes off and the buffer goes to native. */
+  const hidpi = window.devicePixelRatio >= 1.4;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:!small && !hidpi, powerPreference:'high-performance' });
+  /* Measured at 1440x900 on the target GPU: 1.0 -> 10.5ms, 1.25 -> 15.3ms,
+     1.5 -> 21.0ms, 2.0 -> 34.7ms. The previous 1.1 cap on a 1.5-DPR screen
+     upscaled the buffer by half again, which is what read as soft. Render at
+     native up to 1.5, and never below 1:1 — blur costs more than a few fps. */
+  const DPR_MAX = Math.min(window.devicePixelRatio, small ? 1.25 : 1.5);
+  const DPR_MIN = 1.0;
   let dpr = DPR_MAX;
   renderer.setPixelRatio(dpr);
   renderer.shadowMap.enabled = !small;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.12;
+
+  const MAXA = renderer.capabilities.getMaxAnisotropy();
 
   const scene  = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.3, 900);
@@ -112,7 +122,7 @@ async function boot(){
     const t = new THREE.CanvasTexture(cv);
     t.colorSpace = THREE.SRGBColorSpace;
     if (rx){ t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); }
-    t.anisotropy = 4;
+    t.anisotropy = MAXA;   // was 4; walls are read at grazing angles
     return t;
   }
 
@@ -341,21 +351,47 @@ async function boot(){
   // the wall board: the same drawing, plus a label bar you can read at distance
   function board(s, w, h){
     return tex((g) => {
-      g.fillStyle = '#EFE9DC'; g.fillRect(0, 0, w, h);
+      g.fillStyle = '#DED6C4'; g.fillRect(0, 0, w, h);   // board ground
       g.textBaseline = 'top';        // otherwise Anton's ascenders clip off the top
-      g.save(); g.translate(38, 208); g.scale((w - 76) / 600, (h - 250) / 400);
+      var BAR = Math.round(h * 0.19), PAD = Math.round(w * 0.025);
+      var availW = w - PAD * 2, availH = h - BAR - PAD * 2;
+      var scale = Math.min(availW / 600, availH / 400);      // uniform: no squash
+      // the drawing is a sheet pinned to the board, not the board itself —
+      // without this the uniform scale just leaves dead white either side
+      var sw = 600 * scale, sh = 400 * scale;
+      var sx0 = (w - sw) / 2, sy0 = BAR + PAD + (availH - sh) / 2;
+      var m = Math.round(24 * scale);
+      g.fillStyle = 'rgba(40,18,32,.14)';
+      g.fillRect(sx0 - m + 7, sy0 - m + 9, sw + m * 2, sh + m * 2);
+      g.fillStyle = '#F7F4EC';
+      g.fillRect(sx0 - m, sy0 - m, sw + m * 2, sh + m * 2);
+      g.strokeStyle = 'rgba(62,14,44,.22)'; g.lineWidth = 2;
+      g.strokeRect(sx0 - m, sy0 - m, sw + m * 2, sh + m * 2);
+      [[sx0 - m + 16, sy0 - m + 16], [sx0 + sw + m - 16, sy0 - m + 16],
+       [sx0 - m + 16, sy0 + sh + m - 16], [sx0 + sw + m - 16, sy0 + sh + m - 16]].forEach(function (pin) {
+        g.fillStyle = RED; g.beginPath(); g.arc(pin[0], pin[1], 7, 0, 6.2832); g.fill();
+      });
+
+      g.save();
+      g.translate(sx0, sy0);
+      g.scale(scale, scale);
       (DRAW[s.kind] || drawPlan)(g);
       g.restore();
-      g.fillStyle = INK; g.fillRect(0, 0, w, 192);
-      g.fillStyle = RED; g.font = '600 56px Inter, sans-serif';
-      g.fillText(s.n, 36, 48);
+
+      g.fillStyle = INK; g.fillRect(0, 0, w, BAR);
+      var numPx = Math.round(BAR * 0.36), titlePx = Math.round(BAR * 0.52), subPx = Math.round(BAR * 0.17);
+      g.fillStyle = RED; g.font = '600 ' + numPx + 'px Inter, sans-serif';
+      g.fillText(s.n, PAD, Math.round(BAR * 0.22));
+      var titleX = PAD + numPx * 1.9;
       g.fillStyle = '#F5F1E7';
-      let px = 76;
-      g.font = `${px}px Anton, sans-serif`;
-      while (px > 30 && g.measureText(s.title.toUpperCase()).width > w - 170){ px -= 2; g.font = `${px}px Anton, sans-serif`; }
-      g.fillText(s.title.toUpperCase(), 132, 34);
-      g.fillStyle = 'rgba(245,241,231,.66)'; g.font = '600 28px Inter, sans-serif';
-      g.fillText(s.sub.toUpperCase(), 134, 136);
+      g.font = titlePx + 'px Anton, sans-serif';
+      while (titlePx > 30 && g.measureText(s.title.toUpperCase()).width > w - titleX - PAD){
+        titlePx -= 2; g.font = titlePx + 'px Anton, sans-serif';
+      }
+      g.fillText(s.title.toUpperCase(), titleX, Math.round(BAR * 0.16));
+      g.fillStyle = 'rgba(245,241,231,.66)';
+      g.font = '600 ' + subPx + 'px Inter, sans-serif';
+      g.fillText(s.sub.toUpperCase(), titleX + 2, Math.round(BAR * 0.62));
     }, w, h);
   }
 
@@ -692,16 +728,16 @@ async function boot(){
     if (i % 2 === 0) figureSeated(sx + s.side * 0.1, s.z + 1.35, -1);
 
     // the wall board behind, plus a pin rail of sketches
-    const bt = board(s, 1024, 640);
-    const b = new THREE.Mesh(new THREE.PlaneGeometry(6.8, 4.25),
+    const bt = board(s, 1536, 864);
+    const b = new THREE.Mesh(new THREE.PlaneGeometry(7.9, 4.44),
       new THREE.MeshLambertMaterial({
         map:bt, emissiveMap:bt, emissive:new THREE.Color(0xFFFFFF), emissiveIntensity:0.22
       }));
-    b.position.set(wx, 2.95, s.z);
+    b.position.set(wx, 3.0, s.z);
     b.rotation.y = s.side < 0 ? Math.PI / 2 : -Math.PI / 2;
     b.userData.dynamic = true;
     world.add(b);
-    boardsOut.push({ mesh:b, z:s.z, side:s.side, x:wx, y:3.35 });
+    boardsOut.push({ mesh:b, z:s.z, side:s.side, x:wx, y:3.3 });
 
     for (let k = 0; k < 4; k++){
       box(0.06, 0.62 + (k % 2) * 0.22, 0.5 + (k % 3) * 0.14, M.paper,
@@ -959,14 +995,14 @@ async function boot(){
     acc += now - lastT; lastT = now; ticks++;
     if (acc < 700) return;
     const avg = acc / ticks; acc = 0; ticks = 0;
-    const target = 1000 / 55;
+    const target = 1000 / 50;   // tolerate ~45fps before trading away sharpness
     if (avg > target * 1.3){
       if (dpr > DPR_MIN){ dpr = Math.max(DPR_MIN, dpr - 0.14); renderer.setPixelRatio(dpr); resize(); }
       else if (shadowsOn){
         shadowsOn = false; renderer.shadowMap.enabled = false;
         scene.traverse(o => { if (o.isMesh) o.material.needsUpdate = true; });
       }
-    } else if (avg < target * 0.8 && dpr < DPR_MAX){
+    } else if (avg < target * 0.98 && dpr < DPR_MAX){   // climb back to native when there is room
       dpr = Math.min(DPR_MAX, dpr + 0.08); renderer.setPixelRatio(dpr); resize();
     }
   }
