@@ -264,6 +264,9 @@ a {
 
 /* ---------- HERO ---------- */
 .hero {
+  /* 10% of a phone's width would eat a third of the picture, so the feather
+     narrows with the viewport. */
+  --hero-edge: 10%;
   position: relative;
   min-height: 100svh;
   display: flex;
@@ -283,6 +286,16 @@ a {
   will-change: transform;
   background: linear-gradient(120deg, #3a2130, #1c2b3a);
   /* fallback tint if poster/video absent */
+
+  /* Feather the left and right edges so the still dissolves into the page
+     colour instead of ending on a hard rectangle edge. Only the sides are
+     masked here: this layer is 150% tall and glides on scroll, so a vertical
+     mask would travel with it. The bottom blend stays on .hero-veil, which is
+     pinned to the hero box. */
+  -webkit-mask-image: linear-gradient(90deg,
+      transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%);
+  mask-image: linear-gradient(90deg,
+      transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%);
 }
 
 .hero-video {
@@ -300,9 +313,58 @@ a {
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  /* More stops than before: the cream used to arrive over 7% of the hero,
+     which read as a hard line against the dark photo. It now eases in over
+     roughly twice that, while still going solid above the second headline
+     line so the plum type keeps its cream ground. */
   background: linear-gradient(180deg,
-      rgba(26, 10, 20, .62) 0%, rgba(26, 10, 20, .42) 22%, rgba(26, 10, 20, .14) 38%,
-      rgba(242, 238, 231, 0) 45%, var(--paper) 52%, var(--paper) 100%);
+      rgba(26, 10, 20, .62) 0%,
+      rgba(26, 10, 20, .50) 14%,
+      rgba(26, 10, 20, .34) 26%,
+      rgba(26, 10, 20, .18) 36%,
+      rgba(26, 10, 20, .06) 43%,
+      rgba(242, 238, 231, 0) 46%,
+      rgba(242, 238, 231, .34) 50%,
+      rgba(242, 238, 231, .70) 54%,
+      rgba(242, 238, 231, .93) 56.5%,
+      var(--paper) 58.5%,
+      var(--paper) 100%);
+}
+
+/* The darkening half of the veil has to feather with the photo, or it would
+   tint the bare paper at the feathered edges and put grey wings on the hero.
+   The cream half must stay full-bleed, so it is masked to the lower band only. */
+.hero-veil {
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%),
+    linear-gradient(180deg, #000 0, #000 44%, transparent 47%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 var(--hero-edge), #000 calc(100% - var(--hero-edge)), transparent 100%),
+    linear-gradient(180deg, #000 0, #000 44%, transparent 47%);
+  mask-composite: intersect;
+}
+
+/* the cream floor, full width, unfeathered */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+      rgba(242, 238, 231, 0) 44%,
+      rgba(242, 238, 231, .34) 50%,
+      rgba(242, 238, 231, .70) 54%,
+      rgba(242, 238, 231, .93) 56.5%,
+      var(--paper) 58.5%,
+      var(--paper) 100%);
+}
+
+@media (max-width:760px) {
+  .hero {
+    --hero-edge: 4.5%;
+  }
 }
 
 .hero-inner {
