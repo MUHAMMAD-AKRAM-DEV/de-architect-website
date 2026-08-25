@@ -601,20 +601,25 @@
   <script src="js/main.js"></script>
 
   <!-- ====== Section 3: pick ONE of the two fly-through engines ======
-       A) js/drone.js  — the live 3D scene. Richer, real camera move, costs GPU.
-       B) js/flight.js — the pre-rendered image reel. Nearly free to run.
-       Both read the same markup above; swap by commenting one block out. -->
+       A) js/studio.js — a fly-through of DE Architects' own studio; the
+                         services are the drawings on the drafting tables.
+       B) js/drone.js  — the luxury villa at dusk.
+       C) js/flight.js — a pre-rendered image reel. Nearly free to run.
+       All three read the same markup above; swap by moving the comments. -->
 
-  <!-- A) live 3D (active) -->
+  <!-- A) the studio (active) -->
   <script type="importmap">
   { "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
       "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
   } }
   </script>
-  <script type="module" src="js/drone.js"></script>
+  <script type="module" src="js/studio.js"></script>
 
-  <!-- B) image reel (inactive) -->
+  <!-- B) the villa (inactive) -->
+  <!-- <script type="module" src="js/drone.js"></script> -->
+
+  <!-- C) image reel (inactive) -->
   <!-- <script src="js/flight.js"></script> -->
 </body>
 </html>
