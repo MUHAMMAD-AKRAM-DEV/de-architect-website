@@ -27,6 +27,15 @@
   if (!reel || shots.length < 2) return;
   section.classList.add('has-reel');
 
+  /* The stills carry data-src, not src. A hidden container does not reliably
+     stop a browser fetching <img src>, so with another engine active the reel
+     would still pull ~1.6MB nobody looks at. Promote them only now, when this
+     player is the one running. */
+  shots.forEach(f => {
+    const img = f.querySelector('img[data-src]');
+    if (img){ img.src = img.dataset.src; img.removeAttribute('data-src'); }
+  });
+
   const N = shots.length;
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
 

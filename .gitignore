@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 *.log
+# build output — regenerate, do not commit
+public_html/
+de-architect-hostinger.zip
