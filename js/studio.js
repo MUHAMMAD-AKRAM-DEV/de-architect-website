@@ -481,6 +481,57 @@ async function boot(){
   // the front daylight is folded into the hemisphere rather than costing
   // another punctual light
 
+  /* ---------- surface grain ----------
+     Everything read as flat white plastic. These are deliberately fine and
+     low-contrast: materials are shared across objects of very different sizes
+     and box UVs run 0-1 per face, so a bold pattern would tile at obviously
+     different scales on a stool and on a table. */
+  const linen = tex(function (g, w, h) {
+    g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, w, h);
+    for (let y = 0; y < h; y += 4){ g.fillStyle = 'rgba(0,0,0,' + (0.04 + Math.random() * 0.04).toFixed(3) + ')'; g.fillRect(0, y, w, 2); }
+    for (let x = 0; x < w; x += 4){ g.fillStyle = 'rgba(255,255,255,' + (0.05 + Math.random() * 0.05).toFixed(3) + ')'; g.fillRect(x, 0, 2, h); }
+    for (let i = 0; i < 260; i++){ g.fillStyle = 'rgba(0,0,0,.05)'; g.fillRect(Math.random() * w, Math.random() * h, 5 + Math.random() * 10, 1); }
+  }, 256, 256, 3, 3);
+
+  const grain = tex(function (g, w, h) {
+    g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 420; i++){
+      const y = Math.random() * h;
+      g.strokeStyle = 'rgba(58,34,14,' + (0.03 + Math.random() * 0.07).toFixed(3) + ')';
+      g.lineWidth = 0.6 + Math.random() * 1.8;
+      g.beginPath(); g.moveTo(0, y);
+      for (let x = 0; x <= w; x += 16) g.lineTo(x, y + Math.sin((x + i) * 0.05) * 1.6);
+      g.stroke();
+    }
+    for (let i = 0; i < 5; i++){ g.fillStyle = 'rgba(58,34,14,.05)'; g.fillRect(0, Math.random() * h, w, 4 + Math.random() * 9); }
+  }, 256, 256, 2, 2);
+
+  const speckle = tex(function (g, w, h) {
+    g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 2600; i++){
+      const v = Math.random() < 0.5 ? '0,0,0' : '255,255,255';
+      g.fillStyle = 'rgba(' + v + ',0.05)';
+      g.fillRect(Math.random() * w, Math.random() * h, 1.5, 1.5);
+    }
+  }, 256, 256, 3, 3);
+
+  const card = tex(function (g, w, h) {
+    g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++){
+      g.fillStyle = 'rgba(118,102,82,' + (0.02 + Math.random() * 0.05).toFixed(3) + ')';
+      g.fillRect(Math.random() * w, Math.random() * h, 2 + Math.random() * 8, 1);
+    }
+  }, 256, 256, 2, 2);
+
+  const brushed = tex(function (g, w, h) {
+    g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++){
+      const a = (0.03 + Math.random() * 0.06).toFixed(3);
+      g.fillStyle = (Math.random() < 0.5 ? 'rgba(0,0,0,' : 'rgba(255,255,255,') + a + ')';
+      g.fillRect(Math.random() * w, Math.random() * h, 20 + Math.random() * 60, 1);
+    }
+  }, 256, 256, 2, 2);
+
   /* ---------- materials ---------- */
   /* Measured on the target hardware (Intel UHD): a scene-wide environment map
      cost about half the frame time. Plaster, concrete, timber, paper and fabric
@@ -498,22 +549,22 @@ async function boot(){
 
   const M = {
     concrete : mat(0xFFFFFF, 0.94, { map:concrete }),
-    plaster  : mat(0xF3F0EA, 0.95),
-    slab     : mat(0x3E0E2C, 0.8),
+    plaster  : mat(0xF3F0EA, 0.95, { map:speckle }),
+    slab     : mat(0x3E0E2C, 0.8, { map:speckle }),
     floor    : mat(0xFFFFFF, 0.7, { map:boards }),
-    screed   : mat(0xC9C4BB, 0.92),
-    steel    : smat(0x3A3B40, 0.45, { metalness:0.7 }),
-    bronze   : smat(0x9A7B4F, 0.36, { metalness:0.8 }),
-    oak      : mat(0xB08A5E, 0.7),
-    walnut   : mat(0x6B4526, 0.6),
-    white    : mat(0xF6F4EF, 0.85),
-    modelWhi : mat(0xEDEAE2, 0.96),
-    figure   : mat(0xD8D4CA, 0.98),
-    fabric   : mat(0x6E5F63, 0.98),
-    crimson  : mat(0xC2183F, 0.8),
-    leaf     : new THREE.MeshLambertMaterial({ color:0x4E6E45, flatShading:true }),
-    bark     : mat(0x4A3627, 1),
-    paper    : mat(0xF5F1E7, 0.96),
+    screed   : mat(0xC9C4BB, 0.92, { map:speckle }),
+    steel    : smat(0x3A3B40, 0.45, { metalness:0.7, map:brushed }),
+    bronze   : smat(0x9A7B4F, 0.36, { metalness:0.8, map:brushed }),
+    oak      : mat(0xB08A5E, 0.7, { map:grain }),
+    walnut   : mat(0x6B4526, 0.6, { map:grain }),
+    white    : mat(0xF6F4EF, 0.85, { map:speckle }),
+    modelWhi : mat(0xEDEAE2, 0.96, { map:card }),
+    figure   : mat(0xD8D4CA, 0.98, { map:speckle }),
+    fabric   : mat(0x6E5F63, 0.98, { map:linen }),
+    crimson  : mat(0xC2183F, 0.8, { map:speckle }),
+    leaf     : new THREE.MeshLambertMaterial({ color:0x4E6E45, flatShading:true, map:speckle }),
+    bark     : mat(0x4A3627, 1, { map:grain }),
+    paper    : mat(0xF5F1E7, 0.96, { map:card }),
     glass    : new THREE.MeshStandardMaterial({
       color:0xCFE0E6, roughness:0.06, metalness:0.1, transparent:true, envMap:envTex,
       opacity:0.15, envMapIntensity:2.0, side:THREE.DoubleSide, depthWrite:false
@@ -522,11 +573,44 @@ async function boot(){
     screen   : glow(0xBFD8E6, 1.1)
   };
 
-  const SAMPLE_MATS = [0xE4DCCC, 0xCFC6B4, 0xB9AE99, 0xD8D2C6].map(c => mat(c, 0.95));
-  const BOOK_MATS = [0x6E3A4E, 0x3E4E6B, 0x7A5B3A, 0x4A5C4A, 0x8A4A3C, 0x40404E].map(c => mat(c, 0.95));
+  /* white card, warm card, grey chipboard, timber block — four tones so a
+     cluster reads as a scale model rather than a stack of cubes */
+  const MODEL_MATS = [
+    mat(0xEFECE4, 0.96, { map:card }),
+    mat(0xE2D6BE, 0.96, { map:card }),
+    mat(0xC2BCB1, 0.96, { map:card }),
+    mat(0xC0955F, 0.94, { map:grain })
+  ];
+
+  const SAMPLE_MATS = [0xE4DCCC, 0xCFC6B4, 0xB9AE99, 0xD8D2C6].map(c => mat(c, 0.95, { map:card }));
+  const BOOK_MATS = [0x6E3A4E, 0x3E4E6B, 0x7A5B3A, 0x4A5C4A, 0x8A4A3C, 0x40404E].map(c => mat(c, 0.95, { map:card }));
 
   const PANEL_W = small ? 1280 : 2560;
   const PANEL_H = Math.round(PANEL_W / 1.7167);
+
+  /* Every logo plane had hand-picked dimensions and none matched the artwork:
+     the facade sign was 18% too wide, the rear-wall lockup 30% squashed, the
+     reception mark 35%. Derive height from the image's own aspect instead. */
+  function logoPlane(file, width, opts) {
+    const o = opts || {};
+    new THREE.TextureLoader().load('assets/img/' + file, function (t) {
+      t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = MAXA;
+      t.minFilter = THREE.LinearMipmapLinearFilter;
+      const aspect = t.image.width / t.image.height;
+      const m = new THREE.Mesh(
+        new THREE.PlaneGeometry(width, width / aspect),
+        new THREE.MeshLambertMaterial({
+          map: t, transparent: true, alphaTest: 0.04,
+          emissive: new THREE.Color(0xFFFFFF), emissiveMap: t,
+          emissiveIntensity: o.glow || 0
+        }));
+      m.position.set(o.x || 0, o.y || 0, o.z || 0);
+      if (o.rotY) m.rotation.y = o.rotY;
+      world.add(m);
+      wake();
+    });
+  }
 
   const world = new THREE.Group();
   scene.add(world);
@@ -569,7 +653,7 @@ async function boot(){
       new THREE.MeshLambertMaterial({ map:FAC[k] }));
     world.add(m);
   });
-  world.add(new THREE.Mesh(mergeGeometries(capGeo), mat(0x6E6C68, 0.94)));
+  world.add(new THREE.Mesh(mergeGeometries(capGeo), mat(0x6E6C68, 0.94, { map:speckle })));
 
   /* ---------- the studio shell ---------- */
   const DEPTH = BACK - FRONT;
@@ -620,16 +704,8 @@ async function boot(){
   box(9, 0.2, 3.4, M.concrete, 0, 0.55, FRONT - 1.8, false, true);             // entrance step
 
   // the sign band over the entrance, carrying the real logo
-  const signBand = box(9.5, 1.5, 0.24, M.slab, 0, 6.6, FRONT - 0.5);
-  new THREE.TextureLoader().load('assets/img/logo-nav.png', t => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    const sign = new THREE.Mesh(new THREE.PlaneGeometry(7.6, 1.05),
-      new THREE.MeshLambertMaterial({ map:t, transparent:true,
-        emissive:new THREE.Color(0xFFFFFF), emissiveMap:t, emissiveIntensity:0.35 }));
-    sign.position.set(0, 6.6, FRONT - 0.8);
-    world.add(sign);
-    wake();
-  }, undefined, () => { signBand.material = M.crimson; });
+  box(9.5, 1.5, 0.24, M.slab, 0, 6.6, FRONT - 0.5);
+  logoPlane('logo-nav.png', 7.4, { x:0, y:6.6, z:FRONT - 0.8, glow:0.32 });
 
   // ceiling strip lights down the hall
   /* Only under the galleries — the middle of the plan is a double-height void,
@@ -658,29 +734,15 @@ async function boot(){
       box(0.5, 0.08, 0.5, M.strip, x, TOP - 4.22, z, false, false);
     });
   });
-  new THREE.TextureLoader().load('assets/img/logo-nav.png', t => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 1.5),
-      new THREE.MeshLambertMaterial({ map:t, transparent:true,
-        emissive:new THREE.Color(0xFFFFFF), emissiveMap:t, emissiveIntensity:0.25 }));
-    m.position.set(0, 4.0, BACK - 0.28); m.rotation.y = Math.PI;
-    world.add(m);
-    wake();
-  });
-  box(9.0, 2.4, 0.16, M.slab, 0, 4.0, BACK - 0.2);
+  box(8.6, 2.2, 0.16, M.slab, 0, 4.0, BACK - 0.2);
+  logoPlane('logo-nav.png', 6.6, { x:0, y:4.0, z:BACK - 0.28, rotY:Math.PI, glow:0.22 });
 
   /* ---------- reception ---------- */
   box(4.6, 1.1, 1.0, M.walnut, -4.5, 1.05, -8.5);
   box(4.9, 0.1, 1.2, M.white, -4.5, 1.63, -8.5, true, false);
   box(0.2, 3.0, 5.0, M.plaster, -8.2, 2.0, -8.0);                              // logo wall
-  new THREE.TextureLoader().load('assets/img/logo-icon.png', t => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.9),
-      new THREE.MeshLambertMaterial({ map:t, transparent:true }));
-    m.position.set(-8.08, 2.4, -8.0); m.rotation.y = Math.PI / 2;
-    world.add(m);
-    wake();
-  });
+  logoPlane('logo-icon.png', 2.1, { x:-8.08, y:2.4, z:-8.0, rotY:Math.PI / 2 });
+
   box(2.6, 0.42, 0.9, M.fabric, 5.5, 0.72, -9.0);                              // waiting bench
   box(2.6, 0.5, 0.24, M.fabric, 5.5, 1.1, -9.4, true, false);
   cyl(0.34, 0.4, 0.7, M.white, 8.4, 0.85, -9.2, 10);
@@ -779,7 +841,7 @@ async function boot(){
     box(2.8, 0.02, 2.0, M.paper, mx, 1.42, s.z, false, false);
     for (let k = 0; k < 8; k++){
       const bw = 0.24 + (k % 3) * 0.12, bh = 0.16 + ((k * 7 + i * 3) % 5) * 0.08;
-      box(bw, bh, bw, M.modelWhi, mx - 1.0 + (k % 4) * 0.62, 1.43 + bh / 2, s.z - 0.45 + Math.floor(k / 4) * 0.8, true, false);
+      box(bw, bh, bw, MODEL_MATS[(k + i) % MODEL_MATS.length], mx - 1.0 + (k % 4) * 0.62, 1.43 + bh / 2, s.z - 0.45 + Math.floor(k / 4) * 0.8, true, false);
     }
     if (i % 2) box(0.32, 0.22, 0.22, M.crimson, mx + 1.15, 1.52, s.z + 0.7, true, false);
   });
@@ -793,7 +855,7 @@ async function boot(){
     box(3.2, 0.02, 2.3, M.paper, 0, 1.43, mz, false, false);
     for (let k = 0; k < 9; k++){
       const w = 0.26 + (k % 3) * 0.12, h = 0.16 + ((k * 7 + i * 3) % 5) * 0.08;
-      box(w, h, w, M.modelWhi, -1.15 + (k % 5) * 0.58, 1.44 + h / 2, mz - 0.5 + Math.floor(k / 5) * 0.8, true, false);
+      box(w, h, w, MODEL_MATS[(k + i) % MODEL_MATS.length], -1.15 + (k % 5) * 0.58, 1.44 + h / 2, mz - 0.5 + Math.floor(k / 5) * 0.8, true, false);
     }
     if (i % 2 === 0) box(0.34, 0.24, 0.24, M.crimson, 1.4, 1.54, mz + 0.8, true, false);
   });
@@ -811,7 +873,7 @@ async function boot(){
   // a massing model of a city block sitting on it
   for (let i = 0; i < 16; i++){
     const w = 0.34 + (i % 3) * 0.16, h = 0.4 + ((i * 13) % 9) * 0.13;
-    box(w, h, w, M.modelWhi, -2.6 + (i % 6) * 0.95, 1.48 + h / 2, 20.6 + Math.floor(i / 6) * 0.95, true, false);
+    box(w, h, w, MODEL_MATS[i % MODEL_MATS.length], -2.6 + (i % 6) * 0.95, 1.48 + h / 2, 20.6 + Math.floor(i / 6) * 0.95, true, false);
   }
   box(5.6, 0.02, 2.4, M.paper, 0, 1.49, 21.5, false, false);
   figureStanding(-3.5, 20.4, 1.3);
@@ -821,8 +883,8 @@ async function boot(){
   [[-9, 23.4], [-5.6, 24.2], [8.8, 23.4], [5.4, 24.2]].forEach((p, i) => {
     box(1.5, 1.15, 1.5, M.white, p[0], 0.68, p[1]);
     const h = 0.5 + (i % 3) * 0.3;
-    box(0.8, h, 0.8, M.modelWhi, p[0], 1.26 + h / 2, p[1], true, false);
-    box(0.5, 0.06, 0.5, M.modelWhi, p[0] + 0.3, 1.29 + h, p[1] + 0.25, true, false);
+    box(0.8, h, 0.8, MODEL_MATS[i % MODEL_MATS.length], p[0], 1.26 + h / 2, p[1], true, false);
+    box(0.5, 0.06, 0.5, MODEL_MATS[(i + 2) % MODEL_MATS.length], p[0] + 0.3, 1.29 + h, p[1] + 0.25, true, false);
   });
 
   // material library: shelves of samples on the east wall
@@ -900,14 +962,8 @@ async function boot(){
   // entrance forecourt: a signage monolith, planters, benches and bollards, so
   // the opening shot has a foreground instead of bare paving
   box(1.1, 3.2, 0.5, M.slab, -6.4, 1.75, -19);
-  new THREE.TextureLoader().load('assets/img/logo-stacked-color.png', t => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(0.86, 0.86),
-      new THREE.MeshLambertMaterial({ map:t, transparent:true }));
-    m.position.set(-6.4, 2.3, -19.27);
-    world.add(m);
-    wake();
-  });
+  logoPlane('logo-stacked-color.png', 0.82, { x:-6.4, y:2.3, z:-19.27 });
+
   box(0.7, 0.12, 0.4, M.bronze, -6.4, 1.15, -19.28, true, false);
 
   [-4.6, 4.6].forEach(x => {
