@@ -2745,23 +2745,42 @@ a.fc-item:hover b {
     gap: 44px;
   }
 
+  /* Mobile keeps the pinning, just stacked: the image sticks under the navbar
+     while the services scroll beneath it, and scroll position still drives
+     which one is open. The grid becomes a block so the sticky image has the
+     whole section to travel through — inside a grid row it could only stick
+     for the height of its own row, which is a few hundred pixels. */
   .tiers {
-    --tiers-pinned: 0;
+    --tiers-pinned: 1;
     min-height: 0;
   }
 
   .tiers-grid {
-    grid-template-columns: 1fr;
+    display: block;
     position: relative;
     top: auto;
   }
 
   .tiers-media {
+    position: sticky;
+    top: 68px;
+    z-index: 2;
+    height: 34vh;
+    max-height: 300px;
+    margin-bottom: 26px;
+    border-radius: 20px;
+  }
+
+  .tiers-acc {
     position: relative;
-    top: auto;
-    height: auto;
-    aspect-ratio: 16/10;
-    max-height: 60vh;
+    z-index: 1;
+  }
+
+  /* room to scroll past the last service while the image is still stuck */
+  .tiers-acc::after {
+    content: "";
+    display: block;
+    height: 26vh;
   }
 
   .exp-inner {

@@ -62,6 +62,30 @@ async function boot(){
     ]);
   } catch (e){ /* fall through with whatever is available */ }
 
+  /* Real local time drives the scene, so the studio looks the way it would if
+     you walked past it now. Three tuned states rather than a continuous sweep:
+     sky, sun, ambience, window glow and exposure all have to move together,
+     and three looks that each work beat one that is mediocre at every hour. */
+  const HOUR = new Date().getHours();
+  const TOD = (HOUR >= 19 || HOUR < 6) ? 'night' : ((HOUR < 8 || HOUR >= 17) ? 'dusk' : 'day');
+  const LOOK = {
+    day:   { top:0x5B84C4, mid:0xC9DCF0, bot:0xF1EFE4,
+             sun:0xFFF4E2, sunI:3.1, sunPos:[-44, 62, -34],
+             hemiSky:0xCFE2FA, hemiGnd:0xB2A894, hemiI:3.2,
+             fog:0xC9CFD6, fogD:0.0022, exposure:1.06,
+             glow:0.0, interior:20, strip:0.75, lamp:0.6, boardBase:0.10, boardPeak:0.30 },
+    dusk:  { top:0x3E4E86, mid:0x9C86A6, bot:0xF0B678,
+             sun:0xFFB877, sunI:2.3, sunPos:[-62, 20, -42],
+             hemiSky:0x8FA4D6, hemiGnd:0x8A7F72, hemiI:2.3,
+             fog:0xA98FA0, fogD:0.0028, exposure:1.16,
+             glow:0.6, interior:34, strip:1.7, lamp:1.6, boardBase:0.24, boardPeak:0.42 },
+    night: { top:0x080C1E, mid:0x18203A, bot:0x3A3352,
+             sun:0x9FB6E8, sunI:0.30, sunPos:[34, 44, 54],
+             hemiSky:0x232D48, hemiGnd:0x14141C, hemiI:0.75,
+             fog:0x131A2C, fogD:0.0030, exposure:1.38,
+             glow:1.0, interior:56, strip:2.6, lamp:2.6, boardBase:0.62, boardPeak:0.55 }
+  }[TOD];
+
   const small = window.innerWidth < 900;
   let visible = false, settled = false;   // declared early: texture callbacks call wake()
 
@@ -81,7 +105,7 @@ async function boot(){
   renderer.shadowMap.enabled = !small;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.12;
+  renderer.toneMappingExposure = LOOK.exposure;
 
   const MAXA = renderer.capabilities.getMaxAnisotropy();
 
@@ -92,9 +116,9 @@ async function boot(){
   const skyMat = new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite:false,
     uniforms:{
-      top:{ value:new THREE.Color(0x6E8DBE) },
-      mid:{ value:new THREE.Color(0xCFDCEA) },
-      bot:{ value:new THREE.Color(0xF3E3CB) }
+      top:{ value:new THREE.Color(LOOK.top) },
+      mid:{ value:new THREE.Color(LOOK.mid) },
+      bot:{ value:new THREE.Color(LOOK.bot) }
     },
     vertexShader:`varying vec3 vP;
       void main(){ vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
@@ -113,7 +137,7 @@ async function boot(){
   envScene.add(new THREE.Mesh(new THREE.SphereGeometry(700, 32, 16), skyMat));
   const envTex = pmrem.fromScene(envScene, 0.02).texture;
   pmrem.dispose();          // the render target is not needed once baked
-  scene.fog = new THREE.FogExp2(0xC9CFD6, 0.0022);
+  scene.fog = new THREE.FogExp2(LOOK.fog, LOOK.fogD);
 
   /* ---------- canvas texture helper ---------- */
   function tex(draw, w, h, rx, ry){
@@ -446,8 +470,11 @@ async function boot(){
   }, 512, 512, 8, 12);
 
   // daylight facades for the city — glass and stone, nothing glowing
+  /* Two passes per facade: the daytime albedo, and a black mask carrying only
+     the windows that happen to be lit. The mask goes in as an emissive map, so
+     one material covers every hour — at noon its intensity is simply zero. */
   function facade(cols, rows, tint){
-    return tex((g, w, h) => {
+    const map = tex((g, w, h) => {
       g.fillStyle = tint; g.fillRect(0, 0, w, h);
       const cw = w / cols, ch = h / rows;
       for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
@@ -456,13 +483,25 @@ async function boot(){
         g.fillRect(c * cw + cw * 0.14, r * ch + ch * 0.18, cw * 0.72, ch * 0.56);
       }
     }, cols * 20, rows * 20, 1, 1);
+
+    const lit = tex((g, w, h) => {
+      g.fillStyle = '#000000'; g.fillRect(0, 0, w, h);
+      const cw = w / cols, ch = h / rows;
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
+        if (Math.random() > 0.44) continue;
+        g.fillStyle = Math.random() < 0.3 ? '#FFE6BC' : '#FFC072';
+        g.fillRect(c * cw + cw * 0.14, r * ch + ch * 0.18, cw * 0.72, ch * 0.56);
+      }
+    }, cols * 20, rows * 20, 1, 1);
+
+    return { map: map, lit: lit };
   }
   const FAC = { A:facade(8, 14, '#B9B3A9'), B:facade(6, 10, '#A9A9A6'), C:facade(10, 20, '#C2BCB2') };
 
   /* ---------- light ---------- */
-  scene.add(new THREE.HemisphereLight(0xDCE8F8, 0xB0A692, 3.5));
-  const sun = new THREE.DirectionalLight(0xFFE7C6, 2.6);
-  sun.position.set(-48, 40, -34);
+  scene.add(new THREE.HemisphereLight(LOOK.hemiSky, LOOK.hemiGnd, LOOK.hemiI));
+  const sun = new THREE.DirectionalLight(LOOK.sun, LOOK.sunI);
+  sun.position.set(LOOK.sunPos[0], LOOK.sunPos[1], LOOK.sunPos[2]);
   if (!small){
     sun.castShadow = true;
     sun.shadow.mapSize.set(1536, 1536);
@@ -475,7 +514,7 @@ async function boot(){
   sun.shadow.needsUpdate = true;
   scene.add(sun);
   [2, 16].forEach(z => {
-    const l = new THREE.PointLight(0xFFF2DE, 40, 36, 2);
+    const l = new THREE.PointLight(0xFFF2DE, LOOK.interior, 36, 2);
     l.position.set(0, GH - 1.0, z); scene.add(l);
   });
   // the front daylight is folded into the hemisphere rather than costing
@@ -569,8 +608,8 @@ async function boot(){
       color:0xCFE0E6, roughness:0.06, metalness:0.1, transparent:true, envMap:envTex,
       opacity:0.15, envMapIntensity:2.0, side:THREE.DoubleSide, depthWrite:false
     }),
-    strip    : glow(0xFFF6E6, 1.8),
-    screen   : glow(0xBFD8E6, 1.1)
+    strip    : glow(0xFFF6E6, LOOK.strip),
+    screen   : glow(0xBFD8E6, LOOK.strip * 0.6)
   };
 
   /* white card, warm card, grey chipboard, timber block — four tones so a
@@ -651,10 +690,88 @@ async function boot(){
   Object.keys(cityGeo).forEach(k => {
     if (!cityGeo[k].length) return;
     const m = new THREE.Mesh(mergeGeometries(cityGeo[k]),
-      new THREE.MeshLambertMaterial({ map:FAC[k] }));
+      new THREE.MeshLambertMaterial({
+        map: FAC[k].map, emissiveMap: FAC[k].lit,
+        emissive: new THREE.Color(0xFFFFFF), emissiveIntensity: LOOK.glow
+      }));
     world.add(m);
   });
   world.add(new THREE.Mesh(mergeGeometries(capGeo), mat(0x6E6C68, 0.94, { map:speckle })));
+
+  /* Trees were written out inline in three separate places; one builder now
+     serves those and the new grounds. */
+  function tree(x, z, scale, tall){
+    const h = (tall ? 3.0 : 2.1) * scale;
+    cyl(0.15 * scale, 0.21 * scale, h, M.bark, x, h / 2, z, 8);
+    for (let i = 0; i < 3; i++){
+      const f = new THREE.Mesh(new THREE.IcosahedronGeometry((1.35 - i * 0.3) * scale, 0), M.leaf);
+      f.position.set(x, h + (0.4 + i * 0.85) * scale, z);
+      f.rotation.set(Math.random(), Math.random(), Math.random());
+      f.castShadow = true; world.add(f);
+    }
+  }
+
+  /* ---------- scale models ----------
+     These were identical white cubes. A real studio table carries a mix:
+     some schemes still as line studies, some rendered with glazing and
+     entrances, each on its own plot with landscape and parking. Wireframes
+     are collected into one LineSegments so the variety costs a single extra
+     draw call rather than one per model. */
+  const wireGeo = [];
+  const MODEL_TONES = [0xE9E4D8, 0xD8C7A6, 0xBFBAB0, 0xC0955F, 0xA8B0A2, 0xCBB8B0];
+  const modelMat = MODEL_TONES.map(c => mat(c, 0.95, { map:card }));
+  const glazeMat = mat(0x6E8CA0, 0.5, { map:speckle });
+  const roofMat  = mat(0x6B6560, 0.9, { map:speckle });
+  const lawnMat  = mat(0x5E7A4C, 1, { map:speckle });
+  const bedMat   = mat(0x7C5F46, 1, { map:card });
+  const tarmacMat= mat(0x54535A, 0.95, { map:speckle });
+  const lineMat  = mat(0xE8E4D8, 0.9);
+
+  function wireBlock(w, h, d, x, y, z){
+    const g = new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d));
+    g.translate(x, y + h / 2, z);
+    wireGeo.push(g);
+  }
+
+  /* One scheme on a plot: massing, glazing bands, a roof cap, a lawn, a
+     planted bed and a parking apron with bays. kind 0 = built, 1 = wireframe
+     study, 2 = mixed. */
+  function siteModel(cx, top, cz, seed, span){
+    const r = (n) => ((Math.sin(seed * 12.9898 + n * 78.233) * 43758.5453) % 1 + 1) % 1;
+    const kind = Math.floor(r(1) * 3);
+    const S = span || 1;
+    const tone = modelMat[Math.floor(r(2) * modelMat.length)];
+
+    // plot base
+    box(2.5 * S, 0.03, 1.9 * S, lawnMat, cx, top + 0.015, cz, false, false);
+    box(2.5 * S, 0.035, 0.5 * S, tarmacMat, cx, top + 0.018, cz + 0.68 * S, false, false);
+    for (let b = 0; b < 5; b++)                                   // parking bays
+      box(0.03 * S, 0.04, 0.4 * S, lineMat, cx - 0.9 * S + b * 0.45 * S, top + 0.02, cz + 0.68 * S, false, false);
+    box(0.55 * S, 0.035, 0.55 * S, bedMat, cx - 0.92 * S, top + 0.018, cz - 0.55 * S, false, false);
+    for (let t = 0; t < 3; t++){                                  // garden planting
+      const f = new THREE.Mesh(new THREE.IcosahedronGeometry(0.075 * S, 0), M.leaf);
+      f.position.set(cx - 1.05 * S + t * 0.14 * S, top + 0.10 * S, cz - 0.55 * S + (t % 2) * 0.16 * S);
+      world.add(f);
+    }
+
+    // massing
+    const bw = (0.5 + r(3) * 0.35) * S, bd = (0.45 + r(4) * 0.3) * S, bh = (0.35 + r(5) * 0.75) * S;
+    const bx = cx - 0.25 * S, bz = cz - 0.1 * S;
+    if (kind === 1){
+      wireBlock(bw, bh, bd, bx, top + 0.03, bz);
+      wireBlock(bw * 0.6, bh * 0.55, bd * 0.8, bx + bw * 0.85, top + 0.03, bz + 0.1 * S);
+    } else {
+      box(bw, bh, bd, tone, bx, top + 0.03 + bh / 2, bz, true, false);
+      box(bw + 0.05 * S, 0.04 * S, bd + 0.05 * S, roofMat, bx, top + 0.05 + bh, bz, true, false);
+      for (let f = 0; f < Math.max(1, Math.round(bh / (0.16 * S))); f++)   // glazing bands
+        box(bw + 0.012 * S, 0.05 * S, bd + 0.012 * S, glazeMat, bx, top + 0.1 + f * 0.16 * S, bz, false, false);
+      box(0.1 * S, 0.14 * S, 0.02 * S, glazeMat, bx, top + 0.1, bz - bd / 2, false, false);  // entrance
+      if (kind === 2) wireBlock(bw * 0.55, bh * 0.7, bd * 0.7, bx + bw * 0.8, top + 0.03, bz + 0.15 * S);
+    }
+    // a low neighbour so the plot reads as a piece of a street
+    box(0.34 * S, (0.18 + r(6) * 0.2) * S, 0.34 * S, modelMat[Math.floor(r(7) * modelMat.length)],
+        cx + 0.85 * S, top + 0.03 + (0.18 + r(6) * 0.2) * S / 2, cz - 0.5 * S, true, false);
+  }
 
   /* ---------- the studio shell ---------- */
   const DEPTH = BACK - FRONT;
@@ -828,7 +945,7 @@ async function boot(){
     const bt = board(s, PANEL_W, PANEL_H);
     const b = new THREE.Mesh(new THREE.PlaneGeometry(8.0, 4.66),
       new THREE.MeshLambertMaterial({
-        map:bt, emissiveMap:bt, emissive:new THREE.Color(0xFFFFFF), emissiveIntensity:0.22
+        map:bt, emissiveMap:bt, emissive:new THREE.Color(0xFFFFFF), emissiveIntensity:LOOK.boardBase
       }));
     b.position.set(wx, 2.95, s.z);
     b.rotation.y = s.side < 0 ? Math.PI / 2 : -Math.PI / 2;
@@ -844,11 +961,8 @@ async function boot(){
     box(3.0, 0.7, 2.2, M.steel, mx, 0.95, s.z);
     box(3.3, 0.1, 2.5, M.walnut, mx, 1.36, s.z, true, false);
     box(2.8, 0.02, 2.0, M.paper, mx, 1.42, s.z, false, false);
-    for (let k = 0; k < 8; k++){
-      const bw = 0.24 + (k % 3) * 0.12, bh = 0.16 + ((k * 7 + i * 3) % 5) * 0.08;
-      box(bw, bh, bw, MODEL_MATS[(k + i) % MODEL_MATS.length], mx - 1.0 + (k % 4) * 0.62, 1.43 + bh / 2, s.z - 0.45 + Math.floor(k / 4) * 0.8, true, false);
-    }
-    if (i % 2) box(0.32, 0.22, 0.22, M.crimson, mx + 1.15, 1.52, s.z + 0.7, true, false);
+    siteModel(mx - 0.62, 1.43, s.z, i * 3 + 1, 0.92);
+    siteModel(mx + 0.72, 1.43, s.z + 0.05, i * 3 + 2, 0.78);
   });
 
   /* ---------- the model spine down the middle of the hall ----------
@@ -858,28 +972,27 @@ async function boot(){
     box(3.4, 0.72, 2.5, M.steel, 0, 0.96, mz);
     box(3.7, 0.1, 2.8, M.walnut, 0, 1.37, mz, true, false);
     box(3.2, 0.02, 2.3, M.paper, 0, 1.43, mz, false, false);
-    for (let k = 0; k < 9; k++){
-      const w = 0.26 + (k % 3) * 0.12, h = 0.16 + ((k * 7 + i * 3) % 5) * 0.08;
-      box(w, h, w, MODEL_MATS[(k + i) % MODEL_MATS.length], -1.15 + (k % 5) * 0.58, 1.44 + h / 2, mz - 0.5 + Math.floor(k / 5) * 0.8, true, false);
-    }
-    if (i % 2 === 0) box(0.34, 0.24, 0.24, M.crimson, 1.4, 1.54, mz + 0.8, true, false);
+    siteModel(-0.85, 1.44, mz, i * 5 + 3, 0.95);
+    siteModel(0.95, 1.44, mz + 0.06, i * 5 + 4, 0.85);
   });
+  // proper planters: a squared trough with a rim, not the white drum that
+  // read as a stray stool
   [[-3.6, -9], [3.6, 3], [-3.6, 15], [3.6, 19]].forEach(p => {
-    cyl(0.3, 0.36, 0.72, M.white, p[0], 0.96, p[1], 10);
+    box(0.86, 0.62, 0.86, M.concrete, p[0], 0.91, p[1]);
+    box(0.94, 0.07, 0.94, M.bronze, p[0], 1.25, p[1], true, false);
+    box(0.74, 0.06, 0.74, bedMat, p[0], 1.24, p[1], false, false);
     [0, 1, 2].forEach(i => {
-      const f = new THREE.Mesh(new THREE.IcosahedronGeometry(0.56 - i * 0.13, 0), M.leaf);
-      f.position.set(p[0], 1.5 + i * 0.44, p[1]); f.castShadow = true; world.add(f);
+      const f = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5 - i * 0.12, 0), M.leaf);
+      f.position.set(p[0] + (i - 1) * 0.12, 1.5 + i * 0.4, p[1] + (i % 2) * 0.1);
+      f.castShadow = true; world.add(f);
     });
   });
 
   /* ---------- model bay at the back ---------- */
   box(6.4, 0.9, 3.2, M.white, 0, 0.95, 21.5);                       // big model table
   box(6.7, 0.08, 3.5, M.oak, 0, 1.44, 21.5, true, false);
-  // a massing model of a city block sitting on it
-  for (let i = 0; i < 16; i++){
-    const w = 0.34 + (i % 3) * 0.16, h = 0.4 + ((i * 13) % 9) * 0.13;
-    box(w, h, w, MODEL_MATS[i % MODEL_MATS.length], -2.6 + (i % 6) * 0.95, 1.48 + h / 2, 20.6 + Math.floor(i / 6) * 0.95, true, false);
-  }
+  // the big table carries a whole block: four plots side by side
+  for (let i = 0; i < 4; i++) siteModel(-2.25 + i * 1.5, 1.48, 21.4, 40 + i, 1.15);
   box(5.6, 0.02, 2.4, M.paper, 0, 1.49, 21.5, false, false);
   figureStanding(-3.5, 20.4, 1.3);
   figureStanding(3.4, 22.6, -2.2);
@@ -887,9 +1000,7 @@ async function boot(){
   // plinths with single models, along the rear
   [[-9, 23.4], [-5.6, 24.2], [8.8, 23.4], [5.4, 24.2]].forEach((p, i) => {
     box(1.5, 1.15, 1.5, M.white, p[0], 0.68, p[1]);
-    const h = 0.5 + (i % 3) * 0.3;
-    box(0.8, h, 0.8, MODEL_MATS[i % MODEL_MATS.length], p[0], 1.26 + h / 2, p[1], true, false);
-    box(0.5, 0.06, 0.5, MODEL_MATS[(i + 2) % MODEL_MATS.length], p[0] + 0.3, 1.29 + h, p[1] + 0.25, true, false);
+    siteModel(p[0], 1.26, p[1], 60 + i, 0.95);
   });
 
   // material library: shelves of samples on the east wall
@@ -908,11 +1019,6 @@ async function boot(){
   box(0.94, 0.1, 1.9, M.steel, -HW + 0.8, 1.85, 15.4, true, false);
   box(0.5, 0.02, 1.5, M.paper, -HW + 1.1, 1.9, 15.4, false, false);
 
-  // the stair up, in the void at the back
-  for (let i = 0; i < 14; i++)
-    box(2.6, 0.14, 0.34, M.concrete, 3.4, 0.7 + i * 0.38, 17.4 + i * 0.36);
-  box(0.1, 1.1, 5.4, M.glass, 2.1, 3.4, 19.9, false, false);
-  box(0.14, 0.09, 5.5, M.bronze, 2.1, 4.0, 19.9, true, false);
 
   /* ---------- upper gallery: meeting room, library, desks ---------- */
   box(4.4, 0.1, 2.2, M.walnut, -9.0, UY + 1.15, 2.0);                // meeting table
@@ -963,6 +1069,36 @@ async function boot(){
     });
   }
   for (let i = 0; i < 4; i++) box(6.0, 0.14, 2.2, M.concrete, 0, 0.2, -15 - i * 3.2, false, true);
+
+  /* Grounds. The forecourt was paving and planters on a grey slab; it now has
+     lawns either side of the approach, planted beds along the boundary and a
+     marked parking court, so the building sits in something. */
+  const lawn = mat(0x5B7A4A, 1, { map:speckle });
+  const bed  = mat(0x6E5540, 1, { map:card });
+  [-1, 1].forEach(sx => {
+    box(7.6, 0.10, 26, lawn, sx * 12.4, 0.16, -26, false, true);
+    box(1.5, 0.12, 24, bed, sx * 16.6, 0.17, -26, false, true);
+    for (let i = 0; i < 9; i++){
+      const f = new THREE.Mesh(new THREE.IcosahedronGeometry(0.42 + (i % 3) * 0.12, 0), M.leaf);
+      f.position.set(sx * 16.6 + ((i % 2) - 0.5) * 0.7, 0.5, -37 + i * 2.7);
+      f.castShadow = true; world.add(f);
+    }
+    for (let i = 0; i < 4; i++) tree(sx * 12.4, -40 + i * 7.5, 0.95, false);
+  });
+
+  // parking court on the east side, with bays and a few cars
+  box(13, 0.12, 17, tarmacMat, 15.5, 0.18, -8, false, true);
+  for (let i = 0; i < 6; i++)
+    box(0.12, 0.14, 4.6, mat(0xE6E2D6, 0.9), 10.4 + i * 2.05, 0.2, -12.5, false, false);
+  for (let i = 0; i < 5; i++)
+    box(0.12, 0.14, 4.6, mat(0xE6E2D6, 0.9), 11.4 + i * 2.05, 0.2, -3.5, false, false);
+  car(11.6, -12.4, 0x2A3340);
+  car(15.7, -12.4, 0xB8B4AC);
+  car(13.6, -3.4, 0x6E1230);
+  for (let i = 0; i < 4; i++){
+    cyl(0.09, 0.09, 3.6, M.steel, 21.6, 1.9, -15 + i * 5, 8);
+    box(0.5, 0.14, 0.24, M.strip, 21.2, 3.7, -15 + i * 5, false, false);
+  }
 
   // entrance forecourt: a signage monolith, planters, benches and bollards, so
   // the opening shot has a foreground instead of bare paving
@@ -1045,6 +1181,14 @@ async function boot(){
     });
     return byMat.size;
   }
+  if (wireGeo.length){
+    const merged = mergeGeometries(wireGeo);
+    const wires = new THREE.LineSegments(merged,
+      new THREE.LineBasicMaterial({ color:0x9FA8B4, transparent:true, opacity:0.85 }));
+    wires.userData.dynamic = true;      // LineSegments must skip the mesh bake
+    world.add(wires);
+  }
+
   const bakedGroups = bake(world);
 
   /* ---------- the flight path ---------- */
@@ -1083,7 +1227,8 @@ async function boot(){
   let targetP = 0, curP = 0, running = false, raf = null, lastFov = -1;
   const pos = new THREE.Vector3(), look = new THREE.Vector3(), boardAt = new THREE.Vector3();
   const ahead = new THREE.Vector3();
-  const EASE = 0.055;              // lower than before: slower, heavier drone
+  const lookCur = new THREE.Vector3();
+  const EASE = 0.042;              // slower, heavier drone
   let lastFrame = performance.now();
 
   /* adaptive resolution — trade pixels to hold the frame rate, as in drone.js */
@@ -1155,30 +1300,46 @@ async function boot(){
     path.getPoint(Math.min(1, u + 0.005), ahead);
     const wantSide = ahead.z >= pos.z ? -1 : 1;
 
-    let nearD = 1e9, near = null;
-    for (const b of boardsOut){
-      if (b.side !== wantSide) continue;
-      const d = Math.abs(pos.z - b.z);
-      if (d < nearD){ nearD = d; near = b; }
+    /* Hold the wall. The camera used to lerp toward each panel and fall back
+       to facing down the hall in between, so it swung to the wall and away
+       again six times. Now it turns once on entering the run of panels, keeps
+       the wall square in frame for the whole pass, and turns back once on
+       leaving — the blend is driven by position along the run, not by
+       proximity to any single board. */
+    const RUN_A = -8, RUN_B = 16;              // the panelled stretch of wall
+    const TURN  = 4.5;                         // how far the turn is spread
+    const inHall = pos.y < 5;
+    let hold = 0;
+    if (inHall && pos.z > RUN_A - TURN && pos.z < RUN_B + TURN){
+      const inEdge  = clamp((pos.z - (RUN_A - TURN)) / TURN, 0, 1);
+      const outEdge = clamp(((RUN_B + TURN) - pos.z) / TURN, 0, 1);
+      hold = Math.min(inEdge, outEdge);
+      hold = hold * hold * (3 - 2 * hold);     // smoothstep, so no kink
     }
-    const inHall = pos.y < 5 && pos.z > -8 && pos.z < 19.5;
-    if (inHall && near && nearD < 6){
-      const w = 1 - nearD / 6;
-      boardAt.set(near.x, near.y, near.z);
-      look.lerp(boardAt, w * w * 0.9);
+    if (hold > 0.001){
+      // aim a little ahead along the wall rather than dead abeam, which keeps
+      // the panel in frame without the wall sliding sideways too fast
+      const lead = wantSide === -1 ? 2.6 : -2.6;
+      boardAt.set(wantSide * (HW - 0.05), 3.0, clamp(pos.z + lead, RUN_A - 2, RUN_B + 2));
+      look.lerp(boardAt, hold * 0.92);
     }
 
     // the boards are always there; they just brighten as you draw level, and
     // only on the pass that is actually showing that wall
     for (const b of boardsOut){
-      const a = clamp(1 - Math.abs(pos.z - b.z) / 6, 0, 1);
-      const facing = b.side === wantSide ? 1 : 0.45;
-      b.mesh.material.emissiveIntensity = 0.16 + a * a * (3 - 2 * a) * 0.36 * facing;
+      const a = clamp(1 - Math.abs(pos.z - b.z) / 7, 0, 1);
+      const facing = b.side === wantSide ? 1 : 0.4;
+      b.mesh.material.emissiveIntensity = LOOK.boardBase + a * a * (3 - 2 * a) * LOOK.boardPeak * facing;
     }
 
     adapt(nowMs);
     camera.position.copy(pos);
-    camera.lookAt(look);
+    /* The aim gets its own easing. Position was already damped, but the look
+       target could still step when the hold blend changed, and a rotation
+       step is far more visible than a translation one. */
+    if (lookCur.lengthSq() === 0) lookCur.copy(look);
+    lookCur.lerp(look, 1 - Math.pow(1 - 0.10, dt * 60));
+    camera.lookAt(lookCur);
 
     const inside = clamp(1 - Math.abs(pos.z - 7) / 22, 0, 1);
     const fov = vFov(50 + inside * 16, camera.aspect);

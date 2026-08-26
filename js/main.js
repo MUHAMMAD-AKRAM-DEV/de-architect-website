@@ -166,6 +166,8 @@
       const travel = section.offsetHeight - window.innerHeight;
       if (travel <= 0) return;
       const p = Math.min(Math.max(-r.top / travel, 0), 1);
+      // stacked layouts have no lead-in above the accordion, so the run-out
+      // padding does the holding instead (see .tiers-acc::after)
       // a small lead-in and run-out so the first and last tier both hold
       const idx = Math.min(tiers.length - 1,
                   Math.max(0, Math.floor(((p - 0.06) / 0.88) * tiers.length)));
