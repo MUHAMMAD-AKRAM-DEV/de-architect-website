@@ -54,17 +54,26 @@
 
 
 <main>
-  <section class="pg-head">
-    <span class="eyebrow"><span class="tick"></span>Selected work</span>
-    <h1 class="display"><span class="c-plum">Every project</span> <span class="c-crimson">we have built.</span></h1>
-    <p class="pg-lede">Houses, interiors, workspaces and buildings brought back to use. A few can be walked through in 3D — look for the tour badge.</p>
+  <section class="pg-hero">
+    <div class="pg-hero-in">
+      <span class="pg-eyebrow"><span class="tick"></span>Selected work</span>
+      <h1 class="pg-title display">
+        <span class="w"><i>Every</i></span>
+        <span class="w"><i class="out">project.</i></span>
+      </h1>
+      <div class="pg-sub">
+        <p>Houses, interiors, workspaces and buildings brought back into use. A few can be walked through in 3D — look for the tour badge.</p>
+        <span class="pg-count" id="pgCount">12<sub>Projects</sub></span>
+      </div>
+    </div>
   </section>
 
-  <section class="pg-body">
-    <div class="pg-filters" id="pgFilters" role="tablist" aria-label="Filter projects by type"></div>
-    <div class="pgrid" id="pgrid"></div>
-    <p class="pg-empty" id="pgEmpty" hidden>Nothing in that category yet.</p>
-  </section>
+  <div class="pg-rail">
+    <div class="pg-rail-in" id="pgFilters" role="tablist" aria-label="Filter projects by type"></div>
+  </div>
+
+  <section class="pmosaic" id="pmosaic"></section>
+  <p class="pg-empty" id="pgEmpty" hidden>Nothing in that category yet.</p>
 </main>
 
 <footer class="footer" >
