@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Studio — DE Architects</title>
-<meta name="description" content="About DE Architects — an architecture and interior design studio." />
+<title>The Studio — DE Architects</title>
+<meta name="description" content="DE Architects is an architecture and interior design studio of fourteen people across two studios, working on houses, interiors, workspaces and restoration since 2009." />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>if (window.tailwind) tailwind.config = { corePlugins: { preflight: false } };</script>
@@ -13,14 +13,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" href="assets/icons/favicon.png" type="image/png">
-<style>
-  /* small page-header helper reused by inner pages */
-  .page-head{ background:var(--wine);color:#fff;padding:clamp(120px,18vh,190px) clamp(18px,5vw,80px) clamp(50px,7vw,90px);text-align:center; }
-  .page-head .eyebrow{ color:var(--pink);display:block;margin-bottom:14px; }
-  .page-head h1{ font-size:clamp(2.6rem,7vw,5.5rem);margin:0; }
-  .page-body{ padding:clamp(60px,8vw,110px) clamp(18px,5vw,80px);max-width:1180px;margin:0 auto; }
-  .placeholder-note{ border:2px dashed rgba(62,14,44,.28);border-radius:16px;padding:30px;color:#6a4a56;background:#fff; }
-</style>
 </head>
 <body>
 <script src="js/intro.js"></script>
@@ -62,23 +54,153 @@
 
 
 <main>
-  <section class="page-head">
-    <span class="eyebrow">Our studio</span>
-    <h1 class="display">Who we are</h1>
+  <!-- ============ opening ============ -->
+  <section class="ab-hero" id="abHero">
+    <span class="ab-cover" aria-hidden="true"></span>
+    <div class="ab-hero-in">
+      <span class="pg-eyebrow"><span class="tick"></span>The studio</span>
+      <h1 class="ab-title display">
+        <span class="w"><i>We design for</i></span>
+        <span class="w"><i class="out">how you live.</i></span>
+      </h1>
+      <p class="ab-lede">DE Architects is an architecture and interior design studio. We work on houses, interiors, workspaces and buildings that deserve another life — and we start every one of them the same way, by watching how a place is actually used.</p>
+    </div>
+    <span class="pd-scroll" aria-hidden="true">Scroll<i></i></span>
   </section>
 
-  <section class="page-body">
-    <div class="r"><p style="font-size:1.15rem;line-height:1.75;max-width:60ch;color:#4a2c3a;">DE Architects is a design studio working across residential architecture, interiors, commercial spaces and renovation. This is your About page — add your story, team, approach and awards here.</p></div>
-    <div class="r" style="margin-top:40px;"><div class="placeholder-note">Drop your studio story, team photos and process here. You can reuse the section styles from the landing page (headings, <code>.tier</code>, <code>.fcard</code>, stat rows, etc.).</div></div>
+  <!-- ============ the numbers ============ -->
+  <section class="ab-stats">
+    <div class="ab-stats-in">
+      <div class="ab-stat r"><b data-count="480" data-suffix="+">0</b><span>Projects delivered</span></div>
+      <div class="ab-stat r d1"><b data-count="16" data-suffix="+">0</b><span>Years of practice</span></div>
+      <div class="ab-stat r d2"><b data-count="27" data-suffix="+">0</b><span>Design awards</span></div>
+      <div class="ab-stat r d3"><b data-count="98" data-suffix="%">0</b><span>Would recommend us</span></div>
+    </div>
+  </section>
+
+  <!-- ============ story ============ -->
+  <section class="ab-story">
+    <div class="ab-story-in">
+      <div class="ab-story-copy r">
+        <span class="ab-kicker">Our story</span>
+        <h2 class="display">Sixteen years of<br><em>starting with the brief.</em></h2>
+        <p>The studio began in 2009 with one house and a conviction that has not changed since: a building should be shaped by the life inside it, not the other way round. That first client wanted somewhere to cook, read and have people over — so we designed around a kitchen and let the rest follow.</p>
+        <p>We have grown since, into interiors, workspaces and restoration, but the method is the same. We spend the first weeks listening, measuring, and watching where the light lands. The drawing comes after.</p>
+        <p>Today the practice is fourteen people across two studios, working on everything from a single reimagined room to a whole building brought back into use. No project is too small if the thinking is worth doing.</p>
+      </div>
+      <div class="ab-story-media r d1">
+        <figure class="ab-shot tall"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="Inside the DE Architects studio" loading="lazy" decoding="async"></figure>
+        <figure class="ab-shot"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="A model on a drafting table" loading="lazy" decoding="async"></figure>
+        <span class="ab-note hand">since 2009</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ how we work ============ -->
+  <section class="ab-process">
+    <div class="ab-process-in">
+      <div class="ab-process-head r">
+        <span class="ab-kicker light">How we work</span>
+        <h2 class="display">Four stages,<br>and no surprises.</h2>
+        <p>Every project runs the same way. You always know which stage you are in, what is being decided, and what it costs before it starts.</p>
+      </div>
+      <ol class="ab-steps">
+        <li class="ab-step r"><span class="ab-step-n">01</span><h3>Listen</h3><p>We visit, measure and talk — about routine, not style. What time you eat, where you work, which room nobody uses. The brief comes out of that conversation.</p></li>
+        <li class="ab-step r d1"><span class="ab-step-n">02</span><h3>Draw</h3><p>Sketches, plans and a physical model. You see options in three dimensions before anything is fixed, and we expect to throw the first one away.</p></li>
+        <li class="ab-step r d2"><span class="ab-step-n">03</span><h3>Resolve</h3><p>Materials, joinery, light and detail, plus the permissions and costings. This is the longest stage and the one that decides whether the building works.</p></li>
+        <li class="ab-step r d3"><span class="ab-step-n">04</span><h3>Build</h3><p>We stay on site until the keys change hands. The people who drew it are the people who see it finished.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ what we believe ============ -->
+  <section class="ab-values">
+    <div class="ab-values-in">
+      <span class="ab-kicker">What we believe</span>
+      <div class="ab-vgrid">
+        <article class="ab-value r"><h3>Light before finish</h3><p>Where the sun falls decides a plan. Materials are chosen afterwards, to suit the light a room actually gets.</p></article>
+        <article class="ab-value r d1"><h3>Build less, better</h3><p>The cheapest and greenest square metre is the one you do not build. We would rather rework what exists than add to it.</p></article>
+        <article class="ab-value r d2"><h3>Detail is not decoration</h3><p>A junction that is thought through disappears. Most of what we draw is meant never to be noticed.</p></article>
+        <article class="ab-value r d3"><h3>One team throughout</h3><p>No handover to a delivery office. The people at the first meeting are on site at the last.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ people ============ -->
+  <section class="ab-team">
+    <div class="ab-team-in">
+      <div class="ab-team-head r">
+        <span class="ab-kicker">The people</span>
+        <h2 class="display">Fourteen of us,<br>two studios.</h2>
+      </div>
+      <div class="ab-people">
+        <article class="ab-person r">
+          <span class="ab-face" style="--c:var(--wine)"><img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy" onerror="this.remove()">AK</span>
+          <h3>Aisha Karim</h3><span class="ab-role">Founding partner</span>
+          <p>Started the studio in 2009. Leads the residential work and still draws every house herself.</p>
+        </article>
+        <article class="ab-person r d1">
+          <span class="ab-face" style="--c:var(--navy)"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy" onerror="this.remove()">DM</span>
+          <h3>Daniel Meyer</h3><span class="ab-role">Partner, commercial</span>
+          <p>Joined in 2013. Runs the workspace and restoration projects, and everything with a structural argument in it.</p>
+        </article>
+        <article class="ab-person r d2">
+          <span class="ab-face" style="--c:var(--magenta-deep)"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" loading="lazy" onerror="this.remove()">PN</span>
+          <h3>Priya Nair</h3><span class="ab-role">Head of interiors</span>
+          <p>Materials, joinery and light. If a room feels right when you walk in, it is usually her doing.</p>
+        </article>
+        <article class="ab-person r d3">
+          <span class="ab-face" style="--c:var(--teal-ink)"><img src="https://randomuser.me/api/portraits/men/76.jpg" alt="" loading="lazy" onerror="this.remove()">TA</span>
+          <h3>Tomas Alvarez</h3><span class="ab-role">Associate, visualisation</span>
+          <p>Builds the 3D walkthroughs, so clients can stand in a room a year before it exists.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ recognition ============ -->
+  <section class="ab-awards">
+    <div class="ab-awards-in">
+      <span class="ab-kicker light">Recognition</span>
+      <ul class="ab-award-list">
+        <li class="r"><b>2024</b><span>House of the Year, shortlist</span><i>Riverside House</i></li>
+        <li class="r d1"><b>2024</b><span>Interior Award, winner</span><i>Harbour Penthouse</i></li>
+        <li class="r d2"><b>2023</b><span>Workplace Design, commended</span><i>Studio North</i></li>
+        <li class="r d3"><b>2022</b><span>Restoration Prize, winner</span><i>The Warehouse</i></li>
+        <li class="r"><b>2021</b><span>Small Project Award, winner</span><i>Slate Kitchen</i></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ call to action ============ -->
+  <section class="ab-cta">
+    <div class="ab-cta-in">
+      <h2 class="display">Tell us how you<br>want to live.</h2>
+      <p>Every project starts with a conversation. There is no charge for the first one.</p>
+      <div class="ab-cta-btns">
+        <a class="pill solid" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill" href="projects.html">See our work
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
   </section>
 </main>
 
-<footer class="footer" >
+<footer class="footer">
   <div class="cta-grid">
     <div class="foot-brand" style="grid-column:1/-1;display:none;"></div>
     <div class="r">
-      <img class="foot-logo" src="assets/img/logo-footer.png" alt="DE Architects — Consulting Engineers">
+      <img class="foot-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
       <p class="foot-blurb">We are an architecture and interior design studio shaping homes, workspaces and everything in between — designed for how you actually live.</p>
+      <div class="foot-social">
+        <a href="#" aria-label="Instagram"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
+        <a href="#" aria-label="Pinterest"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+      </div>
     </div>
     <div class="r d1">
       <h2 class="big display">Architecture that reflects all of you.</h2>
@@ -140,24 +262,24 @@
   </div>
 
   <div class="foot-bottom">
-    <div class="socials">
-      <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-      <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
-      <a href="#" aria-label="Pinterest"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
-      <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
-    </div>
     <div class="foot-links">
       <a href="#">Privacy Policy</a>
       <a href="#">Terms</a>
       <a href="#">Site Map</a>
     </div>
-  </div>
 
-  <p class="legal">DE Architects is an independent design studio. All project imagery is illustrative. We design across residential, interior, commercial and landscape work, and welcome projects of every size — from a single room to a whole building.</p>
+    <!-- Logo saved locally on purpose: the Facebook CDN URL it came from is
+         signed and expires. Set href when the Reego Tech site is known. -->
+    <a class="dev-by" href="#" rel="noopener">
+      <img src="assets/img/reego-tech.jpg" alt="Reego Tech" onerror="this.remove()">
+      <span><small>Developed by</small><b>Reego Tech</b></span>
+    </a>
+  </div>
 </footer>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
+  <script src="js/about.js"></script>
 </body>
 </html>
