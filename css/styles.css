@@ -3028,7 +3028,7 @@ a.fc-item:hover b {
 /* ============ Section 3: scroll-driven image sequence ============ */
 .flight {
   position: relative;
-  height: 560vh;
+  height: 760vh;
   background: #0E0A10;
 }
 
@@ -3335,7 +3335,7 @@ a.fc-item:hover b {
 
 @media (max-width:900px) {
   .flight {
-    height: 420vh;
+    height: 560vh;
   }
 
   .flight-caps {
@@ -3354,7 +3354,7 @@ a.fc-item:hover b {
 
 @media (max-width:560px) {
   .flight {
-    height: 340vh;
+    height: 460vh;
   }
 
   .ff-grid {
@@ -3374,7 +3374,7 @@ a.fc-item:hover b {
 /* a phone on its side: almost no vertical room, so shed the furniture */
 @media (max-height:520px) and (orientation:landscape) {
   .flight {
-    height: 300vh;
+    height: 420vh;
   }
 
   .scene-text h2 {

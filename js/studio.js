@@ -43,12 +43,12 @@ const TOP  = UY + UH;            // underside of roof
 /* ---------- the six services, as drawings on the tables ----------
    side: -1 = left of the aisle, +1 = right.  z = position down the hall. */
 const SERVICES = [
-  { n:'01', title:'Residential Architecture', sub:'Concept to keys',            dwg:'A-101', scale:'1:100', side:-1, z:-4,  kind:'plan'  },
-  { n:'02', title:'Interior Design',          sub:'Spaces that feel like you',  dwg:'ID-204', scale:'1:50', side: 1, z: 0,  kind:'layout'},
-  { n:'03', title:'Commercial & Workspaces',  sub:'Where business takes shape', dwg:'C-310', scale:'1:200', side:-1, z: 4,  kind:'grid'  },
-  { n:'04', title:'Renovation & Restoration', sub:'Brought back to life',       dwg:'R-118', scale:'1:100', side: 1, z: 8,  kind:'elev'  },
-  { n:'05', title:'Landscape & Exteriors',    sub:'Design meets the outdoors',  dwg:'L-402', scale:'1:500', side:-1, z:12,  kind:'site'  },
-  { n:'06', title:'3D Visualisation',         sub:"See it before it's built",   dwg:'V-006', scale:'N.T.S.',side: 1, z:16,  kind:'axo'   }
+  { n:'01', title:'Residential Architecture', sub:'Concept to keys',            dwg:'A-101', scale:'1:100', side:-1, z:-4,  kind:'plan'   },
+  { n:'02', title:'Interior Design',          sub:'Spaces that feel like you',  dwg:'ID-204', scale:'1:50', side:-1, z: 4,  kind:'layout' },
+  { n:'03', title:'Commercial & Workspaces',  sub:'Where business takes shape', dwg:'C-310', scale:'1:200', side:-1, z:12,  kind:'grid'   },
+  { n:'04', title:'Renovation & Restoration', sub:'Brought back to life',       dwg:'R-118', scale:'1:100', side: 1, z:12,  kind:'elev'   },
+  { n:'05', title:'Landscape & Exteriors',    sub:'Design meets the outdoors',  dwg:'L-402', scale:'1:500', side: 1, z: 4,  kind:'site'   },
+  { n:'06', title:'3D Visualisation',         sub:"See it before it's built",   dwg:'V-006', scale:'N.T.S.',side: 1, z:-4,  kind:'axo'    }
 ];
 
 if (section && canvas && !reduce && webglOK()) boot();
@@ -601,7 +601,8 @@ async function boot(){
       const m = new THREE.Mesh(
         new THREE.PlaneGeometry(width, width / aspect),
         new THREE.MeshLambertMaterial({
-          map: t, transparent: true, alphaTest: 0.04,
+          map: t, transparent: true, alphaTest: 0.02, depthWrite: false,
+          polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
           emissive: new THREE.Color(0xFFFFFF), emissiveMap: t,
           emissiveIntensity: o.glow || 0
         }));
@@ -705,7 +706,7 @@ async function boot(){
 
   // the sign band over the entrance, carrying the real logo
   box(9.5, 1.5, 0.24, M.slab, 0, 6.6, FRONT - 0.5);
-  logoPlane('logo-nav.png', 7.4, { x:0, y:6.6, z:FRONT - 0.8, glow:0.32 });
+  logoPlane('logo-nav.png', 7.4, { x:0, y:6.6, z:FRONT - 0.78, glow:0.34 });
 
   // ceiling strip lights down the hall
   /* Only under the galleries — the middle of the plan is a double-height void,
@@ -735,13 +736,17 @@ async function boot(){
     });
   });
   box(8.6, 2.2, 0.16, M.slab, 0, 4.0, BACK - 0.2);
-  logoPlane('logo-nav.png', 6.6, { x:0, y:4.0, z:BACK - 0.28, rotY:Math.PI, glow:0.22 });
+  // the backing slab's face is at BACK-0.28; sitting the mark exactly on it
+  // was the worst of the flicker
+  logoPlane('logo-nav.png', 6.6, { x:0, y:4.0, z:BACK - 0.36, rotY:Math.PI, glow:0.26 });
 
   /* ---------- reception ---------- */
   box(4.6, 1.1, 1.0, M.walnut, -4.5, 1.05, -8.5);
   box(4.9, 0.1, 1.2, M.white, -4.5, 1.63, -8.5, true, false);
   box(0.2, 3.0, 5.0, M.plaster, -8.2, 2.0, -8.0);                              // logo wall
-  logoPlane('logo-icon.png', 2.1, { x:-8.08, y:2.4, z:-8.0, rotY:Math.PI / 2 });
+  // a brushed plate to mount the mark on, so reception reads as signage
+  box(0.06, 3.0, 3.0, M.bronze, -8.06, 2.4, -8.0, true, false);
+  logoPlane('logo-icon.png', 1.9, { x:-7.98, y:2.4, z:-8.0, rotY:Math.PI / 2, glow:0.14 });
 
   box(2.6, 0.42, 0.9, M.fabric, 5.5, 0.72, -9.0);                              // waiting bench
   box(2.6, 0.5, 0.24, M.fabric, 5.5, 1.1, -9.4, true, false);
@@ -962,7 +967,8 @@ async function boot(){
   // entrance forecourt: a signage monolith, planters, benches and bollards, so
   // the opening shot has a foreground instead of bare paving
   box(1.1, 3.2, 0.5, M.slab, -6.4, 1.75, -19);
-  logoPlane('logo-stacked-color.png', 0.82, { x:-6.4, y:2.3, z:-19.27 });
+  // was at -19.27, which is behind the monolith's own front face at -19.25
+  logoPlane('logo-stacked-color.png', 0.82, { x:-6.4, y:2.3, z:-19.33 });
 
   box(0.7, 0.12, 0.4, M.bronze, -6.4, 1.15, -19.28, true, false);
 
@@ -1044,30 +1050,41 @@ async function boot(){
   /* ---------- the flight path ---------- */
   const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
+  /* Down the hall holding to the east side so the west wall (01-03) sits
+     square in frame, a turn across the model bay, then back along the west
+     side so the east wall (04-06) does the same on the way out. Waypoints are
+     evenly spaced through both passes, and the curve is read with getPoint()
+     so each segment takes an equal share of the scroll — that is what keeps
+     the panels from flashing past. */
   const path = new THREE.CatmullRomCurve3([
-    V(0, 3.6, -40), V(0, 3.2, -26), V(0, 2.9, -17), V(0, 3.0, -11.5), V(0, 3.1, -7.5),
-    V(0, 3.15, -4), V(0, 3.15, -2), V(0, 3.15, 0), V(0, 3.15, 2), V(0, 3.15, 4),
-    V(0, 3.15, 6), V(0, 3.15, 8), V(0, 3.15, 10), V(0, 3.15, 12), V(0, 3.15, 14),
-    V(0, 3.2, 16),
-    V(0, 3.6, 19), V(0.5, 6.6, 23.2),
-    V(0, 8.0, 19.5), V(0, 8.1, 13), V(0, 8.1, 6), V(0, 8.0, -1), V(0, 8.5, -14),
-    V(0, 13, -34), V(0, 20, -56), V(0, 26, -74)
+    V(0, 3.6, -40), V(0, 3.2, -26), V(0, 2.9, -17), V(0, 3.0, -12.5), V(0.9, 3.15, -9),
+    V(2.4, 3.15, -6), V(2.4, 3.15, -3), V(2.4, 3.15, 0), V(2.4, 3.15, 3),
+    V(2.4, 3.15, 6),  V(2.4, 3.15, 9),  V(2.4, 3.15, 12), V(2.4, 3.20, 15),
+    V(1.6, 3.40, 18.5), V(-1.6, 3.50, 20.5),
+    V(-2.4, 3.20, 17), V(-2.4, 3.15, 14), V(-2.4, 3.15, 11), V(-2.4, 3.15, 8),
+    V(-2.4, 3.15, 5),  V(-2.4, 3.15, 2),  V(-2.4, 3.15, -1), V(-2.4, 3.15, -4),
+    V(-1.3, 3.20, -7),
+    V(0, 3.4, -11), V(0, 4.2, -16), V(0, 8, -26), V(0, 16, -44), V(0, 26, -70)
   ], false, 'catmullrom', 0.35);
 
   const aim = new THREE.CatmullRomCurve3([
     V(0, 4.8, -12), V(0, 4.0, -12), V(0, 3.2, -10), V(0, 3.0, -7), V(0, 3.0, -4),
-    V(0, 3.0, -1), V(0, 3.0, 1), V(0, 3.0, 3), V(0, 3.0, 5), V(0, 3.0, 7),
-    V(0, 3.0, 9), V(0, 3.0, 11), V(0, 3.0, 13), V(0, 3.0, 15), V(0, 3.0, 17),
-    V(0, 2.9, 19),
-    V(0, 2.4, 21.5), V(0, 1.5, 20.5),
-    V(0, 2.6, 14), V(0, 2.8, 7), V(0, 3.0, 0), V(0, 4.2, -7), V(0, 5.0, -10),
-    V(0, 5.0, -4), V(0, 5.0, -2), V(0, 5.0, -2)
+    V(0, 3.0, -2), V(0, 3.0, 1), V(0, 3.0, 4), V(0, 3.0, 7),
+    V(0, 3.0, 10), V(0, 3.0, 13), V(0, 3.0, 16), V(0, 3.0, 19),
+    V(0, 2.5, 21), V(0, 2.7, 19),
+    V(0, 3.0, 13), V(0, 3.0, 10), V(0, 3.0, 7), V(0, 3.0, 4),
+    V(0, 3.0, 1),  V(0, 3.0, -2), V(0, 3.0, -5), V(0, 3.0, -8),
+    V(0, 3.0, -11),
+    V(0, 3.2, -15), V(0, 3.6, -20), V(0, 4.5, -24), V(0, 5.0, -14), V(0, 5.0, -4)
   ], false, 'catmullrom', 0.35);
 
   /* ---------- scroll → progress ---------- */
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   let targetP = 0, curP = 0, running = false, raf = null, lastFov = -1;
   const pos = new THREE.Vector3(), look = new THREE.Vector3(), boardAt = new THREE.Vector3();
+  const ahead = new THREE.Vector3();
+  const EASE = 0.055;              // lower than before: slower, heavier drone
+  let lastFrame = performance.now();
 
   /* adaptive resolution — trade pixels to hold the frame rate, as in drone.js */
   let acc = 0, ticks = 0, lastT = performance.now(), shadowsOn = renderer.shadowMap.enabled;
@@ -1116,35 +1133,50 @@ async function boot(){
 
   function frame(){
     readScroll();
+
+    /* Frame-rate independent easing. The old fixed per-frame factor smoothed
+       roughly twice as hard at 30fps as at 60, so the drone's weight changed
+       with the machine it ran on. */
+    const nowMs = performance.now();
+    const dt = Math.min(0.05, (nowMs - lastFrame) / 1000);
+    lastFrame = nowMs;
     const delta = targetP - curP;
-    curP += delta * 0.085;
-    if (Math.abs(delta) < 0.0002){ curP = targetP; settled = true; }
+    curP += delta * (1 - Math.pow(1 - EASE, dt * 60));
+    if (Math.abs(delta) < 0.00012){ curP = targetP; settled = true; }
     const u = clamp(curP, 0, 1);
 
     path.getPoint(u, pos);
     aim.getPoint(u, look);
 
-    // in the hall, turn toward whichever service board is passing
+    /* Which wall is on show follows the direction of travel: outbound the
+       drone faces west and 01-03, on the return it faces east and 04-06.
+       Reading that off the curve means neither pass needs a hard-coded
+       scroll range that would drift if the waypoints ever move. */
+    path.getPoint(Math.min(1, u + 0.005), ahead);
+    const wantSide = ahead.z >= pos.z ? -1 : 1;
+
     let nearD = 1e9, near = null;
     for (const b of boardsOut){
+      if (b.side !== wantSide) continue;
       const d = Math.abs(pos.z - b.z);
       if (d < nearD){ nearD = d; near = b; }
     }
-    const inHall = pos.y < 5 && pos.z > -7 && pos.z < 19;
-    if (inHall && near && nearD < 4.2){
-      // point straight at the board that is passing, so it lands in frame
-      const w = 1 - nearD / 4.2;
+    const inHall = pos.y < 5 && pos.z > -8 && pos.z < 19.5;
+    if (inHall && near && nearD < 6){
+      const w = 1 - nearD / 6;
       boardAt.set(near.x, near.y, near.z);
-      look.lerp(boardAt, w * w * 0.88);
+      look.lerp(boardAt, w * w * 0.9);
     }
 
-    // the boards are always there; they just brighten as you draw level
+    // the boards are always there; they just brighten as you draw level, and
+    // only on the pass that is actually showing that wall
     for (const b of boardsOut){
-      const a = clamp(1 - Math.abs(pos.z - b.z) / 5, 0, 1);
-      b.mesh.material.emissiveIntensity = 0.18 + a * a * (3 - 2 * a) * 0.34;
+      const a = clamp(1 - Math.abs(pos.z - b.z) / 6, 0, 1);
+      const facing = b.side === wantSide ? 1 : 0.45;
+      b.mesh.material.emissiveIntensity = 0.16 + a * a * (3 - 2 * a) * 0.36 * facing;
     }
 
-    adapt(performance.now());
+    adapt(nowMs);
     camera.position.copy(pos);
     camera.lookAt(look);
 
@@ -1168,6 +1200,7 @@ async function boot(){
   function wake(){
     if (!visible) return;
     settled = false;
+    lastFrame = performance.now();   // never ease against a stale timestamp
     if (!running){ running = true; lastT = performance.now(); acc = ticks = 0; raf = requestAnimationFrame(frame); }
   }
   function stop(){ if (running){ running = false; cancelAnimationFrame(raf); raf = null; } }
@@ -1182,7 +1215,8 @@ async function boot(){
   }), { rootMargin:'200px' }).observe(section);
 
   // opt-in diagnostics: /?debug=1 exposes the renderer for the perf harness
-  if (location.search.includes('debug')) window.__deStudio = { renderer, scene, camera };
+  if (location.search.includes('debug')) window.__deStudio = { renderer, scene, camera, path, aim, boards:boardsOut,
+    state: () => ({ running, settled, visible, curP, targetP, raf }) };
 
   section.classList.add('has-webgl');
   readScroll();
