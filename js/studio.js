@@ -68,23 +68,29 @@ async function boot(){
      and three looks that each work beat one that is mediocre at every hour. */
   const HOUR = new Date().getHours();
   const TOD = (HOUR >= 19 || HOUR < 6) ? 'night' : ((HOUR < 8 || HOUR >= 17) ? 'dusk' : 'day');
-  const LOOK = {
+  const LOOKS = {
     day:   { top:0x5B84C4, mid:0xC9DCF0, bot:0xF1EFE4,
              sun:0xFFF4E2, sunI:3.1, sunPos:[-44, 62, -34],
              hemiSky:0xCFE2FA, hemiGnd:0xB2A894, hemiI:3.2,
              fog:0xC9CFD6, fogD:0.0022, exposure:1.06,
-             glow:0.0, interior:20, strip:0.75, lamp:0.6, boardBase:0.10, boardPeak:0.30 },
+             glow:0.0, interior:20, strip:0.75, lamp:0.6, boardBase:0.10, boardPeak:0.30, pool:0.0, spill:0.0 },
     dusk:  { top:0x3E4E86, mid:0x9C86A6, bot:0xF0B678,
              sun:0xFFB877, sunI:2.3, sunPos:[-62, 20, -42],
              hemiSky:0x8FA4D6, hemiGnd:0x8A7F72, hemiI:2.3,
              fog:0xA98FA0, fogD:0.0028, exposure:1.16,
-             glow:0.6, interior:34, strip:1.7, lamp:1.6, boardBase:0.24, boardPeak:0.42 },
-    night: { top:0x080C1E, mid:0x18203A, bot:0x3A3352,
-             sun:0x9FB6E8, sunI:0.30, sunPos:[34, 44, 54],
-             hemiSky:0x232D48, hemiGnd:0x14141C, hemiI:0.75,
-             fog:0x131A2C, fogD:0.0030, exposure:1.38,
-             glow:1.0, interior:56, strip:2.6, lamp:2.6, boardBase:0.62, boardPeak:0.55 }
-  }[TOD];
+             glow:0.6, interior:34, strip:1.7, lamp:1.6, boardBase:0.24, boardPeak:0.42, pool:0.45, spill:0.5 },
+    night: { top:0x0A1024, mid:0x1E2848, bot:0x46405E,
+             sun:0xA8BEEE, sunI:0.62, sunPos:[34, 44, 54],
+             hemiSky:0x33406A, hemiGnd:0x24242E, hemiI:1.35,
+             fog:0x18203A, fogD:0.0028, exposure:1.46,
+             glow:1.0, interior:56, strip:2.6, lamp:2.8, boardBase:0.62, boardPeak:0.55, pool:1.0, spill:1.25 }
+  };
+  let LOOK = LOOKS[TOD];
+
+  /* Things applyLook() has to reach once the scene is built. Collected as the
+     scene is assembled rather than hunted for afterwards, so nothing that
+     depends on the hour can be missed when the toggle flips. */
+  const interiorLights = [], cityMats = [], poolMats = [], spillMats = [], envMats = [];
 
   const small = window.innerWidth < 900;
   let visible = false, settled = false;   // declared early: texture callbacks call wake()
@@ -500,6 +506,7 @@ async function boot(){
 
   /* ---------- light ---------- */
   scene.add(new THREE.HemisphereLight(LOOK.hemiSky, LOOK.hemiGnd, LOOK.hemiI));
+  const hemi = scene.children[scene.children.length - 1];   // the hemisphere just added
   const sun = new THREE.DirectionalLight(LOOK.sun, LOOK.sunI);
   sun.position.set(LOOK.sunPos[0], LOOK.sunPos[1], LOOK.sunPos[2]);
   if (!small){
@@ -515,7 +522,7 @@ async function boot(){
   scene.add(sun);
   [2, 16].forEach(z => {
     const l = new THREE.PointLight(0xFFF2DE, LOOK.interior, 36, 2);
-    l.position.set(0, GH - 1.0, z); scene.add(l);
+    l.position.set(0, GH - 1.0, z); scene.add(l); interiorLights.push(l);
   });
   // the front daylight is folded into the hemisphere rather than costing
   // another punctual light
@@ -581,8 +588,10 @@ async function boot(){
     const { metalness, roughness, envMapIntensity, ...rest } = o;
     return new THREE.MeshLambertMaterial({ color, ...rest });
   };
-  const smat = (color, rough = 0.5, o = {}) =>
-    new THREE.MeshStandardMaterial({ color, roughness:rough, metalness:0, envMap:envTex, ...o });
+  const smat = (color, rough = 0.5, o = {}) => {
+    const m = new THREE.MeshStandardMaterial({ color, roughness:rough, metalness:0, envMap:envTex, ...o });
+    envMats.push(m); return m;
+  };
   const glow = (color, i = 1) =>
     new THREE.MeshLambertMaterial({ color:0x151515, emissive:new THREE.Color(color), emissiveIntensity:i });
 
@@ -608,6 +617,7 @@ async function boot(){
       color:0xCFE0E6, roughness:0.06, metalness:0.1, transparent:true, envMap:envTex,
       opacity:0.15, envMapIntensity:2.0, side:THREE.DoubleSide, depthWrite:false
     }),
+    extLamp  : glow(0xFFD9A0, LOOK.lamp),
     strip    : glow(0xFFF6E6, LOOK.strip),
     screen   : glow(0xBFD8E6, LOOK.strip * 0.6)
   };
@@ -653,6 +663,50 @@ async function boot(){
   }
 
   const world = new THREE.Group();
+
+  /* Pools of light on the ground. Real lights would be the obvious way and
+     the wrong one — every extra punctual light costs across the whole frame,
+     at every hour, whether it is switched on or not. These are additive
+     decals: the look of lit ground for the price of a small transparent
+     quad, and they simply fade to nothing during the day. */
+  const poolTex = tex(function (g, w, h) {
+    const r = w / 2;
+    const grd = g.createRadialGradient(r, r, 0, r, r, r);
+    grd.addColorStop(0,    'rgba(255,226,180,0.95)');
+    grd.addColorStop(0.35, 'rgba(255,206,140,0.45)');
+    grd.addColorStop(1,    'rgba(255,190,120,0)');
+    g.fillStyle = grd; g.fillRect(0, 0, w, h);
+  }, 128, 128);
+
+  function lightPool(x, z, size, y){
+    const m = new THREE.MeshBasicMaterial({
+      map: poolTex, transparent: true, depthWrite: false,
+      blending: THREE.AdditiveBlending, opacity: LOOK.pool
+    });
+    const q = new THREE.Mesh(new THREE.PlaneGeometry(size, size), m);
+    q.rotation.x = -Math.PI / 2;
+    q.position.set(x, (y || 0) + 0.05, z);
+    q.userData.dynamic = true;      // additive: must not be baked into the opaque pass
+    q.visible = LOOK.pool > 0.01;
+    poolMats.push(q);
+    world.add(q);
+  }
+
+  /* A glowing quad set just off a surface — window spill, facade wash, the
+     underside of the canopy. Same trick, vertical. */
+  function spill(w, h, x, y, z, rotY, colour){
+    const m = new THREE.MeshBasicMaterial({
+      color: colour || 0xFFD9A0, transparent: true, depthWrite: false,
+      blending: THREE.AdditiveBlending, opacity: LOOK.spill * 0.5
+    });
+    const q = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m);
+    q.position.set(x, y, z);
+    if (rotY) q.rotation.y = rotY;
+    q.userData.dynamic = true;
+    q.visible = LOOK.spill > 0.01;
+    spillMats.push(q);
+    world.add(q);
+  }
   scene.add(world);
 
   function box(w, h, d, m, x, y, z, cast = true, rec = true){
@@ -690,10 +744,10 @@ async function boot(){
   Object.keys(cityGeo).forEach(k => {
     if (!cityGeo[k].length) return;
     const m = new THREE.Mesh(mergeGeometries(cityGeo[k]),
-      new THREE.MeshLambertMaterial({
+      (() => { const cm = new THREE.MeshLambertMaterial({
         map: FAC[k].map, emissiveMap: FAC[k].lit,
-        emissive: new THREE.Color(0xFFFFFF), emissiveIntensity: LOOK.glow
-      }));
+        emissive: new THREE.Color(0xFFFFFF), emissiveIntensity: LOOK.glow });
+        cityMats.push(cm); return cm; })());
     world.add(m);
   });
   world.add(new THREE.Mesh(mergeGeometries(capGeo), mat(0x6E6C68, 0.94, { map:speckle })));
@@ -1097,8 +1151,27 @@ async function boot(){
   car(13.6, -3.4, 0x6E1230);
   for (let i = 0; i < 4; i++){
     cyl(0.09, 0.09, 3.6, M.steel, 21.6, 1.9, -15 + i * 5, 8);
-    box(0.5, 0.14, 0.24, M.strip, 21.2, 3.7, -15 + i * 5, false, false);
+    box(0.5, 0.14, 0.24, M.extLamp, 21.2, 3.7, -15 + i * 5, false, false);
+    lightPool(20.6, -15 + i * 5, 11, 0.24);
   }
+
+  /* Exterior lighting. Uplights washing the facade, pools along the approach
+     and under the street trees, spill from the glazing and a lit soffit under
+     the entrance canopy — all of it fades out during the day. */
+  for (let i = 0; i < 6; i++)
+    box(0.28, 0.1, 0.28, M.extLamp, -10 + i * 4, 0.3, FRONT - 1.4, false, false);
+  [-8.5, 8.5].forEach(x => spill(6.0, 5.4, x, 3.0, FRONT - 0.34, 0, 0xFFCE94));
+  for (let i = 0; i < 3; i++) lightPool(0, -16 - i * 8, 10, 0.2);   // one run down the path
+  for (let i = 0; i < 5; i++){                                       // street trees
+    lightPool(-42 + i * 21, -56, 8, 0.2);
+    box(0.24, 0.09, 0.24, M.extLamp, -42 + i * 21, 0.28, -55.2, false, false);
+  }
+  lightPool(0, FRONT - 3.2, 12, 0.22);                          // entrance apron
+  spill(9.0, 2.2, 0, 5.32, FRONT - 1.4, 0, 0xFFD9A0);           // canopy soffit
+  [-6.4, 6.4].forEach(x => lightPool(x, -19, 6, 0.2));          // monolith + bench
+  // the studio's own glazing reading as lit from outside
+  spill(15.0, 3.8, 0, 2.9, FRONT - 0.42, 0, 0xFFE0B0);
+  [-1, 1].forEach(sx => spill(3.6, 4.0, sx * (HW + 0.6), 2.9, 6, sx * Math.PI / 2, 0xFFD9A0));
 
   // entrance forecourt: a signage monolith, planters, benches and bollards, so
   // the opening shot has a foreground instead of bare paving
@@ -1125,7 +1198,7 @@ async function boot(){
   for (let i = 0; i < 7; i++){
     [-7.6, 7.6].forEach(x => {
       cyl(0.07, 0.07, 0.85, M.steel, x, 0.62, -14 - i * 3.6, 8, false);
-      box(0.2, 0.08, 0.2, M.strip, x, 1.06, -14 - i * 3.6, false, false);
+      box(0.2, 0.08, 0.2, M.extLamp, x, 1.06, -14 - i * 3.6, false, false);
     });
   }
   for (let i = 0; i < 5; i++) box(0.06, 0.7, 0.06, M.steel, 11.5 + i * 0.42, 0.55, -21, true, false);
@@ -1378,6 +1451,62 @@ async function boot(){
   // opt-in diagnostics: /?debug=1 exposes the renderer for the perf harness
   if (location.search.includes('debug')) window.__deStudio = { renderer, scene, camera, path, aim, boards:boardsOut,
     state: () => ({ running, settled, visible, curP, targetP, raf }) };
+
+  /* ---------- day / night ----------
+     Everything the hour touches is re-applied here, so the toggle and the
+     clock go through exactly one code path. The environment map is rebuilt
+     too: it is baked from the sky, and a daylit reflection on the glazing at
+     midnight is the sort of detail that quietly looks wrong. */
+  function applyLook(next){
+    LOOK = next;
+    renderer.toneMappingExposure = LOOK.exposure;
+    skyMat.uniforms.top.value.setHex(LOOK.top);
+    skyMat.uniforms.mid.value.setHex(LOOK.mid);
+    skyMat.uniforms.bot.value.setHex(LOOK.bot);
+    scene.fog.color.setHex(LOOK.fog);
+    scene.fog.density = LOOK.fogD;
+    hemi.color.setHex(LOOK.hemiSky);
+    hemi.groundColor.setHex(LOOK.hemiGnd);
+    hemi.intensity = LOOK.hemiI;
+    sun.color.setHex(LOOK.sun);
+    sun.intensity = LOOK.sunI;
+    sun.position.set(LOOK.sunPos[0], LOOK.sunPos[1], LOOK.sunPos[2]);
+    sun.shadow.needsUpdate = true;            // autoUpdate is off; re-bake once
+    interiorLights.forEach(l => l.intensity = LOOK.interior);
+    M.strip.emissiveIntensity = LOOK.strip;
+    M.screen.emissiveIntensity = LOOK.strip * 0.6;
+    M.extLamp.emissiveIntensity = LOOK.lamp;
+    cityMats.forEach(m => m.emissiveIntensity = LOOK.glow);
+    // hidden outright in daylight — an invisible additive quad is not free
+    poolMats.forEach(q => { q.material.opacity = LOOK.pool; q.visible = LOOK.pool > 0.01; });
+    spillMats.forEach(q => { q.material.opacity = LOOK.spill * 0.5; q.visible = LOOK.spill > 0.01; });
+
+    const gen = new THREE.PMREMGenerator(renderer);
+    const t = gen.fromScene(envScene, 0.02).texture;
+    envMats.forEach(m => { m.envMap = t; m.needsUpdate = true; });
+    M.glass.envMap = t; M.glass.needsUpdate = true;
+    gen.dispose();
+    wake();
+  }
+
+  const todBtn = section.querySelector('.flight-tod');
+  if (todBtn){
+    // The clock decides what you see first; the button is only an override.
+    let mode = TOD;
+    const paint = () => {
+      const night = mode !== 'day';
+      todBtn.dataset.mode = night ? 'night' : 'day';
+      todBtn.querySelector('.tod-label').textContent = night ? 'Night' : 'Day';
+      todBtn.setAttribute('aria-label',
+        'Lighting: ' + (night ? 'night' : 'day') + '. Switch to ' + (night ? 'day' : 'night') + '.');
+    };
+    paint();
+    todBtn.addEventListener('click', () => {
+      mode = (mode === 'day') ? 'night' : 'day';
+      applyLook(LOOKS[mode]);
+      paint();
+    });
+  }
 
   section.classList.add('has-webgl');
   readScroll();

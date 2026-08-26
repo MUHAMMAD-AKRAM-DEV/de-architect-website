@@ -3633,3 +3633,70 @@ a.fc-item:hover b {
     display: none;
   }
 }
+
+/* ---- day / night override in the fly-through ---- */
+.flight-tod {
+  position: absolute;
+  z-index: 4;
+  top: clamp(84px, 11vh, 116px);
+  right: clamp(18px, 4vw, 46px);
+  display: none;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 15px 8px 11px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, .28);
+  background: rgba(24, 10, 20, .42);
+  backdrop-filter: blur(9px);
+  color: #fff;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: .6rem;
+  cursor: pointer;
+  transition: background .25s, border-color .25s, transform .25s;
+}
+
+.flight.has-webgl .flight-tod {
+  display: inline-flex;
+}
+
+.flight-tod:hover {
+  background: rgba(24, 10, 20, .66);
+  border-color: rgba(255, 255, 255, .55);
+  transform: translateY(-1px);
+}
+
+.flight-tod .tod-ico {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .14);
+}
+
+/* one icon or the other, never both */
+.flight-tod .ico-moon,
+.flight-tod[data-mode="night"] .ico-sun {
+  display: none;
+}
+
+.flight-tod[data-mode="night"] .ico-moon {
+  display: block;
+}
+
+.flight-tod[data-mode="night"] .tod-ico {
+  background: rgba(255, 214, 150, .22);
+  color: var(--gold);
+}
+
+@media (max-width:560px) {
+  .flight-tod {
+    top: 76px;
+    right: 14px;
+    padding: 7px 12px 7px 9px;
+    font-size: .55rem;
+  }
+}
