@@ -24,31 +24,46 @@
      a tall pair, then a full-width feature — so the eye never settles into a
      row-by-row scan the way it does with equal cards. */
   const LAYOUT = [
-    { span: 7, ar: '16/11' },
-    { span: 5, ar: '4/5' },
-    { span: 5, ar: '4/5' },
-    { span: 7, ar: '16/11' },
-    { span: 6, ar: '1/1' },
-    { span: 6, ar: '1/1' }
+    { span: 7, ar: '16/10' },
+    { span: 5, ar: '4/3' },
+    { span: 5, ar: '4/3' },
+    { span: 7, ar: '16/10' },
+    { span: 6, ar: '3/2' },
+    { span: 6, ar: '3/2' }
   ];
+
+  /* Every card carries its category colour on the top rule, the meta dot and
+     the hover state — a second, non-textual way to tell projects apart. */
+  const ACCENT = {
+    Residential: 'var(--crimson)',
+    Interior: 'var(--magenta)',
+    Commercial: 'var(--navy)',
+    Renovation: 'var(--gold)'
+  };
+
+  const ARROW = '<svg width="16" height="11" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>';
 
   const TOUR_ICO = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg>';
 
   mosaic.innerHTML = projects.map((p, i) => {
     const L = LAYOUT[i % LAYOUT.length];
+    const accent = ACCENT[p.category] || 'var(--crimson)';
     return `
-    <article class="ptile" data-cat="${p.category}" style="--span:${L.span};--ar:${L.ar}">
-      <a href="project.html?p=${encodeURIComponent(p.slug)}" data-cta="${p.tour ? 'Take the tour' : 'View project'}">
+    <article class="ptile" data-cat="${p.category}" style="--span:${L.span};--ar:${L.ar};--accent:${accent}">
+      <a class="ptile-card" href="project.html?p=${encodeURIComponent(p.slug)}" data-cta="${p.tour ? 'Take the tour' : 'View project'}">
         <span class="ptile-media">
           <img src="${p.cover}" alt="${p.title}" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
+          <span class="ptile-num">${String(i + 1).padStart(2, '0')}</span>
+          ${p.tour ? `<span class="ptile-tour">${TOUR_ICO}Virtual tour</span>` : ''}
         </span>
-        <span class="ptile-num">${String(i + 1).padStart(2, '0')}</span>
-        ${p.tour ? `<span class="ptile-tour">${TOUR_ICO}Virtual tour</span>` : ''}
-        <span class="ptile-foot">
-          <span class="ptile-cat">${p.category} · ${p.year}</span>
+        <span class="ptile-info">
+          <span class="ptile-cat">${p.category}</span>
           <h2 class="ptile-name">${p.title}</h2>
           <span class="ptile-place">${p.place}</span>
-          <span class="ptile-rule"></span>
+          <span class="ptile-foot">
+            <span class="ptile-cta">${p.tour ? 'Take the tour' : 'View project'} ${ARROW}</span>
+            <span class="ptile-year">${p.year}</span>
+          </span>
         </span>
       </a>
     </article>`;
