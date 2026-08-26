@@ -348,50 +348,72 @@ async function boot(){
     }, w, h);
   }
 
-  // the wall board: the same drawing, plus a label bar you can read at distance
-  function board(s, w, h){
-    return tex((g) => {
-      g.fillStyle = '#DED6C4'; g.fillRect(0, 0, w, h);   // board ground
-      g.textBaseline = 'top';        // otherwise Anton's ascenders clip off the top
-      var BAR = Math.round(h * 0.19), PAD = Math.round(w * 0.025);
-      var availW = w - PAD * 2, availH = h - BAR - PAD * 2;
-      var scale = Math.min(availW / 600, availH / 400);      // uniform: no squash
-      // the drawing is a sheet pinned to the board, not the board itself —
-      // without this the uniform scale just leaves dead white either side
-      var sw = 600 * scale, sh = 400 * scale;
-      var sx0 = (w - sw) / 2, sy0 = BAR + PAD + (availH - sh) / 2;
-      var m = Math.round(24 * scale);
-      g.fillStyle = 'rgba(40,18,32,.14)';
-      g.fillRect(sx0 - m + 7, sy0 - m + 9, sw + m * 2, sh + m * 2);
-      g.fillStyle = '#F7F4EC';
-      g.fillRect(sx0 - m, sy0 - m, sw + m * 2, sh + m * 2);
-      g.strokeStyle = 'rgba(62,14,44,.22)'; g.lineWidth = 2;
-      g.strokeRect(sx0 - m, sy0 - m, sw + m * 2, sh + m * 2);
-      [[sx0 - m + 16, sy0 - m + 16], [sx0 + sw + m - 16, sy0 - m + 16],
-       [sx0 - m + 16, sy0 + sh + m - 16], [sx0 + sw + m - 16, sy0 + sh + m - 16]].forEach(function (pin) {
-        g.fillStyle = RED; g.beginPath(); g.arc(pin[0], pin[1], 7, 0, 6.2832); g.fill();
-      });
+  /* The service panel IS the wall: full storey height, the name's own plum as
+     the wall colour, and the drawing behind it as a tonal watermark.
 
-      g.save();
-      g.translate(sx0, sy0);
-      g.scale(scale, scale);
-      (DRAW[s.kind] || drawPlan)(g);
-      g.restore();
-
-      g.fillStyle = INK; g.fillRect(0, 0, w, BAR);
-      var numPx = Math.round(BAR * 0.36), titlePx = Math.round(BAR * 0.52), subPx = Math.round(BAR * 0.17);
-      g.fillStyle = RED; g.font = '600 ' + numPx + 'px Inter, sans-serif';
-      g.fillText(s.n, PAD, Math.round(BAR * 0.22));
-      var titleX = PAD + numPx * 1.9;
-      g.fillStyle = '#F5F1E7';
-      g.font = titlePx + 'px Anton, sans-serif';
-      while (titlePx > 30 && g.measureText(s.title.toUpperCase()).width > w - titleX - PAD){
-        titlePx -= 2; g.font = titlePx + 'px Anton, sans-serif';
+     The DRAW routines paint dark ink on light paper, which would vanish on
+     plum. Rather than thread a palette through every one of them, the linework
+     is rendered to an offscreen canvas and recoloured in one pass with
+     source-in, which keeps the drawn pixels and replaces their colour. */
+  function fitTitle(g, text, maxW, maxPx, minPx) {
+    var words = text.split(' ');
+    for (var px = maxPx; px >= minPx; px -= 4) {
+      g.font = px + 'px Anton, sans-serif';
+      if (g.measureText(text).width <= maxW) return { px: px, lines: [text] };
+      for (var i = 1; i < words.length; i++) {
+        var a = words.slice(0, i).join(' '), b = words.slice(i).join(' ');
+        if (g.measureText(a).width <= maxW && g.measureText(b).width <= maxW)
+          return { px: px, lines: [a, b] };
       }
-      g.fillText(s.title.toUpperCase(), titleX, Math.round(BAR * 0.16));
-      g.fillStyle = 'rgba(245,241,231,.66)';
+    }
+    g.font = minPx + 'px Anton, sans-serif';
+    return { px: minPx, lines: [text] };
+  }
+
+  function board(s, w, h) {
+    return tex(function (g) {
+      var PAD = Math.round(w * 0.055);
+      g.fillStyle = '#3E0E2C'; g.fillRect(0, 0, w, h);       // the wall colour
+      g.textBaseline = 'top';
+
+      // watermark: the drawing, recoloured cream and laid in faintly
+      var off = document.createElement('canvas');
+      off.width = w; off.height = h;
+      var og = off.getContext('2d');
+      var sc = Math.min((w - PAD * 2) / 600, (h - PAD * 2) / 400) * 1.12;
+      og.textBaseline = 'top';
+      og.save();
+      og.translate((w - 600 * sc) / 2, (h - 400 * sc) / 2);
+      og.scale(sc, sc);
+      (DRAW[s.kind] || drawPlan)(og);
+      og.restore();
+      og.globalCompositeOperation = 'source-in';
+      og.fillStyle = '#F5F1E7';
+      og.fillRect(0, 0, w, h);
+      g.globalAlpha = 0.17;
+      g.drawImage(off, 0, 0);
+      g.globalAlpha = 1;
+
+      // number, with a crimson rule under it
+      var numPx = Math.round(h * 0.085);
+      g.fillStyle = RED;
+      g.font = '700 ' + numPx + 'px Inter, sans-serif';
+      g.fillText(s.n, PAD, PAD);
+      g.fillRect(PAD, PAD + numPx * 1.35, numPx * 1.5, Math.max(3, Math.round(h * 0.006)));
+
+      // the name, as large as two lines allow
+      var fit = fitTitle(g, s.title.toUpperCase(), w - PAD * 2, Math.round(h * 0.30), Math.round(h * 0.10));
+      var lh = fit.px * 0.9;
+      var blockH = lh * fit.lines.length;
+      var top = (h - blockH) / 2 + h * 0.03;
+      g.fillStyle = '#F7F3EA';
+      for (var i = 0; i < fit.lines.length; i++) g.fillText(fit.lines[i], PAD, top + i * lh);
+
+      // subtitle
+      var subPx = Math.round(h * 0.045);
+      g.fillStyle = 'rgba(247,243,234,.62)';
       g.font = '600 ' + subPx + 'px Inter, sans-serif';
-      g.fillText(s.sub.toUpperCase(), titleX + 2, Math.round(BAR * 0.62));
+      g.fillText(s.sub.toUpperCase(), PAD + 3, top + blockH + subPx * 0.55);
     }, w, h);
   }
 
@@ -438,7 +460,7 @@ async function boot(){
   const FAC = { A:facade(8, 14, '#B9B3A9'), B:facade(6, 10, '#A9A9A6'), C:facade(10, 20, '#C2BCB2') };
 
   /* ---------- light ---------- */
-  scene.add(new THREE.HemisphereLight(0xDCE8F8, 0xB0A692, 3.15));
+  scene.add(new THREE.HemisphereLight(0xDCE8F8, 0xB0A692, 3.5));
   const sun = new THREE.DirectionalLight(0xFFE7C6, 2.6);
   sun.position.set(-48, 40, -34);
   if (!small){
@@ -453,7 +475,7 @@ async function boot(){
   sun.shadow.needsUpdate = true;
   scene.add(sun);
   [2, 16].forEach(z => {
-    const l = new THREE.PointLight(0xFFF2DE, 30, 34, 2);
+    const l = new THREE.PointLight(0xFFF2DE, 40, 36, 2);
     l.position.set(0, GH - 1.0, z); scene.add(l);
   });
   // the front daylight is folded into the hemisphere rather than costing
@@ -502,6 +524,9 @@ async function boot(){
 
   const SAMPLE_MATS = [0xE4DCCC, 0xCFC6B4, 0xB9AE99, 0xD8D2C6].map(c => mat(c, 0.95));
   const BOOK_MATS = [0x6E3A4E, 0x3E4E6B, 0x7A5B3A, 0x4A5C4A, 0x8A4A3C, 0x40404E].map(c => mat(c, 0.95));
+
+  const PANEL_W = small ? 1280 : 2560;
+  const PANEL_H = Math.round(PANEL_W / 1.7167);
 
   const world = new THREE.Group();
   scene.add(world);
@@ -728,24 +753,23 @@ async function boot(){
     if (i % 2 === 0) figureSeated(sx + s.side * 0.1, s.z + 1.35, -1);
 
     // the wall board behind, plus a pin rail of sketches
-    const bt = board(s, 1536, 864);
-    const b = new THREE.Mesh(new THREE.PlaneGeometry(7.9, 4.44),
+    /* Measured: at its closest pass a panel spans about 1.85x the drawing
+       buffer width, so on a 1440x900 screen at 1.44 device pixels it covers
+       ~3840px. At 1792 the texture was being magnified 2x, which is what made
+       the lettering look pixelated. 2560 brings that down to ~1.5x. Phones get
+       half, where the panel never fills the frame the same way. */
+    const bt = board(s, PANEL_W, PANEL_H);
+    const b = new THREE.Mesh(new THREE.PlaneGeometry(8.0, 4.66),
       new THREE.MeshLambertMaterial({
         map:bt, emissiveMap:bt, emissive:new THREE.Color(0xFFFFFF), emissiveIntensity:0.22
       }));
-    b.position.set(wx, 3.0, s.z);
+    b.position.set(wx, 2.95, s.z);
     b.rotation.y = s.side < 0 ? Math.PI / 2 : -Math.PI / 2;
     b.userData.dynamic = true;
     world.add(b);
-    boardsOut.push({ mesh:b, z:s.z, side:s.side, x:wx, y:3.3 });
+    boardsOut.push({ mesh:b, z:s.z, side:s.side, x:wx, y:3.0 });
 
-    for (let k = 0; k < 4; k++){
-      box(0.06, 0.62 + (k % 2) * 0.22, 0.5 + (k % 3) * 0.14, M.paper,
-          wx - s.side * 0.06, 1.35 + (k % 2) * 0.78, s.z - 2.5 + k * 0.66, true, false);
-      box(0.06, 0.5 + (k % 2) * 0.2, 0.46, M.paper,
-          wx - s.side * 0.06, 1.3 + ((k + 1) % 2) * 0.72, s.z + 2.2 + k * 0.62, true, false);
-    }
-    box(0.1, 0.06, 7.0, M.bronze, wx - s.side * 0.08, 2.05, s.z, true, false);
+// (pin rail removed: the service panel now covers this wall)
 
     // a model table between the aisle and this board, so the turn has
     // something in the near field rather than bare floor

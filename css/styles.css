@@ -2276,7 +2276,7 @@ a {
 .marquee {
   background: var(--pink);
   overflow: hidden;
-  padding: 16px 0;
+  padding: 7px 0;
   white-space: nowrap;
 }
 
@@ -2288,7 +2288,8 @@ a {
 
 .marquee .track span {
   font-family: 'Anton';
-  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-size: clamp(1.05rem, 2.3vw, 1.7rem);
+  line-height: 1.18;
   color: var(--wine);
   text-transform: uppercase;
 }
