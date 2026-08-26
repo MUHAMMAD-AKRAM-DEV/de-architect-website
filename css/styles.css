@@ -3877,12 +3877,11 @@ a.fc-item:hover b {
 }
 
 /* ---- the mosaic ----
-   The tiles were bare images with the caption laid over them, on a cream page.
-   Twelve architectural photographs in similar tones, butted together with a
-   small gap, merged into one field and nothing read as a separate project.
-   Each is now a bounded white card on a warmer ground, with the caption on
-   solid paper below the image rather than fighting it, and a category colour
-   carried on a top rule and the meta dot. */
+   The image is now the whole card rather than a strip at the top. The lesson
+   from the previous pass still holds though: text laid straight onto
+   photography is unreadable when twelve covers share a tonal range. So the
+   caption sits on a frosted panel with a real background behind it — the
+   picture carries the card, the panel carries the words. */
 .pmosaic {
   background: var(--paper-2);
   padding: clamp(34px, 5vw, 66px) clamp(18px, 5vw, 80px) clamp(80px, 10vw, 140px);
@@ -3904,96 +3903,77 @@ a.fc-item:hover b {
 .ptile-card {
   display: block;
   position: relative;
-  background: #fff;
-  border-radius: 16px;
+  aspect-ratio: var(--ar, 3/4);
+  border-radius: 18px;
   overflow: hidden;
-  /* White on the warm ground is only about 1.25:1, so the edge cannot rest on
-     tone alone — the hairline guarantees definition and the shadow does the
-     lifting. */
-  border: 1px solid rgba(62, 14, 44, .09);
-  box-shadow: 0 2px 6px rgba(62, 14, 44, .06), 0 20px 44px rgba(62, 14, 44, .13);
-  transition: transform .5s cubic-bezier(.2, .8, .25, 1), box-shadow .5s;
+  background: #2a1622;
+  border: 1px solid rgba(62, 14, 44, .1);
+  box-shadow: 0 2px 6px rgba(62, 14, 44, .07), 0 22px 48px rgba(62, 14, 44, .16);
+  transition: transform .55s cubic-bezier(.2, .8, .25, 1), box-shadow .55s;
 }
 
 .ptile-card:hover {
-  transform: translateY(-7px);
-  box-shadow: 0 4px 10px rgba(62, 14, 44, .1), 0 34px 66px rgba(62, 14, 44, .22);
+  transform: translateY(-8px);
+  box-shadow: 0 6px 14px rgba(62, 14, 44, .1), 0 40px 76px rgba(62, 14, 44, .28);
 }
 
-/* the category rule across the top of every card */
-.ptile-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  z-index: 3;
-  background: var(--accent, var(--crimson));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .7s cubic-bezier(.76, 0, .24, 1);
-}
-
-.ptile.is-in .ptile-card::before {
-  transform: scaleX(1);
-}
-
-.ptile-media {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: var(--ar, 4/3);
-  background: #2a1622;
-}
-
-.ptile-media img {
-  width: 100%;
-  height: 116%;
-  object-fit: cover;
-  position: absolute;
-  top: -8%;
-  left: 0;
-  will-change: transform;
-}
-
-/* only a light foot of shade, enough to seat the badges */
-.ptile-media::after {
-  content: "";
+.ptile-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(30, 8, 22, .28) 0%, rgba(30, 8, 22, 0) 30%);
+  overflow: hidden;
+}
+
+.ptile-bg img {
+  width: 100%;
+  height: 114%;
+  object-fit: cover;
+  position: absolute;
+  top: -7%;
+  left: 0;
+  will-change: transform;
+  transition: scale .9s cubic-bezier(.2, .8, .25, 1);
+}
+
+.ptile-card:hover .ptile-bg img {
+  scale: 1.05;
+}
+
+/* just enough shade at the head of the card to seat the badges */
+.ptile-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(24, 8, 18, .46) 0%, rgba(24, 8, 18, .06) 26%, rgba(24, 8, 18, 0) 46%);
   pointer-events: none;
 }
 
 .ptile-num {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 2;
-  min-width: 34px;
-  height: 26px;
-  padding: 0 9px;
+  top: 15px;
+  left: 15px;
+  z-index: 3;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .92);
+  background: rgba(255, 255, 255, .93);
   color: var(--plum);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
-  font-size: .68rem;
-  letter-spacing: .04em;
+  font-size: .7rem;
 }
 
 .ptile-tour {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 2;
+  top: 15px;
+  right: 15px;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  padding: 7px 13px;
   border-radius: 999px;
   background: var(--crimson);
   color: #fff;
@@ -4001,54 +3981,85 @@ a.fc-item:hover b {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .1em;
-  font-size: .54rem;
-  box-shadow: 0 6px 18px rgba(194, 24, 63, .45);
+  font-size: .55rem;
+  box-shadow: 0 8px 20px rgba(194, 24, 63, .5);
 }
 
-/* ---- caption, on solid paper under the image ---- */
-.ptile-info {
+/* ---- the frosted caption panel ---- */
+.ptile-panel {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
   display: block;
-  padding: 18px 20px 20px;
-  border-top: 1px solid rgba(62, 14, 44, .07);
+  padding: 16px 18px 15px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .93);
+  backdrop-filter: blur(16px) saturate(1.3);
+  border-top: 3px solid var(--accent, var(--crimson));
+  box-shadow: 0 10px 30px rgba(20, 6, 14, .3);
+  transition: background .4s;
+}
+
+.ptile-card:hover .ptile-panel {
+  background: rgba(255, 255, 255, .97);
 }
 
 .ptile-cat {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-family: 'Archivo', sans-serif;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .16em;
-  font-size: .55rem;
+  font-size: .54rem;
   color: var(--accent, var(--crimson));
-  margin-bottom: 9px;
+  margin-bottom: 7px;
 }
 
 .ptile-cat::before {
   content: "";
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent, var(--crimson));
-  flex: 0 0 7px;
+  flex: 0 0 6px;
 }
 
 .ptile-name {
   font-family: 'Archivo', sans-serif;
   font-weight: 900;
   text-transform: uppercase;
-  font-size: clamp(1.05rem, 1.5vw, 1.42rem);
+  font-size: clamp(1.02rem, 1.4vw, 1.34rem);
   line-height: 1.02;
-  margin: 0 0 7px;
+  margin: 0 0 6px;
   color: var(--plum);
 }
 
 .ptile-place {
   display: block;
   color: #6a4a56;
-  font-size: .86rem;
-  line-height: 1.5;
+  font-size: .84rem;
+}
+
+/* the description only appears on hover, so the panel stays compact */
+.ptile-blurb {
+  display: block;
+  color: #6a4a56;
+  font-size: .82rem;
+  line-height: 1.55;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .5s cubic-bezier(.2, .8, .25, 1), opacity .4s, margin .5s;
+}
+
+.ptile-card:hover .ptile-blurb {
+  max-height: 82px;
+  opacity: 1;
+  margin-top: 8px;
 }
 
 .ptile-foot {
@@ -4056,9 +4067,9 @@ a.fc-item:hover b {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 14px;
-  padding-top: 13px;
-  border-top: 1px solid rgba(62, 14, 44, .09);
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(62, 14, 44, .12);
 }
 
 .ptile-cta {
@@ -4069,7 +4080,7 @@ a.fc-item:hover b {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .12em;
-  font-size: .58rem;
+  font-size: .57rem;
   color: var(--plum);
   transition: color .3s;
 }
@@ -4089,8 +4100,8 @@ a.fc-item:hover b {
 .ptile-year {
   font-family: 'Archivo', sans-serif;
   font-weight: 800;
-  font-size: .68rem;
-  color: rgba(62, 14, 44, .4);
+  font-size: .66rem;
+  color: rgba(62, 14, 44, .42);
 }
 
 /* ---- entrance ---- */
@@ -4146,6 +4157,13 @@ a.fc-item:hover b {
   .pcursor {
     display: none;
   }
+
+  /* no hover on touch, so the description is simply always out */
+  .ptile-blurb {
+    max-height: 82px;
+    opacity: 1;
+    margin-top: 8px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -4153,8 +4171,8 @@ a.fc-item:hover b {
     grid-column: span 12 !important;
   }
 
-  .ptile-media {
-    aspect-ratio: 16/10 !important;
+  .ptile-card {
+    aspect-ratio: 4/5 !important;
   }
 }
 
@@ -4163,8 +4181,8 @@ a.fc-item:hover b {
     grid-column: span 6 !important;
   }
 
-  .ptile-media {
-    aspect-ratio: 4/3 !important;
+  .ptile-card {
+    aspect-ratio: 3/4 !important;
   }
 }
 
@@ -4174,41 +4192,94 @@ a.fc-item:hover b {
     transform: none;
   }
 
-  .ptile-media img {
+  .ptile-bg img {
     transform: none !important;
-  }
-
-  .ptile-card::before {
-    transform: scaleX(1);
   }
 }
 
 /* ============ project detail ============ */
 /* This shared a declaration with the old .pg-head; when that block was
    replaced by the mosaic hero the detail header lost its ground entirely. */
+/* The header was a flat plum band that told you nothing about the project.
+   It now opens on the project's own cover, with the type sitting in the
+   shaded foot rather than over the middle of the picture. */
 .pd-head {
-  background: var(--wine);
-  color: #fff;
-  padding: clamp(122px, 18vh, 196px) clamp(18px, 5vw, 80px) clamp(60px, 8vw, 104px);
   position: relative;
   overflow: hidden;
+  color: #fff;
+  min-height: clamp(460px, 72vh, 760px);
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(122px, 18vh, 196px) clamp(18px, 5vw, 80px) clamp(52px, 7vw, 86px);
+  background: var(--wine);
+}
+
+.pd-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.06);
+  will-change: transform;
 }
 
 .pd-head::after {
   content: "";
   position: absolute;
-  right: -10%;
-  top: -30%;
-  width: min(560px, 52vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, .09);
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(24, 6, 18, .62) 0%, rgba(24, 6, 18, .12) 34%, rgba(24, 6, 18, .82) 100%),
+    linear-gradient(90deg, rgba(62, 14, 44, .5) 0%, rgba(62, 14, 44, 0) 62%);
   pointer-events: none;
 }
 
-.pd-head > * {
+.pd-headin {
   position: relative;
   z-index: 2;
+  max-width: 1320px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* the title rises out of its own clip on load */
+.pd-head h1 {
+  overflow: hidden;
+}
+
+.pd-head h1 span {
+  display: block;
+  transform: translateY(104%);
+  transition: transform 1s cubic-bezier(.2, .85, .25, 1) .1s;
+}
+
+.pd-head.is-in h1 span {
+  transform: none;
+}
+
+.pd-scroll {
+  position: absolute;
+  right: clamp(18px, 5vw, 80px);
+  bottom: clamp(52px, 7vw, 86px);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: .56rem;
+  color: rgba(255, 255, 255, .7);
+}
+
+.pd-scroll i {
+  display: block;
+  width: 2px;
+  height: 34px;
+  background: rgba(255, 255, 255, .5);
+  animation: cue 1.8s ease-in-out infinite;
 }
 
 .pd-back {

@@ -31,6 +31,24 @@ function render(p) {
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute('content', `${p.title}, ${p.place}. ${p.blurb}`);
 
+  // the project's own cover carries the header, with a slow parallax drift
+  const cover = document.getElementById('pdCover');
+  if (cover) {
+    cover.style.backgroundImage = `url("${p.cover}")`;
+    const head = document.getElementById('pdHead');
+    requestAnimationFrame(() => head.classList.add('is-in'));
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let tick = false;
+      const drift = () => {
+        tick = false;
+        const y = Math.min(scrollY, innerHeight) * 0.28;
+        cover.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.06)`;
+      };
+      addEventListener('scroll', () => { if (!tick){ tick = true; requestAnimationFrame(drift); } }, { passive: true });
+      drift();
+    }
+  }
+
   document.getElementById('pdCat').textContent = p.category;
   document.getElementById('pdTitle').textContent = p.title;
   document.getElementById('pdPlace').textContent = p.place;

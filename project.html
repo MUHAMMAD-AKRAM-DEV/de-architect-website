@@ -54,14 +54,18 @@
 
 
 <main id="pdMain" hidden>
-  <section class="pd-head">
-    <a class="pd-back" href="projects.html">
-      <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 7H2M9 1L2 7l7 6"/></svg>
-      All projects
-    </a>
-    <span class="pd-cat" id="pdCat"></span>
-    <h1 class="display" id="pdTitle"></h1>
-    <p class="pd-meta"><span id="pdPlace"></span><i>·</i><span id="pdYear"></span></p>
+  <section class="pd-head" id="pdHead">
+    <span class="pd-cover" id="pdCover" aria-hidden="true"></span>
+    <div class="pd-headin">
+      <a class="pd-back" href="projects.html">
+        <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 7H2M9 1L2 7l7 6"/></svg>
+        All projects
+      </a>
+      <span class="pd-cat" id="pdCat"></span>
+      <h1 class="display"><span id="pdTitle"></span></h1>
+      <p class="pd-meta"><span id="pdPlace"></span><i>·</i><span id="pdYear"></span></p>
+    </div>
+    <span class="pd-scroll" aria-hidden="true">Scroll<i></i></span>
   </section>
 
   <!-- virtual visit, only rendered for projects that have a model -->

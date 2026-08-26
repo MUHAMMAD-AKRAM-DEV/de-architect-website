@@ -24,12 +24,12 @@
      a tall pair, then a full-width feature — so the eye never settles into a
      row-by-row scan the way it does with equal cards. */
   const LAYOUT = [
-    { span: 7, ar: '16/10' },
-    { span: 5, ar: '4/3' },
-    { span: 5, ar: '4/3' },
-    { span: 7, ar: '16/10' },
-    { span: 6, ar: '3/2' },
-    { span: 6, ar: '3/2' }
+    { span: 7, ar: '4/3' },
+    { span: 5, ar: '3/4' },
+    { span: 5, ar: '3/4' },
+    { span: 7, ar: '4/3' },
+    { span: 6, ar: '1/1' },
+    { span: 6, ar: '1/1' }
   ];
 
   /* Every card carries its category colour on the top rule, the meta dot and
@@ -51,15 +51,17 @@
     return `
     <article class="ptile" data-cat="${p.category}" style="--span:${L.span};--ar:${L.ar};--accent:${accent}">
       <a class="ptile-card" href="project.html?p=${encodeURIComponent(p.slug)}" data-cta="${p.tour ? 'Take the tour' : 'View project'}">
-        <span class="ptile-media">
+        <span class="ptile-bg">
           <img src="${p.cover}" alt="${p.title}" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async">
-          <span class="ptile-num">${String(i + 1).padStart(2, '0')}</span>
-          ${p.tour ? `<span class="ptile-tour">${TOUR_ICO}Virtual tour</span>` : ''}
         </span>
-        <span class="ptile-info">
+        <span class="ptile-veil"></span>
+        <span class="ptile-num">${String(i + 1).padStart(2, '0')}</span>
+        ${p.tour ? `<span class="ptile-tour">${TOUR_ICO}Virtual tour</span>` : ''}
+        <span class="ptile-panel">
           <span class="ptile-cat">${p.category}</span>
           <h2 class="ptile-name">${p.title}</h2>
           <span class="ptile-place">${p.place}</span>
+          <span class="ptile-blurb">${p.blurb}</span>
           <span class="ptile-foot">
             <span class="ptile-cta">${p.tour ? 'Take the tour' : 'View project'} ${ARROW}</span>
             <span class="ptile-year">${p.year}</span>
@@ -148,7 +150,7 @@
      without ever exposing an edge. One rAF for the whole page, and only for
      tiles currently on screen. */
   if (!reduce) {
-    const imgs = tiles.map(t => t.querySelector('img'));
+    const imgs = tiles.map(t => t.querySelector('.ptile-bg img'));
     let ticking = false;
     const draw = () => {
       ticking = false;
