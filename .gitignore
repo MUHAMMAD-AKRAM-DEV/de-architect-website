@@ -4,3 +4,9 @@ node_modules/
 # build output — regenerate, do not commit
 public_html/
 de-architect-hostinger.zip
+
+# 3D source models: 41MB of uncompressed GLB. The web-ready versions in
+# assets/3d/web/ are what ship (2.8MB). Regenerate them with:
+#   node tools/glb-textures.mjs <in.glb> <out.glb> 1024 86
+#   npx @gltf-transform/cli prune|dedup|draco <in> <out>
+assets/3d/src/
