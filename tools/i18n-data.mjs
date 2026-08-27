@@ -16,6 +16,11 @@ new Function('window', src)(global.window);
 const out = [];
 const push = v => { if (typeof v === 'string' && /[a-z]/i.test(v) && v.trim().length > 1) out.push(v.trim()); };
 
+// the assistant's own wording — everything it says that is not a quote of the
+// site's copy
+new Function('window', fs.readFileSync('js/chat-copy.js', 'utf8'))(global.window);
+Object.values(global.window.DE_CHAT_COPY || {}).forEach(push);
+
 for (const p of global.window.DE_PROJECTS || []) {
   push(p.title); push(p.category); push(p.place); push(p.blurb);
   (p.body || []).forEach(push);

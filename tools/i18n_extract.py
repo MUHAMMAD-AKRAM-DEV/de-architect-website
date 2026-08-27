@@ -329,9 +329,9 @@ def main():
             if key not in dictionary:
                 dictionary[key] = text
                 added += 1
-        print('  %-15s %3d keys from project data' % ('projects-data.js', added))
+        print('  %-15s %3d keys from the JS sources' % ('projects-data.js', added))
     except Exception as exc:                       # node missing, or data moved
-        print('  projects-data.js  skipped (%s)' % exc)
+        print('  js sources       skipped (%s)' % exc)
 
     print('-' * 46)
     print('  %d stamps, %d unique strings' % (total, len(dictionary)))

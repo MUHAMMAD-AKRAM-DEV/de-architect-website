@@ -7423,11 +7423,12 @@ a.fc-item:hover b {
   text-align: right;
 }
 
-/* the vertical tab rides the left edge instead of the right */
+/* the vertical tab lives on the left edge, so in RTL it moves to the right */
 .is-rtl .side-tab {
-  right: auto;
-  left: 0;
-  transform: rotate(180deg);
+  left: auto;
+  right: 0;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 6px -6px 20px rgba(0, 0, 0, .18);
 }
 
 /* the drawer opens from the left, so its shadow and rounding follow */
@@ -7559,5 +7560,470 @@ a.fc-item:hover b {
   .lang-btn {
     height: 40px;
     padding: 0 11px 0 9px;
+  }
+}
+
+/* ============================================================================
+   Floating buttons and the studio assistant
+   ----------------------------------------------------------------------------
+   The vertical Projects tab owns the left edge, so these stack in the opposite
+   corner — and swap sides in Arabic and Urdu along with it.
+   ========================================================================== */
+.fab-rail {
+  position: fixed;
+  right: clamp(14px, 2.4vw, 26px);
+  bottom: clamp(14px, 2.4vw, 26px);
+  z-index: 1035;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  align-items: center;
+}
+
+.is-rtl .fab-rail {
+  right: auto;
+  left: clamp(14px, 2.4vw, 26px);
+}
+
+.fab {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(20, 6, 14, .22), 0 16px 34px rgba(20, 6, 14, .24);
+  transition: transform .3s cubic-bezier(.2, .8, .25, 1), box-shadow .3s, background .25s;
+}
+
+.fab:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(20, 6, 14, .26), 0 22px 46px rgba(20, 6, 14, .3);
+}
+
+.fab:focus-visible {
+  outline: 3px solid var(--pink);
+  outline-offset: 3px;
+}
+
+.fab-wa {
+  background: #25d366;
+}
+
+.fab-wa:hover {
+  background: #1eb356;
+  color: #fff;
+}
+
+.fab-chat {
+  background: var(--crimson);
+}
+
+.fab-chat:hover {
+  background: var(--crimson-deep);
+}
+
+/* the launcher swaps its own icon rather than being replaced */
+.fab-chat .i-close,
+.fab-chat.is-open .i-open {
+  display: none;
+}
+
+.fab-chat.is-open .i-close {
+  display: block;
+}
+
+/* ---- back to top ----
+   Hidden until the bottom of the page is in reach, so it never offers a
+   shortcut back up while the top is still on screen. */
+.fab-top {
+  background: var(--plum);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(.85);
+  transition: opacity .3s, transform .35s cubic-bezier(.2, .8, .25, 1), visibility .3s;
+}
+
+.fab-top.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.fab-top:hover {
+  background: var(--wine);
+}
+
+/* The panel is anchored in the same corner and is wider than the rail, so with
+   the chat open the rail sits underneath it and WhatsApp becomes unreachable.
+   Rather than push the panel up past three buttons' worth of rail, the rail
+   steps aside — the panel carries its own close button in the header. */
+body.chat-open .fab-rail {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s, visibility .2s;
+}
+
+
+/* ============================================================================
+   The assistant
+   ========================================================================== */
+.chat {
+  position: fixed;
+  right: clamp(14px, 2.4vw, 26px);
+  bottom: clamp(14px, 2.4vw, 26px);
+  z-index: 1036;
+  width: min(380px, calc(100vw - 28px));
+  max-height: min(560px, calc(100vh - 150px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--paper);
+  border: 1px solid rgba(62, 14, 44, .12);
+  box-shadow: 0 10px 26px rgba(20, 6, 14, .2), 0 34px 70px rgba(20, 6, 14, .3);
+  animation: chatIn .28s cubic-bezier(.2, .8, .25, 1);
+}
+
+.is-rtl .chat {
+  right: auto;
+  left: clamp(14px, 2.4vw, 26px);
+}
+
+.chat[hidden] {
+  display: none;
+}
+
+@keyframes chatIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.97);
+  }
+}
+
+/* ---- header ---- */
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 16px;
+  background: var(--plum);
+  color: #fff;
+  flex: 0 0 auto;
+}
+
+/* the green dot is the one piece of theatre here — it says "answering now",
+   which is true: the local answers are instant */
+.chat-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #35d07a;
+  flex: 0 0 9px;
+  box-shadow: 0 0 0 0 rgba(53, 208, 122, .6);
+  animation: chatPulse 2.4s infinite;
+}
+
+@keyframes chatPulse {
+  70% {
+    box-shadow: 0 0 0 8px rgba(53, 208, 122, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(53, 208, 122, 0);
+  }
+}
+
+.chat-id {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.chat-id b {
+  display: block;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .92rem;
+  line-height: 1.2;
+}
+
+.chat-id small {
+  display: block;
+  font-size: .66rem;
+  color: rgba(255, 255, 255, .62);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.chat-x {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.chat-x:hover {
+  background: rgba(255, 255, 255, .22);
+}
+
+/* ---- transcript ---- */
+.chat-log {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  scroll-behavior: smooth;
+}
+
+.chat-msg {
+  max-width: 86%;
+  padding: 11px 14px;
+  border-radius: 15px;
+  font-size: .88rem;
+  line-height: 1.62;
+  word-wrap: break-word;
+}
+
+.chat-msg.bot {
+  align-self: flex-start;
+  background: #fff;
+  color: #4a2c3a;
+  border: 1px solid rgba(62, 14, 44, .09);
+  border-bottom-left-radius: 5px;
+}
+
+.chat-msg.me {
+  align-self: flex-end;
+  background: var(--crimson);
+  color: #fff;
+  border-bottom-right-radius: 5px;
+}
+
+.is-rtl .chat-msg.bot {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 5px;
+}
+
+.is-rtl .chat-msg.me {
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 5px;
+}
+
+.chat-msg a {
+  color: var(--crimson);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.chat-msg.me a {
+  color: #fff;
+}
+
+.chat-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: var(--crimson);
+  color: #fff !important;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .56rem;
+  text-decoration: none !important;
+  transition: background .25s;
+}
+
+.chat-go:hover {
+  background: var(--crimson-deep);
+}
+
+.is-rtl .chat-go svg {
+  transform: scaleX(-1);
+}
+
+/* ---- typing ---- */
+.chat-typing {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 14px;
+}
+
+.chat-typing i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(62, 14, 44, .38);
+  animation: chatBlink 1.3s infinite;
+}
+
+.chat-typing i:nth-child(2) {
+  animation-delay: .18s;
+}
+
+.chat-typing i:nth-child(3) {
+  animation-delay: .36s;
+}
+
+@keyframes chatBlink {
+
+  0%,
+  60%,
+  100% {
+    opacity: .3;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* ---- quick replies ---- */
+.chat-chips {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 7px;
+  padding: 0 14px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chat-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-chips button {
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(62, 14, 44, .16);
+  background: #fff;
+  color: #6a4a56;
+  font-size: .74rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+
+.chat-chips button:hover {
+  background: var(--plum);
+  border-color: var(--plum);
+  color: #fff;
+}
+
+/* ---- the box ---- */
+.chat-form {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid rgba(62, 14, 44, .1);
+  background: var(--paper-2);
+}
+
+.chat-form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 12px 15px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(62, 14, 44, .16);
+  background: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: .87rem;
+  color: var(--ink);
+}
+
+.chat-form input:focus {
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 3px rgba(194, 24, 63, .13);
+}
+
+.chat-form button {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--crimson);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .25s;
+}
+
+.chat-form button:hover {
+  background: var(--crimson-deep);
+}
+
+.is-rtl .chat-form button svg {
+  transform: scaleX(-1);
+}
+
+/* ---- small screens ----
+   The panel takes the width but never the whole height: leaving the page
+   visible behind it keeps the conversation attached to what you were reading. */
+@media (max-width: 560px) {
+  .chat {
+    right: 8px;
+    left: 8px;
+    width: auto;
+    bottom: 8px;
+    max-height: min(74vh, calc(100vh - 90px));
+  }
+
+  .is-rtl .chat {
+    right: 8px;
+    left: 8px;
+  }
+
+  .fab {
+    width: 50px;
+    height: 50px;
+  }
+
+  .fab-rail {
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .chat,
+  .chat-dot,
+  .chat-typing i {
+    animation: none;
+  }
+
+  .fab,
+  .fab-top {
+    transition: opacity .2s, visibility .2s;
+  }
+
+  .fab:hover {
+    transform: none;
+  }
+
+  .chat-log {
+    scroll-behavior: auto;
   }
 }
