@@ -46,6 +46,14 @@ CONTAINERS = {'div', 'section', 'main', 'nav', 'aside', 'header', 'footer',
               'table', 'tbody', 'thead', 'tr', 'body', 'html', 'head',
               'picture', 'video', 'select', 'details', 'menu'}
 
+# A translation unit is written back with innerHTML, which destroys and
+# rebuilds everything inside it. That must never swallow a form control, or
+# switching language halfway through the contact form would wipe what the
+# visitor had typed. A label holding an input is therefore never a unit — the
+# walk steps past it and translates the caption, the options and the
+# placeholder separately.
+FORM_CTRL = {'input', 'textarea', 'select', 'option', 'button', 'optgroup'}
+
 
 def translatable(text):
     """Real prose, not a number, a bullet or a stray symbol."""
@@ -189,7 +197,8 @@ def collect(node, src, out):
     if node.tag in OPAQUE:
         return
 
-    blocked = any(k.tag not in INLINE and owns_text(k) for k in node.kids)
+    blocked = any((k.tag not in INLINE and owns_text(k)) or k.tag in FORM_CTRL
+                  for k in node.kids)
     claimable = (node.open_gt is not None and node.close_lt is not None
                  and node.tag not in CONTAINERS and owns_text(node) and not blocked)
 
@@ -200,7 +209,12 @@ def collect(node, src, out):
             # A button that is just a word next to an icon stays text mode, so
             # the SVG never lands in the dictionary — the runtime swaps the
             # text nodes and leaves the icon where it is.
-            inline_text = any(k.tag in INLINE and owns_text(k) for k in node.kids)
+            # Any inline child at all forces html mode, even one holding no
+            # translatable text of its own. A phone number is not translatable,
+            # but "call the studio on <a>+1 …</a>." still has to keep the link
+            # between the words and the full stop after it — text mode would
+            # move the full stop to the wrong side.
+            inline_text = any(k.tag in INLINE for k in node.kids)
             if inline_text:
                 # Icons become {{0}}, {{1}}… so no SVG path data reaches a
                 # translator, and so a right-to-left language can move the
@@ -211,11 +225,24 @@ def collect(node, src, out):
                     n[0] += 1
                     return '{{%d}}' % (n[0] - 1)
 
-                value = re.sub(r'<svg\b.*?</svg>', token, inner.strip(),
-                               flags=re.S | re.I)
+                value = re.sub(r'<svg\b.*?</svg>|<img\b[^>]*>', token,
+                               inner.strip(), flags=re.S | re.I)
                 out.append((node, 'html', re.sub(r'\s+', ' ', value).strip()))
             else:
-                own = re.sub(r'<svg\b.*?</svg>', ' ', inner, flags=re.S | re.I)
+                # Only this element's OWN text. Sweeping up a child's text too
+                # would double it at runtime: the swap rewrites the text nodes
+                # but leaves the child alone, so "About the project <i>*</i>"
+                # would come back as "About the project * *".
+                own = inner
+                for kid in sorted(node.kids, key=lambda k: -k.open_lt):
+                    if kid.close_lt is not None:
+                        end = src.find('>', kid.close_lt) + 1
+                    else:
+                        end = kid.open_gt + 1
+                    a = kid.open_lt - (node.open_gt + 1)
+                    b = end - (node.open_gt + 1)
+                    if 0 <= a < b <= len(own):
+                        own = own[:a] + ' ' + own[b:]
                 own = re.sub(r'<[^>]+>', ' ', own)
                 out.append((node, 'text', re.sub(r'\s+', ' ', own).strip()))
             return                      # claimed — its children are inside it
@@ -224,8 +251,16 @@ def collect(node, src, out):
         collect(kid, src, out)
 
 
+STAMP = re.compile(r' data-i18n(?:-html|-attr-[a-z-]+)?="[^"]*"')
+
+
 def process(path, dictionary, dry):
     src = io.open(path, encoding='utf-8').read()
+    # Every run starts from clean markup. Skipping elements that already carry
+    # a stamp would mean a change to the grouping rules could never take
+    # effect, and a second run would quietly emit a dictionary holding only
+    # whatever happened to be new.
+    src = STAMP.sub('', src)
     w = Walker(src)
     w.feed(src)
     w.close()
@@ -280,6 +315,23 @@ def main():
         n = process(page, dictionary, dry)
         total += n
         print('  %-15s %3d keys stamped' % (page, n))
+
+    # The project copy is rendered from JS after the page is parsed, so it
+    # never carries an attribute. Fold it in under the same scheme.
+    try:
+        import subprocess
+        raw = subprocess.run(['node', 'tools/i18n-data.mjs'],
+                             capture_output=True, check=True).stdout.decode('utf-8')
+        data_strings = json.loads(raw)
+        added = 0
+        for text in data_strings:
+            key = make_key(text)
+            if key not in dictionary:
+                dictionary[key] = text
+                added += 1
+        print('  %-15s %3d keys from project data' % ('projects-data.js', added))
+    except Exception as exc:                       # node missing, or data moved
+        print('  projects-data.js  skipped (%s)' % exc)
 
     print('-' * 46)
     print('  %d stamps, %d unique strings' % (total, len(dictionary)))

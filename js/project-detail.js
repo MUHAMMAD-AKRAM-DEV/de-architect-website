@@ -10,6 +10,11 @@
    ========================================================================== */
 const CDN = 'https://cdn.jsdelivr.net/npm/three@0.185.1/';
 
+// Declared up here on purpose: the module runs render() a few lines below, and
+// a const declared further down would still be in its dead zone by then.
+const T = s => (window.DELang ? window.DELang.t(s) : s);
+let parallaxOn = false;
+
 const slug = new URLSearchParams(location.search).get('p');
 const all = window.DE_PROJECTS || [];
 const idx = all.findIndex(p => p.slug === slug);
@@ -24,10 +29,14 @@ if (!project) {
   main.hidden = false;
   render(project);
   if (project.tour) startTour(project.tour);
+
+  // The previous/next titles are written in by JavaScript into a <b> that the
+  // language swap rewrites, so the swap would blank them. Re-render after it.
+  document.addEventListener('de:lang', () => render(project));
 }
 
 function render(p) {
-  document.title = `${p.title} — DE Architects`;
+  document.title = `${T(p.title)} — DE Architects`;
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.setAttribute('content', `${p.title}, ${p.place}. ${p.blurb}`);
 
@@ -37,7 +46,10 @@ function render(p) {
     cover.style.backgroundImage = `url("${p.cover}")`;
     const head = document.getElementById('pdHead');
     requestAnimationFrame(() => head.classList.add('is-in'));
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // render() runs again on a language change, so the scroll listener is
+    // attached once rather than once per language the visitor tries
+    if (!parallaxOn && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      parallaxOn = true;
       let tick = false;
       const drift = () => {
         tick = false;
@@ -49,17 +61,17 @@ function render(p) {
     }
   }
 
-  document.getElementById('pdCat').textContent = p.category;
-  document.getElementById('pdTitle').textContent = p.title;
-  document.getElementById('pdPlace').textContent = p.place;
+  document.getElementById('pdCat').textContent = T(p.category);
+  document.getElementById('pdTitle').textContent = T(p.title);
+  document.getElementById('pdPlace').textContent = T(p.place);
   document.getElementById('pdYear').textContent = p.year;
 
   document.getElementById('pdCopy').innerHTML =
-    `<p class="pd-lede">${p.blurb}</p>` + p.body.map(t => `<p>${t}</p>`).join('');
+    `<p class="pd-lede">${T(p.blurb)}</p>` + p.body.map(t => `<p>${T(t)}</p>`).join('');
 
   document.getElementById('pdFacts').innerHTML =
     '<h2>Project facts</h2><dl>' +
-    p.facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('') +
+    p.facts.map(([k, v]) => `<dt>${T(k)}</dt><dd>${T(v)}</dd>`).join('') +
     '</dl>' + (p.tour ? '<span class="pd-hastour">Includes a 3D virtual visit</span>' : '');
 
   document.getElementById('pdGallery').innerHTML =
@@ -75,9 +87,9 @@ function render(p) {
   const next = all[(idx + 1) % all.length];
   const pv = document.getElementById('pdPrev'), nx = document.getElementById('pdNext');
   pv.href = `project.html?p=${encodeURIComponent(prev.slug)}`;
-  pv.querySelector('b').textContent = prev.title;
+  pv.querySelector('b').textContent = T(prev.title);
   nx.href = `project.html?p=${encodeURIComponent(next.slug)}`;
-  nx.querySelector('b').textContent = next.title;
+  nx.querySelector('b').textContent = T(next.title);
 }
 
 /* ---------------------------------------------------------------------------
@@ -99,7 +111,7 @@ function setupFilm(p) {
   video.poster = p.cover;
   video.setAttribute('aria-label', `${p.title} — project film`);
   const cap = document.getElementById('pdFilmCap');
-  if (cap) cap.textContent = p.video.caption || '';
+  if (cap) cap.textContent = T(p.video.caption || '');
 
   video.addEventListener('loadedmetadata', () => { section.hidden = false; }, { once: true });
   video.addEventListener('error', () => {

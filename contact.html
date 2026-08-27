@@ -58,7 +58,7 @@
   <section class="ct-hero" id="ctHero">
     <span class="ct-cover" aria-hidden="true"></span>
     <div class="ct-hero-in">
-      <span class="pg-eyebrow" data-i18n="start_a_project.f2cc"><span class="tick"></span>Start a project</span>
+      <span class="pg-eyebrow" data-i18n-html="span_class_tick_span_start_a_project.b38e"><span class="tick"></span>Start a project</span>
       <h1 class="ct-title display" data-i18n-html="span_class_w_i_tell_us_what_you_i_span.9865">
         <span class="w"><i>Tell us what you</i></span>
         <span class="w"><i class="out">want to build.</i></span>
@@ -77,33 +77,33 @@
 
       <div class="ct-form-wrap r">
         <span class="ab-kicker" data-i18n="project_enquiry.705f">Project enquiry</span>
-        <h2 class="display" data-i18n="a_few_questions_and_we_rsquo_ll_come_b.3f8b">A few questions,<br>and we&rsquo;ll come back to you.</h2>
+        <h2 class="display" data-i18n-html="a_few_questions_br_and_we_rsquo_ll_com.36fb">A few questions,<br>and we&rsquo;ll come back to you.</h2>
         <p class="ct-form-note" data-i18n="everything_except_your_name_email_and.cb61">Everything except your name, email and a line about the project is optional &mdash; but the more you tell us, the more useful our first reply will be.</p>
 
         <!-- To make this form actually send, put your mail service URL on data-endpoint
                (Formspree, Basin, your own handler). Empty = validate and confirm only. -->
           <form class="ct-form" id="ctForm" data-endpoint="" novalidate>
           <div class="ct-row">
-            <label class="ct-field" data-i18n-html="span_class_ct_label_your_name_i_i_span.07d9">
-              <span class="ct-label">Your name <i>*</i></span>
+            <label class="ct-field">
+              <span class="ct-label" data-i18n-html="your_name_i_i.a600">Your name <i>*</i></span>
               <input type="text" name="name" autocomplete="name" required>
               <span class="ct-err" data-err></span>
             </label>
-            <label class="ct-field" data-i18n-html="span_class_ct_label_email_i_i_span_inp.b4cb">
-              <span class="ct-label">Email <i>*</i></span>
+            <label class="ct-field">
+              <span class="ct-label" data-i18n-html="email_i_i.c780">Email <i>*</i></span>
               <input type="email" name="email" autocomplete="email" required>
               <span class="ct-err" data-err></span>
             </label>
           </div>
 
           <div class="ct-row">
-            <label class="ct-field" data-i18n-html="span_class_ct_label_phone_span_input_t.1b18">
-              <span class="ct-label">Phone</span>
+            <label class="ct-field">
+              <span class="ct-label" data-i18n="phone.7706">Phone</span>
               <input type="tel" name="phone" autocomplete="tel">
               <span class="ct-err" data-err></span>
             </label>
-            <label class="ct-field" data-i18n-html="span_class_ct_label_where_is_the_proje.5d9d">
-              <span class="ct-label">Where is the project?</span>
+            <label class="ct-field">
+              <span class="ct-label" data-i18n="where_is_the_project.396e">Where is the project?</span>
               <input type="text" name="place" placeholder="City or postcode" data-i18n-attr-placeholder="city_or_postcode.b995">
               <span class="ct-err" data-err></span>
             </label>
@@ -111,50 +111,50 @@
 
           <fieldset class="ct-chips">
             <legend class="ct-label" data-i18n="what_do_you_need.2ef8">What do you need?</legend>
-            <label data-i18n-html="input_type_checkbox_name_service_value.232f"><input type="checkbox" name="service" value="Residential Architecture"><span>Residential</span></label>
-            <label data-i18n-html="input_type_checkbox_name_service_value.48ae"><input type="checkbox" name="service" value="Interior Design"><span>Interiors</span></label>
-            <label data-i18n-html="input_type_checkbox_name_service_value.abd6"><input type="checkbox" name="service" value="Commercial &amp; Workspaces"><span>Commercial</span></label>
-            <label data-i18n-html="input_type_checkbox_name_service_value.f942"><input type="checkbox" name="service" value="Renovation &amp; Restoration"><span>Renovation</span></label>
-            <label data-i18n-html="input_type_checkbox_name_service_value.0598"><input type="checkbox" name="service" value="Landscape &amp; Exteriors"><span>Landscape</span></label>
-            <label data-i18n-html="input_type_checkbox_name_service_value.7baa"><input type="checkbox" name="service" value="3D Visualisation"><span>3D visuals</span></label>
-            <label data-i18n-html="input_type_checkbox_name_service_value.4ed8"><input type="checkbox" name="service" value="Not sure yet"><span>Not sure yet</span></label>
+            <label><input type="checkbox" name="service" value="Residential Architecture"><span data-i18n="residential.04bb">Residential</span></label>
+            <label><input type="checkbox" name="service" value="Interior Design"><span data-i18n="interiors.2f89">Interiors</span></label>
+            <label><input type="checkbox" name="service" value="Commercial &amp; Workspaces"><span data-i18n="commercial.b485">Commercial</span></label>
+            <label><input type="checkbox" name="service" value="Renovation &amp; Restoration"><span data-i18n="renovation.16f2">Renovation</span></label>
+            <label><input type="checkbox" name="service" value="Landscape &amp; Exteriors"><span data-i18n="landscape.7dc4">Landscape</span></label>
+            <label><input type="checkbox" name="service" value="3D Visualisation"><span data-i18n="3d_visuals.3049">3D visuals</span></label>
+            <label><input type="checkbox" name="service" value="Not sure yet"><span data-i18n="not_sure_yet.1cef">Not sure yet</span></label>
           </fieldset>
 
           <div class="ct-row">
-            <label class="ct-field" data-i18n-html="span_class_ct_label_rough_budget_span.df9d">
-              <span class="ct-label">Rough budget</span>
+            <label class="ct-field">
+              <span class="ct-label" data-i18n="rough_budget.f1f1">Rough budget</span>
               <select name="budget">
-                <option value="">Prefer not to say</option>
-                <option>Under 25k</option>
-                <option>25k &ndash; 75k</option>
-                <option>75k &ndash; 200k</option>
-                <option>200k &ndash; 500k</option>
-                <option>Over 500k</option>
+                <option value="" data-i18n="prefer_not_to_say.0e4b">Prefer not to say</option>
+                <option value="Under 25k" data-i18n="under_25k.413b">Under 25k</option>
+                <option value="25k - 75k" data-i18n="25k_ndash_75k.293b">25k &ndash; 75k</option>
+                <option value="75k - 200k" data-i18n="75k_ndash_200k.0ea2">75k &ndash; 200k</option>
+                <option value="200k - 500k" data-i18n="200k_ndash_500k.0bbb">200k &ndash; 500k</option>
+                <option value="Over 500k" data-i18n="over_500k.3ae9">Over 500k</option>
               </select>
               <span class="ct-err" data-err></span>
             </label>
-            <label class="ct-field" data-i18n-html="span_class_ct_label_when_would_you_sta.2269">
-              <span class="ct-label">When would you start?</span>
+            <label class="ct-field">
+              <span class="ct-label" data-i18n="when_would_you_start.0d39">When would you start?</span>
               <select name="timing">
-                <option value="">Not decided</option>
-                <option>As soon as possible</option>
-                <option>In the next 3 months</option>
-                <option>In 6 to 12 months</option>
-                <option>Just exploring</option>
+                <option value="" data-i18n="not_decided.f504">Not decided</option>
+                <option value="As soon as possible" data-i18n="as_soon_as_possible.c31c">As soon as possible</option>
+                <option value="In the next 3 months" data-i18n="in_the_next_3_months.3d05">In the next 3 months</option>
+                <option value="In 6 to 12 months" data-i18n="in_6_to_12_months.65a0">In 6 to 12 months</option>
+                <option value="Just exploring" data-i18n="just_exploring.75e2">Just exploring</option>
               </select>
               <span class="ct-err" data-err></span>
             </label>
           </div>
 
-          <label class="ct-field" data-i18n-html="span_class_ct_label_about_the_project.14ce">
-            <span class="ct-label">About the project <i>*</i></span>
+          <label class="ct-field">
+            <span class="ct-label" data-i18n-html="about_the_project_i_i.46ea">About the project <i>*</i></span>
             <textarea name="message" rows="6" placeholder="What is there now, what you want instead, and anything that is worrying you about it." data-i18n-attr-placeholder="what_is_there_now_what_you_want_instea.989a"></textarea>
             <span class="ct-err" data-err></span>
           </label>
 
-          <label class="ct-consent" data-i18n-html="input_type_checkbox_name_consent_requi.9939">
+          <label class="ct-consent">
             <input type="checkbox" name="consent" required>
-            <span>I&rsquo;m happy for DE Architects to hold these details so they can reply to this enquiry.</span>
+            <span data-i18n="i_rsquo_m_happy_for_de_architects_to_h.4a31">I&rsquo;m happy for DE Architects to hold these details so they can reply to this enquiry.</span>
             <span class="ct-err" data-err></span>
           </label>
 
@@ -171,7 +171,7 @@
             <svg width="34" height="26" viewBox="0 0 34 26" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14l9 9L31 4"/></svg>
           </span>
           <h3 data-i18n="thank_you_mdash_that_rsquo_s_with_us.583c">Thank you &mdash; that&rsquo;s with us.</h3>
-          <p id="ctSentBody" data-i18n="we_read_every_enquiry_ourselves_and_yo.f49b">We read every enquiry ourselves, and you&rsquo;ll hear back within two working days. If it is urgent, call the studio on <a href="tel:+10000000000">+1 (000) 000-0000</a>.</p>
+          <p id="ctSentBody" data-i18n-html="we_read_every_enquiry_ourselves_and_yo.e45e">We read every enquiry ourselves, and you&rsquo;ll hear back within two working days. If it is urgent, call the studio on <a href="tel:+10000000000">+1 (000) 000-0000</a>.</p>
           <button type="button" class="pill ghost" id="ctAgain" data-i18n="send_another.00e1">Send another</button>
         </div>
       </div>
@@ -220,7 +220,7 @@
     <div class="ct-next-in">
       <div class="ct-next-head r">
         <span class="ab-kicker light" data-i18n="what_happens_next.51ec">What happens next</span>
-        <h2 class="display" data-i18n="three_steps_about_two_weeks.52ad">Three steps,<br>about two weeks.</h2>
+        <h2 class="display" data-i18n-html="three_steps_br_about_two_weeks.567a">Three steps,<br>about two weeks.</h2>
       </div>
       <ol class="ct-steps">
         <li class="r"><span class="ct-step-n">01</span><h3 data-i18n="we_read_it_and_reply.6a5f">We read it and reply</h3><p data-i18n="a_real_answer_from_one_of_us_within_tw.7022">A real answer from one of us within two working days &mdash; not an auto-response. If we are the wrong studio for the job we will say so, and usually suggest someone better suited.</p></li>
@@ -235,7 +235,7 @@
     <div class="ct-places-in">
       <div class="ct-places-head r">
         <span class="ab-kicker" data-i18n="where_we_are.33b0">Where we are</span>
-        <h2 class="display" data-i18n="two_studios_one_practice.1cd5">Two studios,<br>one practice.</h2>
+        <h2 class="display" data-i18n-html="two_studios_br_one_practice.f252">Two studios,<br>one practice.</h2>
       </div>
       <div class="ct-place-grid">
         <article class="ct-place r">
@@ -245,7 +245,7 @@
           </div>
           <div class="ct-place-body">
             <h3 data-i18n="design_office.e263">Design Office</h3>
-            <p class="ct-place-addr" data-i18n="24_foundry_lane_design_district.a562">24 Foundry Lane<br>Design District</p>
+            <p class="ct-place-addr" data-i18n-html="24_foundry_lane_br_design_district.c8ca">24 Foundry Lane<br>Design District</p>
             <p data-i18n="the_drafting_hall_the_model_shop_and_t.fb1f">The drafting hall, the model shop and the materials library. Client meetings happen here, at the long table.</p>
             <div class="ct-place-links">
               <a href="tel:+10000000000" data-i18n="call.291a">Call</a>
@@ -261,7 +261,7 @@
           </div>
           <div class="ct-place-body">
             <h3 data-i18n="site_studio.53d4">Site Studio</h3>
-            <p class="ct-place-addr" data-i18n="9_meridian_court_riverside.b97e">9 Meridian Court<br>Riverside</p>
+            <p class="ct-place-addr" data-i18n-html="9_meridian_court_br_riverside.c6fc">9 Meridian Court<br>Riverside</p>
             <p data-i18n="closer_to_most_of_our_live_constructio.fd39">Closer to most of our live construction work. Handy if your project is out that way and you want to meet on the way to site.</p>
             <div class="ct-place-links">
               <a href="tel:+10000000000" data-i18n="call.291a">Call</a>
@@ -281,19 +281,19 @@
       <h2 class="display" data-i18n="quick_answers.2496">Quick answers.</h2>
       <div class="sv-qs">
         <details class="sv-q r" open>
-          <summary data-i18n="do_i_need_to_know_my_budget.c005">Do I need to know my budget?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <summary data-i18n-html="do_i_need_to_know_my_budget_span_class.5264">Do I need to know my budget?<span class="sv-q-i" aria-hidden="true"></span></summary>
           <p data-i18n="no_but_a_rough_range_helps_enormously.e24c">No, but a rough range helps enormously. It is the difference between us sketching something you can afford and something you cannot, and nobody enjoys the second conversation.</p>
         </details>
         <details class="sv-q r d1">
-          <summary data-i18n="is_the_first_meeting_really_free.4690">Is the first meeting really free?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <summary data-i18n-html="is_the_first_meeting_really_free_span.1e12">Is the first meeting really free?<span class="sv-q-i" aria-hidden="true"></span></summary>
           <p data-i18n="yes_mdash_one_meeting_on_site_or_at_th.cd60">Yes &mdash; one meeting, on site or at the studio, with no charge and nothing to sign. If you then want a written feasibility note before committing to a full project, that is a small fixed fee we deduct from the design fee later.</p>
         </details>
         <details class="sv-q r d2">
-          <summary data-i18n="what_should_i_bring.0e71">What should I bring?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <summary data-i18n-html="what_should_i_bring_span_class_sv_q_i.7ebf">What should I bring?<span class="sv-q-i" aria-hidden="true"></span></summary>
           <p data-i18n="photographs_any_drawings_or_deeds_you.f0f4">Photographs, any drawings or deeds you have, and a list of what annoys you about the place today. That last one is usually the most useful document in the room.</p>
         </details>
         <details class="sv-q r">
-          <summary data-i18n="do_you_work_outside_your_city.ec31">Do you work outside your city?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <summary data-i18n-html="do_you_work_outside_your_city_span_cla.b1ff">Do you work outside your city?<span class="sv-q-i" aria-hidden="true"></span></summary>
           <p data-i18n="regularly_travel_is_charged_at_cost_an.a517">Regularly. Travel is charged at cost and agreed up front. For projects far enough away that weekly site visits are not sensible, we set up a schedule of key inspections instead and are honest about it from the start.</p>
         </details>
       </div>
@@ -382,7 +382,7 @@
 
     <!-- Logo saved locally on purpose: the Facebook CDN URL it came from is
          signed and expires. Set href when the Reego Tech site is known. -->
-    <a class="dev-by" href="#" rel="noopener" data-i18n-html="img_src_assets_img_reego_tech_jpg_alt.5002">
+    <a class="dev-by" href="#" rel="noopener" data-i18n-html="0_span_small_developed_by_small_b_reeg.a3cd">
       <img src="assets/img/reego-tech.jpg" alt="Reego Tech" onerror="this.remove()" data-i18n-attr-alt="reego_tech.164c">
       <span><small>Developed by</small><b>Reego Tech</b></span>
     </a>

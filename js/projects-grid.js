@@ -45,6 +45,10 @@
 
   const TOUR_ICO = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/></svg>';
 
+  // the project copy lives in projects-data.js, not the markup, so it has to
+  // ask for its own translation
+  const T = t => (window.DELang ? window.DELang.t(t) : t);
+
   mosaic.innerHTML = projects.map((p, i) => {
     const L = LAYOUT[i % LAYOUT.length];
     const accent = ACCENT[p.category] || 'var(--crimson)';
@@ -58,10 +62,10 @@
         <span class="ptile-num">${String(i + 1).padStart(2, '0')}</span>
         ${p.tour ? `<span class="ptile-tour">${TOUR_ICO}Virtual tour</span>` : ''}
         <span class="ptile-panel">
-          <span class="ptile-cat">${p.category}</span>
-          <h2 class="ptile-name">${p.title}</h2>
-          <span class="ptile-place">${p.place}</span>
-          <span class="ptile-blurb">${p.blurb}</span>
+          <span class="ptile-cat">${T(p.category)}</span>
+          <h2 class="ptile-name">${T(p.title)}</h2>
+          <span class="ptile-place">${T(p.place)}</span>
+          <span class="ptile-blurb">${T(p.blurb)}</span>
           <span class="ptile-foot">
             <span class="ptile-cta">${p.tour ? 'Take the tour' : 'View project'} ${ARROW}</span>
             <span class="ptile-year">${p.year}</span>
@@ -72,6 +76,23 @@
   }).join('');
 
   /* ---- filters ---- */
+  // The tiles are built from projects-data.js, so the language swap does not
+  // reach them. Update the four bits of copy in place — rebuilding the grid
+  // would throw away the reveal state and the current filter.
+  document.addEventListener('de:lang', () => {
+    mosaic.querySelectorAll('.ptile').forEach((tile, i) => {
+      const p = projects[i];
+      if (!p) return;
+      const set = (sel, v) => { const el = tile.querySelector(sel); if (el) el.textContent = v; };
+      set('.ptile-cat', T(p.category));
+      set('.ptile-name', T(p.title));
+      set('.ptile-place', T(p.place));
+      set('.ptile-blurb', T(p.blurb));
+      const img = tile.querySelector('.ptile-bg img');
+      if (img) img.alt = T(p.title);
+    });
+  });
+
   const cats = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
   rail.innerHTML = cats.map((c, i) => {
     const n = c === 'All' ? projects.length : projects.filter(p => p.category === c).length;
