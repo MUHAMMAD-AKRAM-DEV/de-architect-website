@@ -88,6 +88,20 @@
     <aside class="pd-facts" id="pdFacts"></aside>
   </section>
 
+  <!-- The project film. Deliberately starts hidden and is only revealed once
+       the file has actually loaded (see js/project-detail.js), so a project
+       whose film has not been shot yet shows nothing rather than a dead
+       player. Drop the mp4 into assets/video/ and it appears by itself. -->
+  <section class="pd-film" id="pdFilm" hidden>
+    <div class="pd-film-in">
+      <h2 class="pd-gtitle">Film</h2>
+      <div class="pd-film-stage">
+        <video id="pdFilmEl" controls preload="metadata" playsinline></video>
+      </div>
+      <p class="pd-film-cap" id="pdFilmCap"></p>
+    </div>
+  </section>
+
   <section class="pd-gallery" id="pdGallery"></section>
 
   <nav class="pd-next">

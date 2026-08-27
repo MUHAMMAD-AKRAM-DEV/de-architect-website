@@ -2618,8 +2618,8 @@ a.fc-item:hover b {
 .dev-by {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 16px 9px 10px;
+  gap: 9px;
+  padding: 7px 15px 7px 9px;
   border-radius: 999px;
   border: 1.5px solid rgba(255, 255, 255, .28);
   background: rgba(255, 255, 255, .06);
@@ -2632,8 +2632,8 @@ a.fc-item:hover b {
 }
 
 .dev-by img {
-  height: 30px;
-  width: 30px;
+  height: 26px;
+  width: 26px;
   border-radius: 8px;
   object-fit: cover;   /* the mark ships with its own gradient ground */
   display: block;
@@ -2642,7 +2642,7 @@ a.fc-item:hover b {
 .dev-by span {
   display: flex;
   flex-direction: column;
-  line-height: 1.14;
+  line-height: 1.1;
   text-align: left;
 }
 
@@ -7155,4 +7155,44 @@ a.fc-item:hover b {
   .ct-place:hover .ct-place-img img {
     scale: 1;
   }
+}
+
+/* ---- the project film ----
+   Sits between the story and the gallery. The section is hidden in the markup
+   and only unhidden by project-detail.js once the file genuinely loads, so
+   nothing here has to cope with a missing video. */
+.pd-film {
+  background: var(--paper);
+  padding: clamp(20px, 4vw, 48px) clamp(18px, 5vw, 80px) 0;
+}
+
+.pd-film-in {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.pd-film-stage {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #1a0c14;
+  box-shadow: 0 3px 8px rgba(62, 14, 44, .08), 0 26px 54px rgba(62, 14, 44, .18);
+}
+
+.pd-film-stage video {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* keeps the block a stable height before metadata arrives, so the gallery
+     below does not jump when the film reveals itself */
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #1a0c14;
+}
+
+.pd-film-cap {
+  margin: 14px 0 0;
+  color: #6a4a56;
+  font-size: .88rem;
+  line-height: 1.6;
 }

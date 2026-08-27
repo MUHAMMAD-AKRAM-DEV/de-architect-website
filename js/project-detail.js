@@ -68,6 +68,8 @@ function render(p) {
       `<figure class="pd-shot${i === 0 ? ' wide' : ''}"><img src="${src}" alt="${p.title} — view ${i + 1}" loading="lazy" decoding="async"></figure>`
     ).join('') + '</div>';
 
+  setupFilm(p);
+
   // wrap around at both ends so the pair of arrows is never a dead end
   const prev = all[(idx - 1 + all.length) % all.length];
   const next = all[(idx + 1) % all.length];
@@ -76,6 +78,36 @@ function render(p) {
   pv.querySelector('b').textContent = prev.title;
   nx.href = `project.html?p=${encodeURIComponent(next.slug)}`;
   nx.querySelector('b').textContent = next.title;
+}
+
+/* ---------------------------------------------------------------------------
+   The project film
+   ----------------------------------------------------------------------------
+   Every project names a video, but most of the files do not exist yet. Rather
+   than show a dozen dead players, the section starts hidden and only appears
+   once the browser confirms it can actually read the file. Shoot the film,
+   drop it in assets/video/ under the project's slug, and the section turns up
+   on its own with no code change.
+   ------------------------------------------------------------------------- */
+function setupFilm(p) {
+  const section = document.getElementById('pdFilm');
+  const video = document.getElementById('pdFilmEl');
+  if (!section || !video || !p.video || !p.video.file) return;
+
+  // the cover stands in until the first frame is decoded, so the block never
+  // flashes black on a slow connection
+  video.poster = p.cover;
+  video.setAttribute('aria-label', `${p.title} — project film`);
+  const cap = document.getElementById('pdFilmCap');
+  if (cap) cap.textContent = p.video.caption || '';
+
+  video.addEventListener('loadedmetadata', () => { section.hidden = false; }, { once: true });
+  video.addEventListener('error', () => {
+    console.info(`[project] no film at ${p.video.file} — the section stays hidden`);
+  }, { once: true });
+
+  // src is set last so both handlers are attached before the request starts
+  video.src = p.video.file;
 }
 
 /* ---------------------------------------------------------------------------
