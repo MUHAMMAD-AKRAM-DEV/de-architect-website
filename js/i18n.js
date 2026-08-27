@@ -78,7 +78,12 @@
     let rec = original.get(el);
     if (!rec) { rec = {}; original.set(el, rec); }
     if (!rec.icons) {
-      rec.icons = [...el.querySelectorAll('svg')].map(s => s.outerHTML);
+      // Images are tokenised alongside SVGs by tools/i18n_extract.py, so both
+      // have to be collected here or a {{n}} standing for an <img> resolves to
+      // nothing — which is how the Reego Tech logo quietly vanished from the
+      // footer in every language except English. Document order matches the
+      // order the extractor numbered them in.
+      rec.icons = [...el.querySelectorAll('svg, img')].map(s => s.outerHTML);
     }
     return rec.icons;
   }

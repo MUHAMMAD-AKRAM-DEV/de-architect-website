@@ -481,7 +481,7 @@
 
   /* --- keeping the thread across pages ------------------------------------- */
   function save() {
-    try { sessionStorage.setItem(STORE, JSON.stringify({ history, open })); } catch (e) { /* private mode */ }
+    try { sessionStorage.setItem(STORE, JSON.stringify({ history })); } catch (e) { /* private mode */ }
   }
 
   function restore() {
@@ -492,7 +492,10 @@
       history.push(m);
       bubble(m.role === 'user' ? 'me' : 'bot', escapeHtml(m.content).replace(/\n/g, '<br>'));
     });
-    if (saved.open) toggle(true);
+    // The panel deliberately does not reopen itself. Carrying the open state
+    // across pages meant that opening it once made it spring up on every page
+    // afterwards, which is the behaviour of an advert rather than an assistant.
+    // The conversation is kept; deciding to see it stays with the visitor.
   }
 
   /* --- go ------------------------------------------------------------------ */
