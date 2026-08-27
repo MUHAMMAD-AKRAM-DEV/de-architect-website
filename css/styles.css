@@ -7196,3 +7196,368 @@ a.fc-item:hover b {
   font-size: .88rem;
   line-height: 1.6;
 }
+
+/* ============================================================================
+   Languages
+   ----------------------------------------------------------------------------
+   The switcher stands where the search icon used to, and matches .icon-btn so
+   the bar keeps its rhythm — a globe plus the current code, which is the part
+   people actually scan for.
+   ========================================================================== */
+.lang-switch {
+  position: relative;
+}
+
+.lang-btn {
+  height: 44px;
+  padding: 0 13px 0 11px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, .7);
+  background: transparent;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.lang-btn:hover,
+.lang-btn[aria-expanded="true"] {
+  background: #fff;
+  color: var(--wine);
+}
+
+.lang-code {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .68rem;
+  letter-spacing: .1em;
+}
+
+/* ---- the dropdown ---- */
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  min-width: 208px;
+  padding: 7px;
+  border-radius: 15px;
+  background: #fff;
+  border: 1px solid rgba(62, 14, 44, .1);
+  box-shadow: 0 6px 16px rgba(20, 6, 14, .14), 0 26px 56px rgba(20, 6, 14, .26);
+  display: grid;
+  gap: 2px;
+  animation: langIn .22s cubic-bezier(.2, .8, .25, 1);
+}
+
+.lang-menu[hidden] {
+  display: none;
+}
+
+@keyframes langIn {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+}
+
+.lang-menu button {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 10px 13px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background .2s;
+}
+
+.lang-menu button:hover {
+  background: rgba(62, 14, 44, .06);
+}
+
+.lang-menu button.is-on {
+  background: var(--crimson);
+}
+
+.lang-native {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: .95rem;
+  color: var(--plum);
+}
+
+.lang-label {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .52rem;
+  color: #8a6a78;
+}
+
+.lang-menu button.is-on .lang-native,
+.lang-menu button.is-on .lang-label {
+  color: #fff;
+}
+
+/* the two script faces need their own size — Nastaliq in particular sits
+   small and tall next to a Latin face at the same nominal size */
+.lang-menu button[lang="ur"] .lang-native {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
+  font-size: 1rem;
+  line-height: 2;
+}
+
+.lang-menu button[lang="ar"] .lang-native {
+  font-family: 'Cairo', 'Noto Kufi Arabic', sans-serif;
+  font-size: 1.05rem;
+}
+
+
+/* ============================================================================
+   Arabic and Urdu
+   ----------------------------------------------------------------------------
+   Anton, Archivo and Inter carry no Arabic script, so every rule that names
+   one has to hand over. Rather than repeat the stack in fifty places, the
+   families are re-pointed wholesale while one of these is active — the
+   cascade does the rest.
+   ========================================================================== */
+.font-ar body,
+.font-ar .display,
+.font-ar [class*="display"] {
+  font-family: 'Cairo', 'Noto Kufi Arabic', sans-serif;
+}
+
+.font-ur body,
+.font-ur .display,
+.font-ur [class*="display"] {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Naskh Arabic', serif;
+}
+
+.font-ar *,
+.font-ur * {
+  /* Anton and Archivo are Latin-only; anything still asking for them by name
+     falls through to the script face set on <body> */
+  font-family: inherit;
+}
+
+/* Nastaliq is a sloped, deeply-stacked script. At the tracking and line
+   height the Latin display faces use, it collides with itself. */
+.font-ur .display,
+.font-ur h1,
+.font-ur h2,
+.font-ur h3 {
+  line-height: 1.9;
+  letter-spacing: normal;
+}
+
+.font-ur p,
+.font-ur li,
+.font-ur dd,
+.font-ur dt {
+  line-height: 2.3;
+}
+
+.font-ar .display,
+.font-ar h1,
+.font-ar h2,
+.font-ar h3 {
+  line-height: 1.3;
+  letter-spacing: normal;
+}
+
+.font-ar p,
+.font-ar li {
+  line-height: 2;
+}
+
+/* uppercase does nothing in Arabic script and the wide tracking only breaks
+   the joins between letters */
+.font-ar [class*="kicker"],
+.font-ar [class*="eyebrow"],
+.font-ar .pill,
+.font-ar [class*="-tag"],
+.font-ar [class*="-cat"],
+.font-ur [class*="kicker"],
+.font-ur [class*="eyebrow"],
+.font-ur .pill,
+.font-ur [class*="-tag"],
+.font-ur [class*="-cat"] {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* the outlined second line of each hero is drawn with a Latin stroke width
+   that swallows Arabic letterforms */
+.font-ar .out,
+.font-ur .out {
+  -webkit-text-stroke-width: 1px;
+}
+
+
+/* ============================================================================
+   Right to left
+   ----------------------------------------------------------------------------
+   Only the things that are actually handed — anything centred or symmetrical
+   is already correct. Logical properties would have been the cleaner answer
+   from the start, but the site is written in left/right physical ones, so
+   these mirror the handful that matter.
+   ========================================================================== */
+.is-rtl body {
+  text-align: right;
+}
+
+.is-rtl .hero-inner,
+.is-rtl .ab-hero-in,
+.is-rtl .sv-hero-in,
+.is-rtl .st-hero-in,
+.is-rtl .ct-hero-in,
+.is-rtl .pd-head-in {
+  text-align: right;
+}
+
+/* the vertical tab rides the left edge instead of the right */
+.is-rtl .side-tab {
+  right: auto;
+  left: 0;
+  transform: rotate(180deg);
+}
+
+/* the drawer opens from the left, so its shadow and rounding follow */
+.is-rtl .menu-oc.offcanvas-end {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.is-rtl .menu-oc.offcanvas-end.show {
+  transform: none;
+}
+
+.is-rtl .lang-menu {
+  right: auto;
+  left: 0;
+}
+
+/* arrows point the way the reader is going */
+.is-rtl .pill svg,
+.is-rtl .sv-go svg,
+.is-rtl .ct-card-go svg,
+.is-rtl .ptile-cta svg,
+.is-rtl .tier-link svg,
+.is-rtl .pcard-btn svg,
+.is-rtl .fc-submit svg,
+.is-rtl .ct-submit svg {
+  transform: scaleX(-1);
+}
+
+.is-rtl .pill:hover svg,
+.is-rtl .sv-go:hover svg,
+.is-rtl .ct-card.link:hover .ct-card-go svg {
+  transform: scaleX(-1) translateX(5px);
+}
+
+/* rules and ticks that hang off the start of a line */
+.is-rtl .ab-kicker::before,
+.is-rtl .sv-kicker::before {
+  order: 2;
+}
+
+.is-rtl .sv-inc li,
+.is-rtl .sv-plan ul li {
+  padding-left: 0;
+  padding-right: 27px;
+}
+
+.is-rtl .sv-inc li::before {
+  left: auto;
+  right: 4px;
+}
+
+.is-rtl .sv-plan ul li::before {
+  left: auto;
+  right: 0;
+}
+
+.is-rtl .st-clock li::before {
+  left: auto;
+  right: 0;
+}
+
+.is-rtl .sv-badge,
+.is-rtl .ptile-num,
+.is-rtl .ct-place-tag {
+  left: auto;
+  right: 15px;
+}
+
+.is-rtl .ptile-tour {
+  right: auto;
+  left: 15px;
+}
+
+.is-rtl .sv-media::after {
+  /* the accent bar is full width, nothing to mirror, but the panel edge is */
+  left: 0;
+  right: 0;
+}
+
+.is-rtl .ptile-panel,
+.is-rtl .st-shot figcaption {
+  border-top-color: var(--accent, var(--crimson));
+}
+
+.is-rtl .ct-consent .ct-err {
+  grid-column: 1;
+}
+
+.is-rtl .st-bench,
+.is-rtl .ct-place {
+  text-align: right;
+}
+
+.is-rtl .foot-bottom,
+.is-rtl .ct-hours li,
+.is-rtl .st-kit-list li {
+  flex-direction: row-reverse;
+}
+
+.is-rtl .dev-by {
+  flex-direction: row-reverse;
+}
+
+.is-rtl .dev-by span {
+  text-align: right;
+}
+
+/* a centred block stays centred */
+.is-rtl .ab-cta-in,
+.is-rtl .st-join-in,
+.is-rtl .ct-sent {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .lang-menu {
+    /* on a narrow screen the drawer would otherwise run off the edge */
+    right: -8px;
+    min-width: 190px;
+  }
+
+  .is-rtl .lang-menu {
+    right: auto;
+    left: -8px;
+  }
+
+  .lang-btn {
+    height: 40px;
+    padding: 0 11px 0 9px;
+  }
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Inside the Studio — DE Architects</title>
+<title data-i18n="inside_the_studio_de_architects.8d6b">Inside the Studio — DE Architects</title>
 <meta name="description" content="Two floors above a foundry yard: the drafting hall, the model shop and the materials library where every DE Architects project is drawn." />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,35 +19,34 @@
 
 
 <header class="topbar" id="topbar">
-  <a class="brand" href="index.html" aria-label="DE Architects — Consulting Engineers">
-    <img class="brand-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
+  <a class="brand" href="index.html" aria-label="DE Architects — Consulting Engineers" data-i18n-attr-aria-label="de_architects_consulting_engineers.0cfb">
+    <img class="brand-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers" data-i18n-attr-alt="de_architects_consulting_engineers.0cfb">
   </a>
 
   <nav class="nav-actions">
-    <a class="pill contact" href="contact.html">Contact</a>
-    <button class="icon-btn search" aria-label="Search">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-    </button>
-    <button class="pill menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
+    <a class="pill contact" href="contact.html" data-i18n="contact.b374">Contact</a>
+    <!-- filled in by js/i18n.js so the list of languages lives in one place -->
+    <div class="lang-switch"></div>
+    <button class="pill menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" data-i18n="menu.57f5">
       Menu
       <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
     </button>
   </nav>
 </header>
 
-<a class="side-tab" href="projects.html">Our Projects</a>
+<a class="side-tab" href="projects.html" data-i18n="our_projects.fbad">Our Projects</a>
 
 <div class="offcanvas offcanvas-end menu-oc" tabindex="-1" id="menu">
   <div class="offcanvas-header px-4 pt-4">
-    <img src="assets/img/logo-nav.png" alt="DE Architects" style="height:30px;width:auto;">
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <img src="assets/img/logo-nav.png" alt="DE Architects" style="height:30px;width:auto;" data-i18n-attr-alt="de_architects.c278">
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" data-i18n-attr-aria-label="close.bbfa"></button>
   </div>
   <div class="oc-links">
-    <a href="projects.html">Projects<small>Selected work &amp; case studies</small></a>
-    <a href="services.html">Services<small>Homes, interiors, commercial &amp; more</small></a>
-    <a href="studio.html">Studio<small>Inside the space where we work</small></a>
-    <a href="about.html">About<small>Who we are and how we work</small></a>
-    <a href="contact.html">Contact<small>Start your project with us</small></a>
+    <a href="projects.html" data-i18n-html="projects_small_selected_work_amp_case.0a39">Projects<small>Selected work &amp; case studies</small></a>
+    <a href="services.html" data-i18n-html="services_small_homes_interiors_commerc.1d50">Services<small>Homes, interiors, commercial &amp; more</small></a>
+    <a href="studio.html" data-i18n-html="studio_small_inside_the_space_where_we.6a58">Studio<small>Inside the space where we work</small></a>
+    <a href="about.html" data-i18n-html="about_small_who_we_are_and_how_we_work.28d2">About<small>Who we are and how we work</small></a>
+    <a href="contact.html" data-i18n-html="contact_small_start_your_project_with.999c">Contact<small>Start your project with us</small></a>
   </div>
 </div>
 
@@ -59,32 +58,32 @@
   <section class="st-hero" id="stHero">
     <span class="st-cover" aria-hidden="true"></span>
     <div class="st-hero-in">
-      <span class="pg-eyebrow"><span class="tick"></span>The place</span>
-      <h1 class="st-title display">
+      <span class="pg-eyebrow" data-i18n="the_place.ba7c"><span class="tick"></span>The place</span>
+      <h1 class="st-title display" data-i18n-html="span_class_w_i_where_the_i_span_span_c.144d">
         <span class="w"><i>Where the</i></span>
         <span class="w"><i class="out">drawings happen.</i></span>
       </h1>
-      <p class="st-lede">Two floors above a foundry yard: a drafting hall, a model shop that makes a lot of dust, and a wall of material samples nobody is allowed to tidy. This is the room every project passes through.</p>
+      <p class="st-lede" data-i18n="two_floors_above_a_foundry_yard_a_draf.67c7">Two floors above a foundry yard: a drafting hall, a model shop that makes a lot of dust, and a wall of material samples nobody is allowed to tidy. This is the room every project passes through.</p>
     </div>
-    <span class="pd-scroll" aria-hidden="true">Scroll<i></i></span>
+    <span class="pd-scroll" aria-hidden="true" data-i18n="scroll.090a">Scroll<i></i></span>
   </section>
 
   <!-- ============ walk through it in 3D ============ -->
   <section class="st-tour">
     <div class="st-tour-in">
       <div class="st-tour-copy r">
-        <span class="ab-kicker light">Walk through it</span>
-        <h2 class="display">You can fly<br>through the studio.</h2>
-        <p>We modelled our own building the way we model yours. Scroll the fly-through on the home page and the camera takes you in through the entrance, down the drafting hall past the service boards, around the model bay and back out again — in daylight or at night, your choice.</p>
-        <a class="pill solid" href="index.html#work">Take the fly-through
+        <span class="ab-kicker light" data-i18n="walk_through_it.1616">Walk through it</span>
+        <h2 class="display" data-i18n="you_can_fly_through_the_studio.5b81">You can fly<br>through the studio.</h2>
+        <p data-i18n="we_modelled_our_own_building_the_way_w.69b9">We modelled our own building the way we model yours. Scroll the fly-through on the home page and the camera takes you in through the entrance, down the drafting hall past the service boards, around the model bay and back out again — in daylight or at night, your choice.</p>
+        <a class="pill solid" href="index.html#work" data-i18n="take_the_fly_through.ca93">Take the fly-through
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
       </div>
       <ul class="st-tour-facts r d1">
-        <li><b>2</b><span>floors, one double-height hall</span></li>
-        <li><b>6</b><span>service boards along the walls</span></li>
-        <li><b>14</b><span>desks, all facing the light</span></li>
-        <li><b>1</b><span>model bay, permanently in use</span></li>
+        <li data-i18n-html="b_2_b_span_floors_one_double_height_ha.a378"><b>2</b><span>floors, one double-height hall</span></li>
+        <li data-i18n-html="b_6_b_span_service_boards_along_the_wa.816f"><b>6</b><span>service boards along the walls</span></li>
+        <li data-i18n-html="b_14_b_span_desks_all_facing_the_light.53a3"><b>14</b><span>desks, all facing the light</span></li>
+        <li data-i18n-html="b_1_b_span_model_bay_permanently_in_us.7871"><b>1</b><span>model bay, permanently in use</span></li>
       </ul>
     </div>
   </section>
@@ -93,26 +92,26 @@
   <section class="st-space">
     <div class="st-space-in">
       <div class="st-space-head r">
-        <span class="ab-kicker">The space</span>
-        <h2 class="display">Built for<br>drawing in.</h2>
-        <p>We took a floor of a working foundry building in 2014 and did to it exactly what we tell clients to do: kept the good bones, opened it up, and put the light where the work is.</p>
+        <span class="ab-kicker" data-i18n="the_space.6752">The space</span>
+        <h2 class="display" data-i18n="built_for_drawing_in.38f2">Built for<br>drawing in.</h2>
+        <p data-i18n="we_took_a_floor_of_a_working_foundry_b.3e4e">We took a floor of a working foundry building in 2014 and did to it exactly what we tell clients to do: kept the good bones, opened it up, and put the light where the work is.</p>
       </div>
       <div class="st-grid">
         <figure class="st-shot big r">
-          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&amp;fit=crop&amp;w=1400&amp;q=82" alt="The drafting hall, desks along the north windows" loading="lazy" decoding="async">
-          <figcaption><b>The drafting hall</b>North light all day, so nothing ever glares on a screen or a drawing.</figcaption>
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&amp;fit=crop&amp;w=1400&amp;q=82" alt="The drafting hall, desks along the north windows" loading="lazy" decoding="async" data-i18n-attr-alt="the_drafting_hall_desks_along_the_nort.a892">
+          <figcaption data-i18n-html="b_the_drafting_hall_b_north_light_all.065e"><b>The drafting hall</b>North light all day, so nothing ever glares on a screen or a drawing.</figcaption>
         </figure>
         <figure class="st-shot r d1">
-          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="The model bay with work in progress" loading="lazy" decoding="async">
-          <figcaption><b>The model bay</b>Card, ply and a very old scalpel collection.</figcaption>
+          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="The model bay with work in progress" loading="lazy" decoding="async" data-i18n-attr-alt="the_model_bay_with_work_in_progress.71e2">
+          <figcaption data-i18n-html="b_the_model_bay_b_card_ply_and_a_very.4add"><b>The model bay</b>Card, ply and a very old scalpel collection.</figcaption>
         </figure>
         <figure class="st-shot r d2">
-          <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="The materials library" loading="lazy" decoding="async">
-          <figcaption><b>The library</b>Six hundred samples you are meant to pick up.</figcaption>
+          <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="The materials library" loading="lazy" decoding="async" data-i18n-attr-alt="the_materials_library.7bfe">
+          <figcaption data-i18n-html="b_the_library_b_six_hundred_samples_yo.6c11"><b>The library</b>Six hundred samples you are meant to pick up.</figcaption>
         </figure>
         <figure class="st-shot wide r d1">
-          <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&amp;fit=crop&amp;w=1400&amp;q=82" alt="The meeting table at the end of the hall" loading="lazy" decoding="async">
-          <figcaption><b>The long table</b>Where clients see their project for the first time.</figcaption>
+          <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&amp;fit=crop&amp;w=1400&amp;q=82" alt="The meeting table at the end of the hall" loading="lazy" decoding="async" data-i18n-attr-alt="the_meeting_table_at_the_end_of_the_ha.4652">
+          <figcaption data-i18n-html="b_the_long_table_b_where_clients_see_t.6cad"><b>The long table</b>Where clients see their project for the first time.</figcaption>
         </figure>
       </div>
     </div>
@@ -122,16 +121,16 @@
   <section class="st-day">
     <div class="st-day-in">
       <div class="st-day-head r">
-        <span class="ab-kicker light">A day here</span>
-        <h2 class="display">Nine to six,<br>roughly.</h2>
+        <span class="ab-kicker light" data-i18n="a_day_here.4ef7">A day here</span>
+        <h2 class="display" data-i18n="nine_to_six_roughly.c94f">Nine to six,<br>roughly.</h2>
       </div>
       <ol class="st-clock">
-        <li class="r"><b>08:30</b><h3>The coffee and the wall</h3><p>Whoever is in first puts the machine on and looks at the drawing wall. Anything pinned up overnight gets argued about before the day starts properly.</p></li>
-        <li class="r d1"><b>09:30</b><h3>Desk work</h3><p>The quiet stretch. Plans, sections, details. The rule is no meetings before eleven, and it mostly survives contact with reality.</p></li>
-        <li class="r d2"><b>11:00</b><h3>Site or client</h3><p>Someone is always out — measuring a house, walking a site with a contractor, or sitting at the long table with a client and a model.</p></li>
-        <li class="r"><b>14:00</b><h3>The model shop</h3><p>Cutting, gluing, and the smell of MDF. Every project gets built at least once in card before it gets built in concrete.</p></li>
-        <li class="r d1"><b>16:30</b><h3>Pin-up</h3><p>Work goes on the wall and gets picked apart by everyone, including the person who joined last month. Nothing leaves the studio without this.</p></li>
-        <li class="r d2"><b>18:00</b><h3>Lights off</h3><p>We do not do heroic overtime. Tired people draw badly and miss things, and someone has to pay for that later.</p></li>
+        <li class="r"><b>08:30</b><h3 data-i18n="the_coffee_and_the_wall.f258">The coffee and the wall</h3><p data-i18n="whoever_is_in_first_puts_the_machine_o.36b8">Whoever is in first puts the machine on and looks at the drawing wall. Anything pinned up overnight gets argued about before the day starts properly.</p></li>
+        <li class="r d1"><b>09:30</b><h3 data-i18n="desk_work.ff99">Desk work</h3><p data-i18n="the_quiet_stretch_plans_sections_detai.3570">The quiet stretch. Plans, sections, details. The rule is no meetings before eleven, and it mostly survives contact with reality.</p></li>
+        <li class="r d2"><b>11:00</b><h3 data-i18n="site_or_client.9de0">Site or client</h3><p data-i18n="someone_is_always_out_measuring_a_hous.e1c9">Someone is always out — measuring a house, walking a site with a contractor, or sitting at the long table with a client and a model.</p></li>
+        <li class="r"><b>14:00</b><h3 data-i18n="the_model_shop.aefa">The model shop</h3><p data-i18n="cutting_gluing_and_the_smell_of_mdf_ev.a53e">Cutting, gluing, and the smell of MDF. Every project gets built at least once in card before it gets built in concrete.</p></li>
+        <li class="r d1"><b>16:30</b><h3 data-i18n="pin_up.2907">Pin-up</h3><p data-i18n="work_goes_on_the_wall_and_gets_picked.5a40">Work goes on the wall and gets picked apart by everyone, including the person who joined last month. Nothing leaves the studio without this.</p></li>
+        <li class="r d2"><b>18:00</b><h3 data-i18n="lights_off.fdbb">Lights off</h3><p data-i18n="we_do_not_do_heroic_overtime_tired_peo.18cb">We do not do heroic overtime. Tired people draw badly and miss things, and someone has to pay for that later.</p></li>
       </ol>
     </div>
   </section>
@@ -140,27 +139,27 @@
   <section class="st-craft">
     <div class="st-craft-in">
       <div class="st-craft-head r">
-        <span class="ab-kicker">The craft</span>
-        <h2 class="display">Three benches<br>we could not work without.</h2>
+        <span class="ab-kicker" data-i18n="the_craft.f06b">The craft</span>
+        <h2 class="display" data-i18n="three_benches_we_could_not_work_withou.3eb2">Three benches<br>we could not work without.</h2>
       </div>
       <div class="st-benches">
         <article class="st-bench r" style="--accent:var(--crimson)">
           <span class="st-bench-n">01</span>
-          <h3>The model shop</h3>
-          <p>A screen flattens everything. A model at 1:100 tells you in four seconds that the roof is wrong, and clients who cannot read a plan can read a model instantly.</p>
-          <div class="st-bench-tags"><span>1:200 massing</span><span>1:100 design</span><span>1:20 details</span></div>
+          <h3 data-i18n="the_model_shop.aefa">The model shop</h3>
+          <p data-i18n="a_screen_flattens_everything_a_model_a.b7fe">A screen flattens everything. A model at 1:100 tells you in four seconds that the roof is wrong, and clients who cannot read a plan can read a model instantly.</p>
+          <div class="st-bench-tags"><span data-i18n="1_200_massing.ba55">1:200 massing</span><span data-i18n="1_100_design.9870">1:100 design</span><span data-i18n="1_20_details.4c75">1:20 details</span></div>
         </article>
         <article class="st-bench r d1" style="--accent:var(--teal-ink)">
           <span class="st-bench-n">02</span>
-          <h3>The materials library</h3>
-          <p>Six hundred samples, sorted by how they age rather than by supplier. You choose a stone by putting it next to the timber under the light it will actually live in.</p>
-          <div class="st-bench-tags"><span>Stone</span><span>Timber</span><span>Metal</span><span>Textile</span></div>
+          <h3 data-i18n="the_materials_library.7bfe">The materials library</h3>
+          <p data-i18n="six_hundred_samples_sorted_by_how_they.9cab">Six hundred samples, sorted by how they age rather than by supplier. You choose a stone by putting it next to the timber under the light it will actually live in.</p>
+          <div class="st-bench-tags"><span data-i18n="stone.0296">Stone</span><span data-i18n="timber.e5c6">Timber</span><span data-i18n="metal.90ac">Metal</span><span data-i18n="textile.2c28">Textile</span></div>
         </article>
         <article class="st-bench r d2" style="--accent:var(--navy)">
           <span class="st-bench-n">03</span>
-          <h3>The drawing wall</h3>
-          <p>Twelve metres of pinnable surface holding every live project at once. If a scheme is not on the wall it is not really being designed yet.</p>
-          <div class="st-bench-tags"><span>Pin-ups</span><span>Reviews</span><span>Sketches</span></div>
+          <h3 data-i18n="the_drawing_wall.05de">The drawing wall</h3>
+          <p data-i18n="twelve_metres_of_pinnable_surface_hold.0366">Twelve metres of pinnable surface holding every live project at once. If a scheme is not on the wall it is not really being designed yet.</p>
+          <div class="st-bench-tags"><span data-i18n="pin_ups.b601">Pin-ups</span><span data-i18n="reviews.b83c">Reviews</span><span data-i18n="sketches.f3b8">Sketches</span></div>
         </article>
       </div>
     </div>
@@ -170,29 +169,29 @@
   <section class="st-kit">
     <div class="st-kit-in">
       <div class="st-kit-head r">
-        <span class="ab-kicker">The kit</span>
-        <h2 class="display">Sharp pencils,<br>good software.</h2>
-        <p>Neither one on its own. We sketch by hand because it is faster to think that way, and we model everything because it is the only way to be sure it fits together.</p>
+        <span class="ab-kicker" data-i18n="the_kit.3ed1">The kit</span>
+        <h2 class="display" data-i18n="sharp_pencils_good_software.c7f6">Sharp pencils,<br>good software.</h2>
+        <p data-i18n="neither_one_on_its_own_we_sketch_by_ha.7db5">Neither one on its own. We sketch by hand because it is faster to think that way, and we model everything because it is the only way to be sure it fits together.</p>
       </div>
       <div class="st-kit-cols">
         <div class="st-kit-col r">
-          <h3>On the screen</h3>
+          <h3 data-i18n="on_the_screen.97ed">On the screen</h3>
           <ul class="st-kit-list">
-            <li><b>Revit</b><span>Model, drawings and schedules from one file</span></li>
-            <li><b>Rhino &amp; Grasshopper</b><span>Anything with a curve or a rule behind it</span></li>
-            <li><b>AutoCAD</b><span>Because half the industry still sends DWGs</span></li>
-            <li><b>Twinmotion &amp; V-Ray</b><span>Renders and walkthroughs</span></li>
-            <li><b>three.js</b><span>The browser tours on this site, built in-house</span></li>
+            <li data-i18n-html="b_revit_b_span_model_drawings_and_sche.8dda"><b>Revit</b><span>Model, drawings and schedules from one file</span></li>
+            <li data-i18n-html="b_rhino_amp_grasshopper_b_span_anythin.0d0f"><b>Rhino &amp; Grasshopper</b><span>Anything with a curve or a rule behind it</span></li>
+            <li data-i18n-html="b_autocad_b_span_because_half_the_indu.aeb4"><b>AutoCAD</b><span>Because half the industry still sends DWGs</span></li>
+            <li data-i18n-html="b_twinmotion_amp_v_ray_b_span_renders.9374"><b>Twinmotion &amp; V-Ray</b><span>Renders and walkthroughs</span></li>
+            <li data-i18n-html="b_three_js_b_span_the_browser_tours_on.cf97"><b>three.js</b><span>The browser tours on this site, built in-house</span></li>
           </ul>
         </div>
         <div class="st-kit-col r d1">
-          <h3>On the bench</h3>
+          <h3 data-i18n="on_the_bench.fd65">On the bench</h3>
           <ul class="st-kit-list">
-            <li><b>Rotring 0.35</b><span>The only pen anyone here argues about</span></li>
-            <li><b>Laser cutter</b><span>Card, ply and acrylic, most afternoons</span></li>
-            <li><b>Disto and tape</b><span>Nothing is drawn from an estimate</span></li>
-            <li><b>Sample boards</b><span>A0, one per project, kept until handover</span></li>
-            <li><b>The long table</b><span>Four metres of oak, and the best tool we own</span></li>
+            <li data-i18n-html="b_rotring_0_35_b_span_the_only_pen_any.556e"><b>Rotring 0.35</b><span>The only pen anyone here argues about</span></li>
+            <li data-i18n-html="b_laser_cutter_b_span_card_ply_and_acr.15ea"><b>Laser cutter</b><span>Card, ply and acrylic, most afternoons</span></li>
+            <li data-i18n-html="b_disto_and_tape_b_span_nothing_is_dra.f173"><b>Disto and tape</b><span>Nothing is drawn from an estimate</span></li>
+            <li data-i18n-html="b_sample_boards_b_span_a0_one_per_proj.9f00"><b>Sample boards</b><span>A0, one per project, kept until handover</span></li>
+            <li data-i18n-html="b_the_long_table_b_span_four_metres_of.c032"><b>The long table</b><span>Four metres of oak, and the best tool we own</span></li>
           </ul>
         </div>
       </div>
@@ -202,14 +201,14 @@
   <!-- ============ join ============ -->
   <section class="st-join">
     <div class="st-join-in r">
-      <span class="ab-kicker light">Working here</span>
-      <h2 class="display">We hire slowly,<br>and keep people.</h2>
-      <p>Fourteen of us, and the average stay is over five years. We take one or two students each summer and give them real drawings to do, not coffee runs. If you want to work here, send us three pieces of work you are proud of and tell us why.</p>
+      <span class="ab-kicker light" data-i18n="working_here.8ea9">Working here</span>
+      <h2 class="display" data-i18n="we_hire_slowly_and_keep_people.ccc2">We hire slowly,<br>and keep people.</h2>
+      <p data-i18n="fourteen_of_us_and_the_average_stay_is.651a">Fourteen of us, and the average stay is over five years. We take one or two students each summer and give them real drawings to do, not coffee runs. If you want to work here, send us three pieces of work you are proud of and tell us why.</p>
       <div class="st-join-btns">
-        <a class="pill solid" href="contact.html">Send us your work
+        <a class="pill solid" href="contact.html" data-i18n="send_us_your_work.b612">Send us your work
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
-        <a class="pill ghost" href="about.html">Meet the team
+        <a class="pill ghost" href="about.html" data-i18n="meet_the_team.42a9">Meet the team
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
       </div>
@@ -219,13 +218,13 @@
   <!-- ============ call to action ============ -->
   <section class="ab-cta">
     <div class="ab-cta-in">
-      <h2 class="display">Come and see<br>it in person.</h2>
-      <p>The kettle works and the long table is usually free. Bring a plan, a photograph, or just an idea you cannot shake.</p>
+      <h2 class="display" data-i18n="come_and_see_it_in_person.3a4e">Come and see<br>it in person.</h2>
+      <p data-i18n="the_kettle_works_and_the_long_table_is.9bf8">The kettle works and the long table is usually free. Bring a plan, a photograph, or just an idea you cannot shake.</p>
       <div class="ab-cta-btns">
-        <a class="pill solid" href="contact.html">Book a visit
+        <a class="pill solid" href="contact.html" data-i18n="book_a_visit.46c8">Book a visit
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
-        <a class="pill" href="services.html">What we do
+        <a class="pill" href="services.html" data-i18n="what_we_do.a39b">What we do
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
       </div>
@@ -237,22 +236,22 @@
   <div class="cta-grid">
     <div class="foot-brand" style="grid-column:1/-1;display:none;"></div>
     <div class="r">
-      <img class="foot-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
-      <p class="foot-blurb">We are an architecture and interior design studio shaping homes, workspaces and everything in between — designed for how you actually live.</p>
+      <img class="foot-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers" data-i18n-attr-alt="de_architects_consulting_engineers.0cfb">
+      <p class="foot-blurb" data-i18n="we_are_an_architecture_and_interior_de.58b8">We are an architecture and interior design studio shaping homes, workspaces and everything in between — designed for how you actually live.</p>
       <div class="foot-social">
-        <a href="#" aria-label="Instagram"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
-        <a href="#" aria-label="LinkedIn"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
-        <a href="#" aria-label="Pinterest"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
-        <a href="#" aria-label="YouTube"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Instagram" data-i18n-attr-aria-label="instagram.5721"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="LinkedIn" data-i18n-attr-aria-label="linkedin.6b63"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
+        <a href="#" aria-label="Pinterest" data-i18n-attr-aria-label="pinterest.a45a"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
+        <a href="#" aria-label="YouTube" data-i18n-attr-aria-label="youtube.5588"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
       </div>
     </div>
     <div class="r d1">
-      <h2 class="big display">Architecture that reflects all of you.</h2>
+      <h2 class="big display" data-i18n="architecture_that_reflects_all_of_you.72de">Architecture that reflects all of you.</h2>
       <div class="cta-buttons">
-        <a class="pill solid" href="contact.html">Inquire
+        <a class="pill solid" href="contact.html" data-i18n="inquire.cec0">Inquire
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
-        <a class="pill" href="contact.html">Start a project
+        <a class="pill" href="contact.html" data-i18n="start_a_project.f2cc">Start a project
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
         </a>
       </div>
@@ -261,61 +260,61 @@
 
   <div class="foot-contact">
     <div class="fc-form">
-      <h3 class="foot-h">Start a conversation</h3>
-      <p class="fc-lede">Tell us about your project and we'll get back to you within two business days.</p>
+      <h3 class="foot-h" data-i18n="start_a_conversation.244c">Start a conversation</h3>
+      <p class="fc-lede" data-i18n="tell_us_about_your_project_and_we_ll_g.e2f2">Tell us about your project and we'll get back to you within two business days.</p>
       <form class="fc-fields" onsubmit="this.querySelector('.fc-note').hidden=false; this.reset(); return false;" novalidate>
         <div class="fc-row">
-          <input type="text" placeholder="Your name" aria-label="Your name" required>
-          <input type="email" placeholder="Email address" aria-label="Email address" required>
+          <input type="text" placeholder="Your name" aria-label="Your name" required data-i18n-attr-aria-label="your_name.ab42" data-i18n-attr-placeholder="your_name.ab42">
+          <input type="email" placeholder="Email address" aria-label="Email address" required data-i18n-attr-aria-label="email_address.c94d" data-i18n-attr-placeholder="email_address.c94d">
         </div>
-        <input type="text" placeholder="Project type — e.g. new home, interior" aria-label="Project type">
-        <textarea rows="4" placeholder="A little about your project" aria-label="About your project"></textarea>
-        <button type="submit" class="fc-submit">Send enquiry
+        <input type="text" placeholder="Project type — e.g. new home, interior" aria-label="Project type" data-i18n-attr-aria-label="project_type.fc53" data-i18n-attr-placeholder="project_type_e_g_new_home_interior.13d4">
+        <textarea rows="4" placeholder="A little about your project" aria-label="About your project" data-i18n-attr-aria-label="about_your_project.83d1" data-i18n-attr-placeholder="a_little_about_your_project.bfdd"></textarea>
+        <button type="submit" class="fc-submit" data-i18n="send_enquiry.4fba">Send enquiry
           <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
         </button>
-        <span class="fc-note" hidden>Thanks! This is a demo form — connect it to your email service to receive messages.</span>
+        <span class="fc-note" hidden data-i18n="thanks_this_is_a_demo_form_connect_it.d65c">Thanks! This is a demo form — connect it to your email service to receive messages.</span>
       </form>
     </div>
 
     <div class="fc-info">
-      <h3 class="foot-h">Get in touch</h3>
-      <a class="fc-item" href="tel:+10000000000">
+      <h3 class="foot-h" data-i18n="get_in_touch.c49b">Get in touch</h3>
+      <a class="fc-item" href="tel:+10000000000" data-i18n-html="span_class_fc_ic_0_span_span_b_call_us.1ee2">
         <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.6 9.8a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
         <span><b>Call us</b>+1 (000) 000-0000</span>
       </a>
-      <a class="fc-item" href="mailto:studio@dearchitect.com">
+      <a class="fc-item" href="mailto:studio@dearchitect.com" data-i18n-html="span_class_fc_ic_0_span_span_b_email_b.b2da">
         <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
         <span><b>Email</b>studio@dearchitect.com</span>
       </a>
       <div class="fc-item">
         <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <span><b>Design Office</b>24 Foundry Lane, Design District</span>
+        <span data-i18n-html="b_design_office_b_24_foundry_lane_desi.81ab"><b>Design Office</b>24 Foundry Lane, Design District</span>
       </div>
       <div class="fc-item">
         <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <span><b>Site Studio</b>9 Meridian Court, Riverside</span>
+        <span data-i18n-html="b_site_studio_b_9_meridian_court_river.cdaa"><b>Site Studio</b>9 Meridian Court, Riverside</span>
       </div>
       <div class="fc-item">
         <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-        <span><b>Studio hours</b>Mon–Fri · 9:00–18:00</span>
+        <span data-i18n-html="b_studio_hours_b_mon_fri_9_00_18_00.4c61"><b>Studio hours</b>Mon–Fri · 9:00–18:00</span>
       </div>
       <div class="fc-links">
-        <a href="projects.html">Projects</a><a href="services.html">Services</a><a href="about.html">Careers</a><a href="contact.html">Client login</a>
+        <a href="projects.html" data-i18n="projects.53e8">Projects</a><a href="services.html" data-i18n="services.5cbd">Services</a><a href="about.html" data-i18n="careers.68d7">Careers</a><a href="contact.html" data-i18n="client_login.595d">Client login</a>
       </div>
     </div>
   </div>
 
   <div class="foot-bottom">
     <div class="foot-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms</a>
-      <a href="#">Site Map</a>
+      <a href="#" data-i18n="privacy_policy.9db1">Privacy Policy</a>
+      <a href="#" data-i18n="terms.a55a">Terms</a>
+      <a href="#" data-i18n="site_map.8fa1">Site Map</a>
     </div>
 
     <!-- Logo saved locally on purpose: the Facebook CDN URL it came from is
          signed and expires. Set href when the Reego Tech site is known. -->
-    <a class="dev-by" href="#" rel="noopener">
-      <img src="assets/img/reego-tech.jpg" alt="Reego Tech" onerror="this.remove()">
+    <a class="dev-by" href="#" rel="noopener" data-i18n-html="img_src_assets_img_reego_tech_jpg_alt.5002">
+      <img src="assets/img/reego-tech.jpg" alt="Reego Tech" onerror="this.remove()" data-i18n-attr-alt="reego_tech.164c">
       <span><small>Developed by</small><b>Reego Tech</b></span>
     </a>
   </div>
@@ -324,6 +323,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/lang/en.js"></script>
+<script src="js/i18n.js"></script>
   <script src="js/page-hero.js"></script>
 </body>
 </html>
