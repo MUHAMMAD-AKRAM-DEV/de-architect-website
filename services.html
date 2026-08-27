@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Services — DE Architects</title>
-<meta name="description" content="Architecture, interior design, commercial and renovation services." />
+<meta name="description" content="Residential architecture, interior design, commercial fit-out, renovation, landscape and 3D visualisation — six services from one studio, with fixed fees per stage." />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>if (window.tailwind) tailwind.config = { corePlugins: { preflight: false } };</script>
@@ -13,14 +13,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" href="assets/icons/favicon.png" type="image/png">
-<style>
-  /* small page-header helper reused by inner pages */
-  .page-head{ background:var(--wine);color:#fff;padding:clamp(120px,18vh,190px) clamp(18px,5vw,80px) clamp(50px,7vw,90px);text-align:center; }
-  .page-head .eyebrow{ color:var(--pink);display:block;margin-bottom:14px; }
-  .page-head h1{ font-size:clamp(2.6rem,7vw,5.5rem);margin:0; }
-  .page-body{ padding:clamp(60px,8vw,110px) clamp(18px,5vw,80px);max-width:1180px;margin:0 auto; }
-  .placeholder-note{ border:2px dashed rgba(62,14,44,.28);border-radius:16px;padding:30px;color:#6a4a56;background:#fff; }
-</style>
 </head>
 <body>
 <script src="js/intro.js"></script>
@@ -51,10 +43,11 @@
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="oc-links">
-    <a href="projects.html" data-bs-dismiss="offcanvas">Projects<small>Selected work &amp; case studies</small></a>
-    <a href="services.html" data-bs-dismiss="offcanvas">Services<small>Homes, interiors, commercial &amp; more</small></a>
-    <a href="about.html" data-bs-dismiss="offcanvas">Studio<small>Who we are and how we work</small></a>
-    <a href="contact.html" data-bs-dismiss="offcanvas">Contact<small>Start your project with us</small></a>
+    <a href="projects.html">Projects<small>Selected work &amp; case studies</small></a>
+    <a href="services.html">Services<small>Homes, interiors, commercial &amp; more</small></a>
+    <a href="studio.html">Studio<small>Inside the space where we work</small></a>
+    <a href="about.html">About<small>Who we are and how we work</small></a>
+    <a href="contact.html">Contact<small>Start your project with us</small></a>
   </div>
 </div>
 
@@ -62,14 +55,285 @@
 
 
 <main>
-  <section class="page-head">
-    <span class="eyebrow">What we do</span>
-    <h1 class="display">Our services</h1>
+  <!-- ============ opening ============ -->
+  <section class="sv-hero" id="svHero">
+    <span class="sv-cover" aria-hidden="true"></span>
+    <div class="sv-hero-in">
+      <span class="pg-eyebrow"><span class="tick"></span>What we do</span>
+      <h1 class="sv-title display">
+        <span class="w"><i>Six ways we can</i></span>
+        <span class="w"><i class="out">help you build.</i></span>
+      </h1>
+      <p class="sv-lede">One studio, from the first sketch to the day you get the keys. Take the whole thing or just the part you need — most clients start with a conversation and work it out from there.</p>
+      <nav class="sv-jump" aria-label="Jump to a service">
+        <a href="#s01">01 Residential</a>
+        <a href="#s02">02 Interiors</a>
+        <a href="#s03">03 Commercial</a>
+        <a href="#s04">04 Renovation</a>
+        <a href="#s05">05 Landscape</a>
+        <a href="#s06">06 Visualisation</a>
+      </nav>
+    </div>
+    <span class="pd-scroll" aria-hidden="true">Scroll<i></i></span>
   </section>
 
-  <section class="page-body">
-    <div class="r"><p style="font-size:1.15rem;line-height:1.75;max-width:60ch;color:#4a2c3a;">From complete home design to interiors, commercial fit-outs, renovation and 3D visualisation. Detail each service here — scope, process, timelines and example work.</p></div>
-    <div class="r" style="margin-top:40px;"><div class="placeholder-note">Build out each service. The <code>.tier</code> and skewed <code>.panel</code> styles from the landing page work well here.</div></div>
+  <!-- ============ the six ============ -->
+  <section class="sv-list">
+
+    <article class="sv-item r" id="s01" style="--accent:var(--crimson)">
+      <div class="sv-media">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&amp;fit=crop&amp;w=1100&amp;q=82" alt="A house designed around its site and light" loading="lazy" decoding="async">
+        <span class="sv-badge">01</span>
+      </div>
+      <div class="sv-copy">
+        <span class="sv-kicker">Residential Architecture</span>
+        <h2 class="display">From concept<br>to keys.</h2>
+        <p>Custom houses, villas and additions, drawn around your plot, your light and the way you actually live in a day. We handle the design, the drawings and the permissions, and we stay on site until it is finished.</p>
+        <ul class="sv-inc">
+          <li>Site study, survey and feasibility</li>
+          <li>Concept design and a physical model</li>
+          <li>Planning drawings and submission</li>
+          <li>Construction detail and tender package</li>
+          <li>Site visits through to handover</li>
+        </ul>
+        <div class="sv-tags"><span>New builds</span><span>Extensions</span><span>Villas</span></div>
+        <a class="sv-go" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="sv-item flip r" id="s02" style="--accent:var(--magenta-deep)">
+      <div class="sv-media">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&amp;fit=crop&amp;w=1100&amp;q=82" alt="A finished interior with built-in joinery" loading="lazy" decoding="async">
+        <span class="sv-badge">02</span>
+      </div>
+      <div class="sv-copy">
+        <span class="sv-kicker">Interior Design</span>
+        <h2 class="display">Spaces that<br>feel like you.</h2>
+        <p>Layout, materials, joinery and light. This is the work that decides whether a room is pleasant to be in, and it is worth doing properly whether you are building from scratch or changing one floor of a flat.</p>
+        <ul class="sv-inc">
+          <li>Space planning and furniture layout</li>
+          <li>Material, finish and colour schemes</li>
+          <li>Bespoke joinery and cabinetry drawings</li>
+          <li>Lighting design and electrical setting-out</li>
+          <li>Sourcing, procurement and installation</li>
+        </ul>
+        <div class="sv-tags"><span>Full fit-out</span><span>Single rooms</span><span>Styling</span></div>
+        <a class="sv-go" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="sv-item r" id="s03" style="--accent:var(--navy)">
+      <div class="sv-media">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&amp;fit=crop&amp;w=1100&amp;q=82" alt="An open-plan workspace" loading="lazy" decoding="async">
+        <span class="sv-badge">03</span>
+      </div>
+      <div class="sv-copy">
+        <span class="sv-kicker">Commercial &amp; Workspaces</span>
+        <h2 class="display">Where business<br>takes shape.</h2>
+        <p>Offices, studios, shops and places to eat. The brief here is different — the building has to work for staff and customers on the busiest day of the year, not just look right in a photograph.</p>
+        <ul class="sv-inc">
+          <li>Occupancy study and space brief</li>
+          <li>Fit-out design and phasing plan</li>
+          <li>Brand and wayfinding built into the space</li>
+          <li>Accessibility, fire and compliance review</li>
+          <li>Contractor coordination and snagging</li>
+        </ul>
+        <div class="sv-tags"><span>Offices</span><span>Retail</span><span>Hospitality</span></div>
+        <a class="sv-go" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="sv-item flip r" id="s04" style="--accent:var(--bronze)">
+      <div class="sv-media">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&amp;fit=crop&amp;w=1100&amp;q=82" alt="An older building brought back into use" loading="lazy" decoding="async">
+        <span class="sv-badge">04</span>
+      </div>
+      <div class="sv-copy">
+        <span class="sv-kicker">Renovation &amp; Restoration</span>
+        <h2 class="display">Brought<br>back to life.</h2>
+        <p>The cheapest and greenest square metre is the one you do not build. We would rather rework what is already standing — open it up, insulate it properly, and keep the parts that give the place its character.</p>
+        <ul class="sv-inc">
+          <li>Condition survey and measured drawings</li>
+          <li>Structural strategy with our engineers</li>
+          <li>Insulation, damp and energy upgrade</li>
+          <li>Period detail matched or honestly replaced</li>
+          <li>Conservation consent where it is needed</li>
+        </ul>
+        <div class="sv-tags"><span>Restoration</span><span>Conversions</span><span>Retrofit</span></div>
+        <a class="sv-go" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="sv-item r" id="s05" style="--accent:var(--teal-ink)">
+      <div class="sv-media">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&amp;fit=crop&amp;w=1100&amp;q=82" alt="A house and its garden read as one design" loading="lazy" decoding="async">
+        <span class="sv-badge">05</span>
+      </div>
+      <div class="sv-copy">
+        <span class="sv-kicker">Landscape &amp; Exteriors</span>
+        <h2 class="display">Design meets<br>the outdoors.</h2>
+        <p>The garden, the approach, the terrace and the parking are part of the building, not an afterthought once the scaffolding comes down. Drawn at the same time as the house, they make the whole thing feel settled.</p>
+        <ul class="sv-inc">
+          <li>Site levels, drainage and hard landscaping</li>
+          <li>Planting scheme by season</li>
+          <li>Terraces, pools and outdoor rooms</li>
+          <li>Approach, parking and boundary treatment</li>
+          <li>External and garden lighting</li>
+        </ul>
+        <div class="sv-tags"><span>Gardens</span><span>Terraces</span><span>Pools</span></div>
+        <a class="sv-go" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="sv-item flip r" id="s06" style="--accent:var(--wine)">
+      <div class="sv-media">
+        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&amp;fit=crop&amp;w=1100&amp;q=82" alt="A photoreal render of an unbuilt room" loading="lazy" decoding="async">
+        <span class="sv-badge">06</span>
+      </div>
+      <div class="sv-copy">
+        <span class="sv-kicker">3D Visualisation</span>
+        <h2 class="display">See it before<br>it&rsquo;s built.</h2>
+        <p>Standing in a room a year before it exists changes the decisions people make. We build every project in 3D anyway, so turning that into images or a walkthrough you can move around in costs very little extra.</p>
+        <ul class="sv-inc">
+          <li>Photoreal stills, interior and exterior</li>
+          <li>Walkthrough animation</li>
+          <li>Browser-based virtual tours</li>
+          <li>Sunlight and shadow study through the year</li>
+          <li>Material and finish comparisons side by side</li>
+        </ul>
+        <div class="sv-tags"><span>Renders</span><span>Virtual tours</span><span>Animation</span></div>
+        <a class="sv-go" href="projects.html">See the tours
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ how we can be engaged ============ -->
+  <section class="sv-engage">
+    <div class="sv-engage-in">
+      <div class="sv-engage-head r">
+        <span class="ab-kicker light">Ways to work with us</span>
+        <h2 class="display">Take all of it,<br>or just the part you need.</h2>
+        <p>Every project is quoted as a fixed fee per stage, agreed before that stage starts. You are never billed for work you did not approve.</p>
+      </div>
+      <div class="sv-plans">
+        <article class="sv-plan r">
+          <span class="sv-plan-n">A</span>
+          <h3>Full service</h3>
+          <p>We take it from the first site visit to the day you move in — design, drawings, permissions, tender and site.</p>
+          <ul>
+            <li>All six services available</li>
+            <li>One team from start to finish</li>
+            <li>We hold the programme and the budget</li>
+          </ul>
+          <span class="sv-plan-for">Best for new builds and whole-house projects</span>
+        </article>
+        <article class="sv-plan feat r d1">
+          <span class="sv-plan-n">B</span>
+          <h3>Design only</h3>
+          <p>We draw it and get it approved. You appoint your own builder and run the site with our drawings in hand.</p>
+          <ul>
+            <li>Concept through to permission</li>
+            <li>Full construction drawing set</li>
+            <li>Optional site visits, billed by the day</li>
+          </ul>
+          <span class="sv-plan-for">Best for clients with a builder they trust</span>
+        </article>
+        <article class="sv-plan r d2">
+          <span class="sv-plan-n">C</span>
+          <h3>Consultation</h3>
+          <p>A couple of hours on site, or a review of drawings you already have, with a written note of what we would change.</p>
+          <ul>
+            <li>Feasibility and what a plot allows</li>
+            <li>Second opinion on an existing design</li>
+            <li>Deducted from the fee if you go ahead</li>
+          </ul>
+          <span class="sv-plan-for">Best for deciding whether a project is worth it</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ deliverables ============ -->
+  <section class="sv-deliver">
+    <div class="sv-deliver-in">
+      <div class="sv-deliver-head r">
+        <span class="ab-kicker">What you actually get</span>
+        <h2 class="display">Paper, pixels<br>and a model.</h2>
+        <p>Design is easy to talk about and hard to hold. Here is what physically arrives, and roughly when.</p>
+      </div>
+      <ol class="sv-deliv">
+        <li class="r"><b>Measured survey</b><span>Everything as it stands today, drawn accurately.</span><i>Stage 1</i></li>
+        <li class="r d1"><b>Concept pack</b><span>Sketch plans, sections, and the idea behind them.</span><i>Stage 2</i></li>
+        <li class="r d2"><b>Physical model</b><span>Card and timber, at 1:100. Yours to keep.</span><i>Stage 2</i></li>
+        <li class="r"><b>3D walkthrough</b><span>Move through the rooms before anything is built.</span><i>Stage 2</i></li>
+        <li class="r d1"><b>Planning set</b><span>Drawings and statements, submitted for you.</span><i>Stage 3</i></li>
+        <li class="r d2"><b>Construction drawings</b><span>Every junction resolved, ready to price and build.</span><i>Stage 3</i></li>
+        <li class="r"><b>Finishes schedule</b><span>Each material named, with a sample board.</span><i>Stage 3</i></li>
+        <li class="r d1"><b>Site reports</b><span>What we found on each visit, and what to fix.</span><i>Stage 4</i></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ questions ============ -->
+  <section class="sv-faq">
+    <div class="sv-faq-in">
+      <span class="ab-kicker">Common questions</span>
+      <h2 class="display">Before you ask.</h2>
+      <div class="sv-qs">
+        <details class="sv-q r" open>
+          <summary>How much does it cost?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Fees are a fixed sum per stage, not a percentage of a moving construction cost. We quote after the first meeting, once we know the size and the scope. Small interior projects usually start in the low thousands; a whole house is a percentage-of-build conversation we will have openly.</p>
+        </details>
+        <details class="sv-q r d1">
+          <summary>How long will it take?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Design runs six to twelve weeks for an interior, three to five months for a house. Permissions add eight to sixteen weeks and are outside anyone&rsquo;s control. Construction depends on your builder, but we will give you a realistic programme rather than an optimistic one.</p>
+        </details>
+        <details class="sv-q r d2">
+          <summary>Do you work on small projects?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Yes. One reimagined room is a real project if the thinking is worth doing, and some of our best work has been the smallest. If the job genuinely does not need an architect we will tell you that instead of taking the fee.</p>
+        </details>
+        <details class="sv-q r">
+          <summary>Can you work with my builder?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Happily. We can also run a tender and get you three comparable prices, which is usually worth more than the fee it costs. If you have nobody yet, we will suggest contractors we have worked with before — we take no commission from them.</p>
+        </details>
+        <details class="sv-q r d1">
+          <summary>Do you handle planning permission?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>We prepare and submit the whole application and deal with the case officer through to the decision. We will also tell you honestly, at the first meeting, how likely it is to be granted.</p>
+        </details>
+        <details class="sv-q r d2">
+          <summary>What if I only want the 3D visuals?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>That is a service on its own. Send us your drawings — from us or from anyone else — and we will model them and produce stills, an animation or a browser tour you can send to a client or a lender.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ call to action ============ -->
+  <section class="ab-cta">
+    <div class="ab-cta-in">
+      <h2 class="display">Not sure which<br>one you need?</h2>
+      <p>Most people are not, at the start. Tell us what you are trying to do and we will point you at the right one. The first conversation is free.</p>
+      <div class="ab-cta-btns">
+        <a class="pill solid" href="contact.html">Talk to us
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill" href="projects.html">See our work
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -164,5 +428,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
+  <script src="js/page-hero.js"></script>
+  <script src="js/services.js"></script>
 </body>
 </html>

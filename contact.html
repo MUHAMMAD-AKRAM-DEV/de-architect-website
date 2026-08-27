@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Contact — DE Architects</title>
-<meta name="description" content="Start a project with DE Architects." />
+<meta name="description" content="Start a project with DE Architects. The first conversation is free — tell us what you want to build and we will reply within two working days." />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>if (window.tailwind) tailwind.config = { corePlugins: { preflight: false } };</script>
@@ -13,14 +13,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" href="assets/icons/favicon.png" type="image/png">
-<style>
-  /* small page-header helper reused by inner pages */
-  .page-head{ background:var(--wine);color:#fff;padding:clamp(120px,18vh,190px) clamp(18px,5vw,80px) clamp(50px,7vw,90px);text-align:center; }
-  .page-head .eyebrow{ color:var(--pink);display:block;margin-bottom:14px; }
-  .page-head h1{ font-size:clamp(2.6rem,7vw,5.5rem);margin:0; }
-  .page-body{ padding:clamp(60px,8vw,110px) clamp(18px,5vw,80px);max-width:1180px;margin:0 auto; }
-  .placeholder-note{ border:2px dashed rgba(62,14,44,.28);border-radius:16px;padding:30px;color:#6a4a56;background:#fff; }
-</style>
 </head>
 <body>
 <script src="js/intro.js"></script>
@@ -51,10 +43,11 @@
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="oc-links">
-    <a href="projects.html" data-bs-dismiss="offcanvas">Projects<small>Selected work &amp; case studies</small></a>
-    <a href="services.html" data-bs-dismiss="offcanvas">Services<small>Homes, interiors, commercial &amp; more</small></a>
-    <a href="about.html" data-bs-dismiss="offcanvas">Studio<small>Who we are and how we work</small></a>
-    <a href="contact.html" data-bs-dismiss="offcanvas">Contact<small>Start your project with us</small></a>
+    <a href="projects.html">Projects<small>Selected work &amp; case studies</small></a>
+    <a href="services.html">Services<small>Homes, interiors, commercial &amp; more</small></a>
+    <a href="studio.html">Studio<small>Inside the space where we work</small></a>
+    <a href="about.html">About<small>Who we are and how we work</small></a>
+    <a href="contact.html">Contact<small>Start your project with us</small></a>
   </div>
 </div>
 
@@ -62,22 +55,249 @@
 
 
 <main>
-  <section class="page-head">
-    <span class="eyebrow">Start a project</span>
-    <h1 class="display">Get in touch</h1>
+  <!-- ============ opening ============ -->
+  <section class="ct-hero" id="ctHero">
+    <span class="ct-cover" aria-hidden="true"></span>
+    <div class="ct-hero-in">
+      <span class="pg-eyebrow"><span class="tick"></span>Start a project</span>
+      <h1 class="ct-title display">
+        <span class="w"><i>Tell us what you</i></span>
+        <span class="w"><i class="out">want to build.</i></span>
+      </h1>
+      <p class="ct-lede">The first conversation is free and costs you nothing but an hour. Bring a plan, a photograph, a rough budget, or just the thing you keep thinking about.</p>
+      <div class="ct-hero-quick">
+        <a href="tel:+10000000000"><b>+1 (000) 000-0000</b><span>Mon&ndash;Fri, 9&ndash;18</span></a>
+        <a href="mailto:studio@dearchitect.com"><b>studio@dearchitect.com</b><span>We reply within two working days</span></a>
+      </div>
+    </div>
   </section>
 
-  <section class="page-body">
-    <div class="r" style="max-width:640px;">
-      <p style="font-size:1.1rem;line-height:1.7;color:#4a2c3a;margin-bottom:26px;">Tell us about your project and we'll get back to you. Wire this form to your email service or backend.</p>
-      <form onsubmit="alert('Demo form — connect this to your backend or a service like Formspree.'); return false;">
-        <div class="mb-3"><label class="form-label" style="font-weight:600;">Name</label><input class="form-control form-control-lg" required></div>
-        <div class="mb-3"><label class="form-label" style="font-weight:600;">Email</label><input type="email" class="form-control form-control-lg" required></div>
-        <div class="mb-3"><label class="form-label" style="font-weight:600;">About your project</label><textarea class="form-control" rows="5"></textarea></div>
-        <button class="pill solid" style="border:none;">Send message
-          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
-        </button>
-      </form>
+  <!-- ============ the form ============ -->
+  <section class="ct-main">
+    <div class="ct-main-in">
+
+      <div class="ct-form-wrap r">
+        <span class="ab-kicker">Project enquiry</span>
+        <h2 class="display">A few questions,<br>and we&rsquo;ll come back to you.</h2>
+        <p class="ct-form-note">Everything except your name, email and a line about the project is optional &mdash; but the more you tell us, the more useful our first reply will be.</p>
+
+        <!-- To make this form actually send, put your mail service URL on data-endpoint
+               (Formspree, Basin, your own handler). Empty = validate and confirm only. -->
+          <form class="ct-form" id="ctForm" data-endpoint="" novalidate>
+          <div class="ct-row">
+            <label class="ct-field">
+              <span class="ct-label">Your name <i>*</i></span>
+              <input type="text" name="name" autocomplete="name" required>
+              <span class="ct-err" data-err></span>
+            </label>
+            <label class="ct-field">
+              <span class="ct-label">Email <i>*</i></span>
+              <input type="email" name="email" autocomplete="email" required>
+              <span class="ct-err" data-err></span>
+            </label>
+          </div>
+
+          <div class="ct-row">
+            <label class="ct-field">
+              <span class="ct-label">Phone</span>
+              <input type="tel" name="phone" autocomplete="tel">
+              <span class="ct-err" data-err></span>
+            </label>
+            <label class="ct-field">
+              <span class="ct-label">Where is the project?</span>
+              <input type="text" name="place" placeholder="City or postcode">
+              <span class="ct-err" data-err></span>
+            </label>
+          </div>
+
+          <fieldset class="ct-chips">
+            <legend class="ct-label">What do you need?</legend>
+            <label><input type="checkbox" name="service" value="Residential Architecture"><span>Residential</span></label>
+            <label><input type="checkbox" name="service" value="Interior Design"><span>Interiors</span></label>
+            <label><input type="checkbox" name="service" value="Commercial &amp; Workspaces"><span>Commercial</span></label>
+            <label><input type="checkbox" name="service" value="Renovation &amp; Restoration"><span>Renovation</span></label>
+            <label><input type="checkbox" name="service" value="Landscape &amp; Exteriors"><span>Landscape</span></label>
+            <label><input type="checkbox" name="service" value="3D Visualisation"><span>3D visuals</span></label>
+            <label><input type="checkbox" name="service" value="Not sure yet"><span>Not sure yet</span></label>
+          </fieldset>
+
+          <div class="ct-row">
+            <label class="ct-field">
+              <span class="ct-label">Rough budget</span>
+              <select name="budget">
+                <option value="">Prefer not to say</option>
+                <option>Under 25k</option>
+                <option>25k &ndash; 75k</option>
+                <option>75k &ndash; 200k</option>
+                <option>200k &ndash; 500k</option>
+                <option>Over 500k</option>
+              </select>
+              <span class="ct-err" data-err></span>
+            </label>
+            <label class="ct-field">
+              <span class="ct-label">When would you start?</span>
+              <select name="timing">
+                <option value="">Not decided</option>
+                <option>As soon as possible</option>
+                <option>In the next 3 months</option>
+                <option>In 6 to 12 months</option>
+                <option>Just exploring</option>
+              </select>
+              <span class="ct-err" data-err></span>
+            </label>
+          </div>
+
+          <label class="ct-field">
+            <span class="ct-label">About the project <i>*</i></span>
+            <textarea name="message" rows="6" placeholder="What is there now, what you want instead, and anything that is worrying you about it."></textarea>
+            <span class="ct-err" data-err></span>
+          </label>
+
+          <label class="ct-consent">
+            <input type="checkbox" name="consent" required>
+            <span>I&rsquo;m happy for DE Architects to hold these details so they can reply to this enquiry.</span>
+            <span class="ct-err" data-err></span>
+          </label>
+
+          <button type="submit" class="ct-submit">
+            <span class="ct-submit-t">Send enquiry</span>
+            <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+          </button>
+
+          <p class="ct-form-legal">We never pass your details to anyone else. No newsletter unless you ask for one.</p>
+        </form>
+
+        <div class="ct-sent" id="ctSent" hidden>
+          <span class="ct-sent-tick" aria-hidden="true">
+            <svg width="34" height="26" viewBox="0 0 34 26" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14l9 9L31 4"/></svg>
+          </span>
+          <h3>Thank you &mdash; that&rsquo;s with us.</h3>
+          <p id="ctSentBody">We read every enquiry ourselves, and you&rsquo;ll hear back within two working days. If it is urgent, call the studio on <a href="tel:+10000000000">+1 (000) 000-0000</a>.</p>
+          <button type="button" class="pill ghost" id="ctAgain">Send another</button>
+        </div>
+      </div>
+
+      <aside class="ct-rail r d1">
+        <div class="ct-card">
+          <h3>Talk to a person</h3>
+          <a class="ct-line" href="tel:+10000000000">
+            <span class="ct-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.6 9.8a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
+            <span><b>+1 (000) 000-0000</b>Studio line, Mon&ndash;Fri 9&ndash;18</span>
+          </a>
+          <a class="ct-line" href="mailto:studio@dearchitect.com">
+            <span class="ct-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+            <span><b>studio@dearchitect.com</b>New projects and everything else</span>
+          </a>
+          <a class="ct-line" href="mailto:careers@dearchitect.com">
+            <span class="ct-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/><path d="M4 21a8 8 0 0116 0"/></svg></span>
+            <span><b>careers@dearchitect.com</b>Portfolios and placements</span>
+          </a>
+        </div>
+
+        <div class="ct-card tint">
+          <h3>Studio hours</h3>
+          <ul class="ct-hours">
+            <li><span>Monday &ndash; Thursday</span><b>09:00 &ndash; 18:00</b></li>
+            <li><span>Friday</span><b>09:00 &ndash; 16:00</b></li>
+            <li><span>Saturday</span><b>By appointment</b></li>
+            <li><span>Sunday</span><b>Closed</b></li>
+          </ul>
+          <p class="ct-hours-note">Site visits are usually booked for mornings. Evening calls can be arranged if you cannot get away in the day.</p>
+        </div>
+
+        <a class="ct-card link" href="studio.html">
+          <h3>Rather come in?</h3>
+          <p>See the studio before you visit it &mdash; the drafting hall, the model shop and the long table you&rsquo;ll be sitting at.</p>
+          <span class="ct-card-go">Look inside
+            <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+          </span>
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ what happens next ============ -->
+  <section class="ct-next">
+    <div class="ct-next-in">
+      <div class="ct-next-head r">
+        <span class="ab-kicker light">What happens next</span>
+        <h2 class="display">Three steps,<br>about two weeks.</h2>
+      </div>
+      <ol class="ct-steps">
+        <li class="r"><span class="ct-step-n">01</span><h3>We read it and reply</h3><p>A real answer from one of us within two working days &mdash; not an auto-response. If we are the wrong studio for the job we will say so, and usually suggest someone better suited.</p></li>
+        <li class="r d1"><span class="ct-step-n">02</span><h3>We meet, on site if we can</h3><p>An hour walking the place, or a call if it is early days. No charge, no obligation, and you will leave knowing whether the thing you want is actually possible.</p></li>
+        <li class="r d2"><span class="ct-step-n">03</span><h3>You get a written proposal</h3><p>Scope, stages, a fixed fee for each, and a realistic programme. Nothing starts until you have read it and said yes.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ where we are ============ -->
+  <section class="ct-places">
+    <div class="ct-places-in">
+      <div class="ct-places-head r">
+        <span class="ab-kicker">Where we are</span>
+        <h2 class="display">Two studios,<br>one practice.</h2>
+      </div>
+      <div class="ct-place-grid">
+        <article class="ct-place r">
+          <div class="ct-place-img">
+            <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&amp;fit=crop&amp;w=1000&amp;q=82" alt="The design office" loading="lazy" decoding="async">
+            <span class="ct-place-tag">Head office</span>
+          </div>
+          <div class="ct-place-body">
+            <h3>Design Office</h3>
+            <p class="ct-place-addr">24 Foundry Lane<br>Design District</p>
+            <p>The drafting hall, the model shop and the materials library. Client meetings happen here, at the long table.</p>
+            <div class="ct-place-links">
+              <a href="tel:+10000000000">Call</a>
+              <a href="mailto:studio@dearchitect.com">Email</a>
+              <a href="studio.html">Look inside</a>
+            </div>
+          </div>
+        </article>
+        <article class="ct-place r d1">
+          <div class="ct-place-img">
+            <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&amp;fit=crop&amp;w=1000&amp;q=82" alt="The site studio" loading="lazy" decoding="async">
+            <span class="ct-place-tag">Site studio</span>
+          </div>
+          <div class="ct-place-body">
+            <h3>Site Studio</h3>
+            <p class="ct-place-addr">9 Meridian Court<br>Riverside</p>
+            <p>Closer to most of our live construction work. Handy if your project is out that way and you want to meet on the way to site.</p>
+            <div class="ct-place-links">
+              <a href="tel:+10000000000">Call</a>
+              <a href="mailto:studio@dearchitect.com">Email</a>
+              <a href="projects.html">Nearby work</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ questions ============ -->
+  <section class="sv-faq">
+    <div class="sv-faq-in">
+      <span class="ab-kicker">Before you write</span>
+      <h2 class="display">Quick answers.</h2>
+      <div class="sv-qs">
+        <details class="sv-q r" open>
+          <summary>Do I need to know my budget?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>No, but a rough range helps enormously. It is the difference between us sketching something you can afford and something you cannot, and nobody enjoys the second conversation.</p>
+        </details>
+        <details class="sv-q r d1">
+          <summary>Is the first meeting really free?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Yes &mdash; one meeting, on site or at the studio, with no charge and nothing to sign. If you then want a written feasibility note before committing to a full project, that is a small fixed fee we deduct from the design fee later.</p>
+        </details>
+        <details class="sv-q r d2">
+          <summary>What should I bring?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Photographs, any drawings or deeds you have, and a list of what annoys you about the place today. That last one is usually the most useful document in the room.</p>
+        </details>
+        <details class="sv-q r">
+          <summary>Do you work outside your city?<span class="sv-q-i" aria-hidden="true"></span></summary>
+          <p>Regularly. Travel is charged at cost and agreed up front. For projects far enough away that weekly site visits are not sensible, we set up a schedule of key inspections instead and are honest about it from the start.</p>
+        </details>
+      </div>
     </div>
   </section>
 </main>
@@ -173,5 +393,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
+  <script src="js/page-hero.js"></script>
+  <script src="js/contact.js"></script>
 </body>
 </html>

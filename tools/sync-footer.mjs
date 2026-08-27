@@ -12,7 +12,7 @@
 */
 import fs from 'node:fs';
 
-const PAGES = ['about.html', 'services.html', 'projects.html', 'contact.html', 'project.html'];
+const PAGES = ['about.html', 'studio.html', 'services.html', 'projects.html', 'contact.html', 'project.html'];
 
 // in-page anchor on index -> where it should point from anywhere else
 const REMAP = {

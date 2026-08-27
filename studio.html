@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inside the Studio — DE Architects</title>
+<meta name="description" content="Two floors above a foundry yard: the drafting hall, the model shop and the materials library where every DE Architects project is drawn." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>if (window.tailwind) tailwind.config = { corePlugins: { preflight: false } };</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/icons/favicon.png" type="image/png">
+</head>
+<body>
+<script src="js/intro.js"></script>
+
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" aria-label="DE Architects — Consulting Engineers">
+    <img class="brand-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
+  </a>
+
+  <nav class="nav-actions">
+    <a class="pill contact" href="contact.html">Contact</a>
+    <button class="icon-btn search" aria-label="Search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+    </button>
+    <button class="pill menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
+      Menu
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
+    </button>
+  </nav>
+</header>
+
+<a class="side-tab" href="projects.html">Our Projects</a>
+
+<div class="offcanvas offcanvas-end menu-oc" tabindex="-1" id="menu">
+  <div class="offcanvas-header px-4 pt-4">
+    <img src="assets/img/logo-nav.png" alt="DE Architects" style="height:30px;width:auto;">
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="oc-links">
+    <a href="projects.html">Projects<small>Selected work &amp; case studies</small></a>
+    <a href="services.html">Services<small>Homes, interiors, commercial &amp; more</small></a>
+    <a href="studio.html">Studio<small>Inside the space where we work</small></a>
+    <a href="about.html">About<small>Who we are and how we work</small></a>
+    <a href="contact.html">Contact<small>Start your project with us</small></a>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+
+
+<main>
+  <!-- ============ opening ============ -->
+  <section class="st-hero" id="stHero">
+    <span class="st-cover" aria-hidden="true"></span>
+    <div class="st-hero-in">
+      <span class="pg-eyebrow"><span class="tick"></span>The place</span>
+      <h1 class="st-title display">
+        <span class="w"><i>Where the</i></span>
+        <span class="w"><i class="out">drawings happen.</i></span>
+      </h1>
+      <p class="st-lede">Two floors above a foundry yard: a drafting hall, a model shop that makes a lot of dust, and a wall of material samples nobody is allowed to tidy. This is the room every project passes through.</p>
+    </div>
+    <span class="pd-scroll" aria-hidden="true">Scroll<i></i></span>
+  </section>
+
+  <!-- ============ walk through it in 3D ============ -->
+  <section class="st-tour">
+    <div class="st-tour-in">
+      <div class="st-tour-copy r">
+        <span class="ab-kicker light">Walk through it</span>
+        <h2 class="display">You can fly<br>through the studio.</h2>
+        <p>We modelled our own building the way we model yours. Scroll the fly-through on the home page and the camera takes you in through the entrance, down the drafting hall past the service boards, around the model bay and back out again — in daylight or at night, your choice.</p>
+        <a class="pill solid" href="index.html#work">Take the fly-through
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <ul class="st-tour-facts r d1">
+        <li><b>2</b><span>floors, one double-height hall</span></li>
+        <li><b>6</b><span>service boards along the walls</span></li>
+        <li><b>14</b><span>desks, all facing the light</span></li>
+        <li><b>1</b><span>model bay, permanently in use</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ the space ============ -->
+  <section class="st-space">
+    <div class="st-space-in">
+      <div class="st-space-head r">
+        <span class="ab-kicker">The space</span>
+        <h2 class="display">Built for<br>drawing in.</h2>
+        <p>We took a floor of a working foundry building in 2014 and did to it exactly what we tell clients to do: kept the good bones, opened it up, and put the light where the work is.</p>
+      </div>
+      <div class="st-grid">
+        <figure class="st-shot big r">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&amp;fit=crop&amp;w=1400&amp;q=82" alt="The drafting hall, desks along the north windows" loading="lazy" decoding="async">
+          <figcaption><b>The drafting hall</b>North light all day, so nothing ever glares on a screen or a drawing.</figcaption>
+        </figure>
+        <figure class="st-shot r d1">
+          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="The model bay with work in progress" loading="lazy" decoding="async">
+          <figcaption><b>The model bay</b>Card, ply and a very old scalpel collection.</figcaption>
+        </figure>
+        <figure class="st-shot r d2">
+          <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="The materials library" loading="lazy" decoding="async">
+          <figcaption><b>The library</b>Six hundred samples you are meant to pick up.</figcaption>
+        </figure>
+        <figure class="st-shot wide r d1">
+          <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&amp;fit=crop&amp;w=1400&amp;q=82" alt="The meeting table at the end of the hall" loading="lazy" decoding="async">
+          <figcaption><b>The long table</b>Where clients see their project for the first time.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ a day here ============ -->
+  <section class="st-day">
+    <div class="st-day-in">
+      <div class="st-day-head r">
+        <span class="ab-kicker light">A day here</span>
+        <h2 class="display">Nine to six,<br>roughly.</h2>
+      </div>
+      <ol class="st-clock">
+        <li class="r"><b>08:30</b><h3>The coffee and the wall</h3><p>Whoever is in first puts the machine on and looks at the drawing wall. Anything pinned up overnight gets argued about before the day starts properly.</p></li>
+        <li class="r d1"><b>09:30</b><h3>Desk work</h3><p>The quiet stretch. Plans, sections, details. The rule is no meetings before eleven, and it mostly survives contact with reality.</p></li>
+        <li class="r d2"><b>11:00</b><h3>Site or client</h3><p>Someone is always out — measuring a house, walking a site with a contractor, or sitting at the long table with a client and a model.</p></li>
+        <li class="r"><b>14:00</b><h3>The model shop</h3><p>Cutting, gluing, and the smell of MDF. Every project gets built at least once in card before it gets built in concrete.</p></li>
+        <li class="r d1"><b>16:30</b><h3>Pin-up</h3><p>Work goes on the wall and gets picked apart by everyone, including the person who joined last month. Nothing leaves the studio without this.</p></li>
+        <li class="r d2"><b>18:00</b><h3>Lights off</h3><p>We do not do heroic overtime. Tired people draw badly and miss things, and someone has to pay for that later.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ how we make things ============ -->
+  <section class="st-craft">
+    <div class="st-craft-in">
+      <div class="st-craft-head r">
+        <span class="ab-kicker">The craft</span>
+        <h2 class="display">Three benches<br>we could not work without.</h2>
+      </div>
+      <div class="st-benches">
+        <article class="st-bench r" style="--accent:var(--crimson)">
+          <span class="st-bench-n">01</span>
+          <h3>The model shop</h3>
+          <p>A screen flattens everything. A model at 1:100 tells you in four seconds that the roof is wrong, and clients who cannot read a plan can read a model instantly.</p>
+          <div class="st-bench-tags"><span>1:200 massing</span><span>1:100 design</span><span>1:20 details</span></div>
+        </article>
+        <article class="st-bench r d1" style="--accent:var(--teal-ink)">
+          <span class="st-bench-n">02</span>
+          <h3>The materials library</h3>
+          <p>Six hundred samples, sorted by how they age rather than by supplier. You choose a stone by putting it next to the timber under the light it will actually live in.</p>
+          <div class="st-bench-tags"><span>Stone</span><span>Timber</span><span>Metal</span><span>Textile</span></div>
+        </article>
+        <article class="st-bench r d2" style="--accent:var(--navy)">
+          <span class="st-bench-n">03</span>
+          <h3>The drawing wall</h3>
+          <p>Twelve metres of pinnable surface holding every live project at once. If a scheme is not on the wall it is not really being designed yet.</p>
+          <div class="st-bench-tags"><span>Pin-ups</span><span>Reviews</span><span>Sketches</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ what we draw with ============ -->
+  <section class="st-kit">
+    <div class="st-kit-in">
+      <div class="st-kit-head r">
+        <span class="ab-kicker">The kit</span>
+        <h2 class="display">Sharp pencils,<br>good software.</h2>
+        <p>Neither one on its own. We sketch by hand because it is faster to think that way, and we model everything because it is the only way to be sure it fits together.</p>
+      </div>
+      <div class="st-kit-cols">
+        <div class="st-kit-col r">
+          <h3>On the screen</h3>
+          <ul class="st-kit-list">
+            <li><b>Revit</b><span>Model, drawings and schedules from one file</span></li>
+            <li><b>Rhino &amp; Grasshopper</b><span>Anything with a curve or a rule behind it</span></li>
+            <li><b>AutoCAD</b><span>Because half the industry still sends DWGs</span></li>
+            <li><b>Twinmotion &amp; V-Ray</b><span>Renders and walkthroughs</span></li>
+            <li><b>three.js</b><span>The browser tours on this site, built in-house</span></li>
+          </ul>
+        </div>
+        <div class="st-kit-col r d1">
+          <h3>On the bench</h3>
+          <ul class="st-kit-list">
+            <li><b>Rotring 0.35</b><span>The only pen anyone here argues about</span></li>
+            <li><b>Laser cutter</b><span>Card, ply and acrylic, most afternoons</span></li>
+            <li><b>Disto and tape</b><span>Nothing is drawn from an estimate</span></li>
+            <li><b>Sample boards</b><span>A0, one per project, kept until handover</span></li>
+            <li><b>The long table</b><span>Four metres of oak, and the best tool we own</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ join ============ -->
+  <section class="st-join">
+    <div class="st-join-in r">
+      <span class="ab-kicker light">Working here</span>
+      <h2 class="display">We hire slowly,<br>and keep people.</h2>
+      <p>Fourteen of us, and the average stay is over five years. We take one or two students each summer and give them real drawings to do, not coffee runs. If you want to work here, send us three pieces of work you are proud of and tell us why.</p>
+      <div class="st-join-btns">
+        <a class="pill solid" href="contact.html">Send us your work
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill ghost" href="about.html">Meet the team
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ call to action ============ -->
+  <section class="ab-cta">
+    <div class="ab-cta-in">
+      <h2 class="display">Come and see<br>it in person.</h2>
+      <p>The kettle works and the long table is usually free. Bring a plan, a photograph, or just an idea you cannot shake.</p>
+      <div class="ab-cta-btns">
+        <a class="pill solid" href="contact.html">Book a visit
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill" href="services.html">What we do
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="cta-grid">
+    <div class="foot-brand" style="grid-column:1/-1;display:none;"></div>
+    <div class="r">
+      <img class="foot-logo" src="assets/img/logo-nav.png" alt="DE Architects — Consulting Engineers">
+      <p class="foot-blurb">We are an architecture and interior design studio shaping homes, workspaces and everything in between — designed for how you actually live.</p>
+      <div class="foot-social">
+        <a href="#" aria-label="Instagram"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 002.5 6 2.5 2.5 0 005 8.5 2.5 2.5 0 007.5 6 2.5 2.5 0 004.98 3.5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3 0-2.95-1.8-2.95s-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
+        <a href="#" aria-label="Pinterest"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 20c-.5-1.5 1-6 1.5-8M9.5 9.5a2.5 2.5 0 115 .4c-.3 2-3.5 3.6-4.5 1.6"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+    <div class="r d1">
+      <h2 class="big display">Architecture that reflects all of you.</h2>
+      <div class="cta-buttons">
+        <a class="pill solid" href="contact.html">Inquire
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+        <a class="pill" href="contact.html">Start a project
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 7h16M13 1l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-contact">
+    <div class="fc-form">
+      <h3 class="foot-h">Start a conversation</h3>
+      <p class="fc-lede">Tell us about your project and we'll get back to you within two business days.</p>
+      <form class="fc-fields" onsubmit="this.querySelector('.fc-note').hidden=false; this.reset(); return false;" novalidate>
+        <div class="fc-row">
+          <input type="text" placeholder="Your name" aria-label="Your name" required>
+          <input type="email" placeholder="Email address" aria-label="Email address" required>
+        </div>
+        <input type="text" placeholder="Project type — e.g. new home, interior" aria-label="Project type">
+        <textarea rows="4" placeholder="A little about your project" aria-label="About your project"></textarea>
+        <button type="submit" class="fc-submit">Send enquiry
+          <svg width="18" height="12" viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M2 7h18M14 1l6 6-6 6"/></svg>
+        </button>
+        <span class="fc-note" hidden>Thanks! This is a demo form — connect it to your email service to receive messages.</span>
+      </form>
+    </div>
+
+    <div class="fc-info">
+      <h3 class="foot-h">Get in touch</h3>
+      <a class="fc-item" href="tel:+10000000000">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L7.6 9.8a16 16 0 006 6l1.4-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
+        <span><b>Call us</b>+1 (000) 000-0000</span>
+      </a>
+      <a class="fc-item" href="mailto:studio@dearchitect.com">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+        <span><b>Email</b>studio@dearchitect.com</span>
+      </a>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><b>Design Office</b>24 Foundry Lane, Design District</span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><b>Site Studio</b>9 Meridian Court, Riverside</span>
+      </div>
+      <div class="fc-item">
+        <span class="fc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <span><b>Studio hours</b>Mon–Fri · 9:00–18:00</span>
+      </div>
+      <div class="fc-links">
+        <a href="projects.html">Projects</a><a href="services.html">Services</a><a href="about.html">Careers</a><a href="contact.html">Client login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <div class="foot-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Site Map</a>
+    </div>
+
+    <!-- Logo saved locally on purpose: the Facebook CDN URL it came from is
+         signed and expires. Set href when the Reego Tech site is known. -->
+    <a class="dev-by" href="#" rel="noopener">
+      <img src="assets/img/reego-tech.jpg" alt="Reego Tech" onerror="this.remove()">
+      <span><small>Developed by</small><b>Reego Tech</b></span>
+    </a>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+  <script src="js/page-hero.js"></script>
+</body>
+</html>
