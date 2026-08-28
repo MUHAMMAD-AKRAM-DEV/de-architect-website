@@ -1,0 +1,10 @@
+{
+  "name": "de-architects-chat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Server endpoint that puts a real Claude model behind the studio assistant.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0"
+  }
+}

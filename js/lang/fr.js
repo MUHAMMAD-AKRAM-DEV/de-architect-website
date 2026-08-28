@@ -647,5 +647,9 @@ window.DE_I18N.fr = {
  "you_are_looking_at_one_of_our_projects.1dbc": "Vous regardez l’un de nos projets — avec plaisir sur celui-ci, ou sur autre chose.",
  "you_are_on_the_services_page_ask_me_ab.681e": "Vous êtes sur la page des prestations — demandez-moi n’importe laquelle des six, ou les honoraires.",
  "you_are_very_welcome.470a": "Je vous en prie.",
- "you_can_reach_the_studio_directly.94ea": "Vous pouvez joindre l’agence directement :"
+ "you_can_reach_the_studio_directly.94ea": "Vous pouvez joindre l’agence directement :",
+ "a_person_will_answer_it_properly_thoug.51a8": "Une personne y répondra correctement — l’agence répond à chaque demande sous deux jours ouvrés, et il y a un bouton WhatsApp dans le coin si c’est plus rapide.",
+ "here_is_that_one.b73a": "La voici :",
+ "that_one_has_a_3d_tour_you_can_walk_th.7976": "Celui-là se parcourt en 3D directement dans le navigateur.",
+ "the_project_page_has_the_full_story_an.8a74": "La page du projet contient toute l’histoire et les photographies."
 };

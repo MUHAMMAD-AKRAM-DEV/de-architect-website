@@ -57,9 +57,15 @@ window.DE_CHAT_COPY = {
   notHuman:  'I should say — I am the studio assistant, not one of the architects. I can answer the common questions, and put you in touch with a person whenever you want.',
   handOff:   'That one is better answered by a person. The quickest way is the contact form, or WhatsApp if you prefer.',
 
+  /* --- talking about one project --- */
+  thatOne:   'Here is that one:',
+  hasTour:   'That one has a 3D tour you can walk through in the browser.',
+  moreOnIt:  'The project page has the full story and the photographs.',
+
   /* --- when it does not know --- */
   unsure:    'I am not certain I have a good answer for that.',
   tryThese:  'Try me on fees, timescales, our services, how a project runs, or where we are.',
+  aPersonWill: 'A person will answer it properly though — the studio replies to every enquiry within two working days, and there is a WhatsApp button in the corner if that is quicker.',
 
   /* --- small talk --- */
   thanks:    'You are very welcome.',

@@ -647,5 +647,9 @@ window.DE_I18N.de = {
  "you_are_looking_at_one_of_our_projects.1dbc": "Sie sehen gerade eines unserer Projekte — dazu oder zu allem anderen gern.",
  "you_are_on_the_services_page_ask_me_ab.681e": "Sie sind auf der Leistungsseite — fragen Sie nach einer der sechs oder nach dem Honorar.",
  "you_are_very_welcome.470a": "Sehr gern.",
- "you_can_reach_the_studio_directly.94ea": "Sie erreichen das Büro direkt:"
+ "you_can_reach_the_studio_directly.94ea": "Sie erreichen das Büro direkt:",
+ "a_person_will_answer_it_properly_thoug.51a8": "Ein Mensch beantwortet sie aber richtig — das Büro antwortet auf jede Anfrage innerhalb von zwei Werktagen, und in der Ecke gibt es einen WhatsApp-Button, falls das schneller geht.",
+ "here_is_that_one.b73a": "Hier ist es:",
+ "that_one_has_a_3d_tour_you_can_walk_th.7976": "Dieses lässt sich in 3D im Browser begehen.",
+ "the_project_page_has_the_full_story_an.8a74": "Auf der Projektseite stehen die ganze Geschichte und die Fotos."
 };

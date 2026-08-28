@@ -647,5 +647,9 @@ window.DE_I18N.ar = {
  "you_are_looking_at_one_of_our_projects.1dbc": "أنت تنظر إلى أحد مشاريعنا — يسعدني الحديث عنه أو عن أي شيء آخر.",
  "you_are_on_the_services_page_ask_me_ab.681e": "أنت في صفحة الخدمات — اسألني عن أي من الست، أو عن الأتعاب.",
  "you_are_very_welcome.470a": "العفو.",
- "you_can_reach_the_studio_directly.94ea": "يمكنك الوصول إلى المكتب مباشرة:"
+ "you_can_reach_the_studio_directly.94ea": "يمكنك الوصول إلى المكتب مباشرة:",
+ "a_person_will_answer_it_properly_thoug.51a8": "لكن سيجيبك عنها شخص كما ينبغي — المكتب يردّ على كل استفسار خلال يومَي عمل، وهناك زر واتساب في الزاوية إن كان ذلك أسرع.",
+ "here_is_that_one.b73a": "إليك هذا المشروع:",
+ "that_one_has_a_3d_tour_you_can_walk_th.7976": "هذا المشروع له جولة ثلاثية الأبعاد يمكنك التجول فيها من المتصفح.",
+ "the_project_page_has_the_full_story_an.8a74": "صفحة المشروع فيها القصة كاملة والصور."
 };

@@ -244,6 +244,35 @@
     return bestScore >= 1 ? best.id : null;
   }
 
+  /* --- is the visitor asking about one particular project? ------------------
+     A project name is far more specific than any keyword, so this runs before
+     the matcher. Names come from the site's own project list, so a project
+     added to projects-data.js becomes answerable with no change here. */
+  function findProject(text) {
+    const q = norm(text.toLowerCase());
+    const all = window.DE_PROJECTS || [];
+    let best = null, bestLen = 0;
+    for (const p of all) {
+      for (const name of [p.title, T(p.title)]) {
+        const n = norm(String(name).toLowerCase());
+        // 'the warehouse' should match; 'house' on its own should not
+        if (n.length > 4 && q.includes(n) && n.length > bestLen) { best = p; bestLen = n.length; }
+      }
+    }
+    return best;
+  }
+
+  function projectAnswer(p) {
+    const facts = (p.facts || []).map(([k, v]) => plain(T(k)) + ': ' + plain(T(v))).join('  ·  ');
+    const out = [
+      c('thatOne'),
+      plain(T(p.title)) + ' — ' + plain(T(p.blurb)) + (facts ? '\n' + facts : '')
+    ];
+    if (p.tour) out.push(c('hasTour'));
+    out.push(linkLine('project.html?p=' + encodeURIComponent(p.slug), c('moreOnIt')));
+    return out;
+  }
+
   /* --- what each intent replies with -------------------------------------- */
   const HREF = { contact: 'contact.html', projects: 'projects.html', services: 'services.html', studio: 'studio.html' };
 
@@ -275,7 +304,8 @@
       case 'thanks':   return [c('thanks'), c('anythingElse')];
       case 'bye':      return [c('bye')];
       case 'hello':    return [greeting(), c('alsoAsk')];
-      default:         return [c('unsure'), c('tryThese')];
+      default:         return [c('unsure'), c('aPersonWill'),
+                               linkLine(HREF.contact, c('goContact'))];
     }
   }
 
@@ -444,9 +474,10 @@
       if (ENDPOINT()) {
         await live(text);
       } else {
-        const id = forced || match(text);
-        await say(answer(id));
-        if (!id) await say([linkLine(HREF.contact, c('goContact'))]);
+        // a project name is more specific than any keyword, so it wins
+        const p = forced ? null : findProject(text);
+        if (p) await say(projectAnswer(p));
+        else await say(answer(forced || match(text)));
       }
     } finally {
       busy = false;

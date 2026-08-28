@@ -647,5 +647,9 @@ window.DE_I18N.ur = {
  "you_are_looking_at_one_of_our_projects.1dbc": "آپ ہمارے ایک منصوبے کو دیکھ رہے ہیں — اسی کے بارے میں یا کسی اور بات پر خوشی سے۔",
  "you_are_on_the_services_page_ask_me_ab.681e": "آپ خدمات کے صفحے پر ہیں — چھ میں سے کسی کے بارے میں، یا فیس کے بارے میں پوچھیے۔",
  "you_are_very_welcome.470a": "کوئی بات نہیں۔",
- "you_can_reach_the_studio_directly.94ea": "آپ اسٹوڈیو سے براہِ راست رابطہ کر سکتے ہیں:"
+ "you_can_reach_the_studio_directly.94ea": "آپ اسٹوڈیو سے براہِ راست رابطہ کر سکتے ہیں:",
+ "a_person_will_answer_it_properly_thoug.51a8": "اس کا صحیح جواب کوئی فرد دے گا — اسٹوڈیو ہر استفسار کا جواب دو کاروباری دنوں میں دیتا ہے، اور کونے میں واٹس ایپ کا بٹن بھی موجود ہے اگر وہ زیادہ تیز ہو۔",
+ "here_is_that_one.b73a": "یہ رہا وہ منصوبہ:",
+ "that_one_has_a_3d_tour_you_can_walk_th.7976": "اس کی تھری ڈی سیر آپ براؤزر ہی میں کر سکتے ہیں۔",
+ "the_project_page_has_the_full_story_an.8a74": "منصوبے کے صفحے پر پوری کہانی اور تصاویر موجود ہیں۔"
 };
