@@ -8027,3 +8027,73 @@ body.chat-open .fab-rail {
     scroll-behavior: auto;
   }
 }
+
+/* ---- the Google listing card ----
+   Sits beside the office card but carries no photograph: a stock image of
+   somebody else's building would be worse than none. It fills the height with
+   the details instead. */
+.ct-place.plain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--plum);
+  border-color: transparent;
+}
+
+.ct-place.plain h3,
+.ct-place.plain .ct-place-addr {
+  color: #fff;
+}
+
+.ct-place.plain .ct-place-addr {
+  color: var(--pink);
+}
+
+.ct-place.plain .ct-place-body > p:not(.ct-place-addr) {
+  color: rgba(255, 255, 255, .74);
+}
+
+.ct-place-facts {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.ct-place-facts li {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .14);
+}
+
+.ct-place-facts li:last-child {
+  border-bottom: 0;
+}
+
+.ct-place-facts b {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .55rem;
+  color: var(--pink);
+  white-space: nowrap;
+}
+
+.ct-place-facts span {
+  color: rgba(255, 255, 255, .86);
+  font-size: .84rem;
+  text-align: right;
+}
+
+.ct-place.plain .ct-place-links a {
+  border-color: rgba(255, 255, 255, .36);
+  color: #fff;
+}
+
+.ct-place.plain .ct-place-links a:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--plum);
+}

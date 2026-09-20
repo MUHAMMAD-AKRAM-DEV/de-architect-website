@@ -48,7 +48,7 @@ const FACTS = [
   ['What happens after an enquiry', 'A real answer from one of us within two working days &mdash; not an auto-response. If we are the wrong studio for the job we will say so, and usually suggest someone better suited.'],
   ['The studio', 'Two floors above a foundry yard: a drafting hall, a model shop that makes a lot of dust, and a wall of material samples nobody is allowed to tidy. This is the room every project passes through.'],
   ['History', 'The studio began in 2009 with one house and a conviction that has not changed since: a building should be shaped by the life inside it, not the other way round. That first client wanted somewhere to cook, read and have people over — so we designed around a kitchen and let the rest follow.'],
-  ['Size today', 'Today the practice is fourteen people across two studios, working on everything from a single reimagined room to a whole building brought back into use. No project is too small if the thinking is worth doing.']
+  ['Size today', 'Today the practice works on everything from a single reimagined room to a whole building brought back into use. No project is too small if the thinking is worth doing.']
 ];
 
 const SERVICES = [
@@ -76,7 +76,7 @@ hand; edit the site and re-run the tool.
 DE Architects is an architecture and interior design studio. We work on houses,
 interiors, workspaces and buildings that deserve another life — and we start
 every one of them the same way, by watching how a place is actually used.
-Fourteen people across two studios. Founded 2009.
+Based in Gilgit, Pakistan.
 
 ## The six services
 
@@ -88,13 +88,22 @@ ${FACTS.map(([q, a]) => `### ${q}\n${say(a)}`).join('\n\n')}
 
 ## How to reach the studio
 
-- Phone: +1 (000) 000-0000
+- Phone: +92 317 5869922 (local 0317 5869922)
+- WhatsApp: +92 346 8485433 (local 0346 8485433) — there is a WhatsApp button on every page
 - Email: studio@dearchitect.com
 - Careers: careers@dearchitect.com
-- Design Office: 24 Foundry Lane, Design District (head office — drafting hall, model shop, materials library)
-- Site Studio: 9 Meridian Court, Riverside (closer to most live construction work)
+- Office: Office #221, 2nd Floor, Qalandar Plaza, Gilgit, Pakistan — this is the only office
+- Google listing: search "De Architects Consulting Engineers Gilgit" for directions, photographs and reviews
 - Hours: Monday–Thursday 09:00–18:00, Friday 09:00–16:00, Saturday by appointment, Sunday closed
-- The contact page has a short enquiry form. There is also a WhatsApp button on every page.
+- The contact page has a short enquiry form.
+
+## Social
+
+- Facebook: https://www.facebook.com/dearchitectspk
+- Instagram: https://www.instagram.com/darchitects2014/
+- LinkedIn: https://www.linkedin.com/company/de-architects2014/
+- TikTok: https://www.tiktok.com/@dearchitects
+- X: https://twitter.com/DArchitects
 
 ## The work
 

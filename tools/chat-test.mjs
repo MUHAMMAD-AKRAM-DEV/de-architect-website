@@ -60,6 +60,10 @@ const TYPED = [
   ['do you have jobs', 'jobs'],
   ['what are your opening hours', 'hours'],
   ['danke', 'thanks'], ['gracias', 'thanks'], ['شکریہ', 'thanks'],
+  // regression: English "contact" and Spanish "contratar" share four letters,
+  // which used to drag this into the start intent
+  ['how do i contact you', 'contact'], ['contactar con ustedes', 'contact'],
+  ['how can i reach you', 'contact'], ['what is your phone number', 'contact'],
   ['hello', 'hello'], ['bonjour', 'hello'],
   // nothing to do with the studio: must fall through to the handover, not be
   // forced into the nearest intent

@@ -48,8 +48,7 @@
     away:    'Regularly. Travel is charged at cost and agreed up front. For projects far enough away that weekly site visits are not sensible, we set up a schedule of key inspections instead and are honest about it from the start.',
     jobs:    'Fourteen of us, and the average stay is over five years. We take one or two students each summer and give them real drawings to do, not coffee runs. If you want to work here, send us three pieces of work you are proud of and tell us why.',
     process: 'Every project runs the same way. You always know which stage you are in, what is being decided, and what it costs before it starts.',
-    addr1:   '24 Foundry Lane<br>Design District',
-    addr2:   '9 Meridian Court<br>Riverside'
+    addr:    'Office #221, 2nd Floor<br>Qalandar Plaza, Gilgit'
   };
   const SERVICES = ['Residential Architecture', 'Interior Design', 'Commercial &amp; Workspaces',
                     'Renovation &amp; Restoration', 'Landscape &amp; Exteriors', '3D Visualisation'];
@@ -218,10 +217,19 @@
     const hit = w => {
       if (w.includes(' ')) return q.includes(' ' + w + ' ') || q.includes(' ' + w);
       if (w.length < 4) return tokens.includes(w);
-      // a plain prefix test is not enough: "kosten" and "kostet" part company
-      // on the last letter, which is exactly where German inflects. Compare
-      // the stem the two share instead.
-      return tokens.some(t => t.length >= 4 && shared(t, w) >= 4);
+      // A plain prefix test is not enough: "kosten" and "kostet" part company
+      // on the last letter, which is exactly where German inflects. But a bare
+      // four-letter stem is too loose across six languages — English "contact"
+      // and Spanish "contratar" share "cont" and belong to different intents.
+      // So the stem has to be a fair share of the longer word as well:
+      //   machen / macht      4 of 6  = 0.67  same word
+      //   kosten / kostet     5 of 6  = 0.83  same word
+      //   contact / contratar 4 of 9  = 0.44  not the same word
+      return tokens.some(t => {
+        if (t.length < 4) return false;
+        const n = shared(t, w);
+        return n >= 4 && n / Math.max(t.length, w.length) >= 0.6;
+      });
     };
 
     let best = null, bestScore = 0;
@@ -286,10 +294,10 @@
                                c('anythingElse')];
       case 'start':    return [c('toContact'), linkLine(HREF.contact, c('goContact'))];
       case 'work':     return [tourLine(), c('seeAll'), linkLine(HREF.projects, c('goProjects'))];
-      case 'where':    return [c('bothPlaces'), site('addr1') + '\n' + site('addr2'), linkLine(HREF.studio, c('goStudio'))];
+      case 'where':    return [c('ourOffice'), site('addr'), linkLine(HREF.studio, c('goStudio'))];
       case 'hours':    return [c('ourHours'), HOURS.map(h => '· ' + plain(T(h))).join('\n')];
       case 'contact':  return [c('reachUs'),
-                               '· +1 (000) 000-0000\n· studio@dearchitect.com',
+                               '· +92 317 5869922\n· +92 346 8485433 (WhatsApp)\n· studio@dearchitect.com',
                                linkLine(HREF.contact, c('goContact'))];
       case 'permit':   return [site('permit')];
       case 'small':    return [site('small')];

@@ -8,12 +8,12 @@
    They stack in the corner opposite the vertical Projects tab, and move to the
    other corner in Arabic and Urdu along with everything else.
 
-   >>> SET YOUR NUMBER <<<  WHATSAPP below is the studio's placeholder number.
-   Until it is a real one in full international format — country code, no
-   spaces, no plus — the button opens a WhatsApp page that cannot find anyone.
+   WHATSAPP is the studio's real number in international form: the local
+   0346 8485433 with Pakistan's country code and no plus or spaces, which is
+   the only format wa.me accepts.
    ========================================================================== */
 (() => {
-  const WHATSAPP = '10000000000';          // e.g. '447700900123' — no + and no spaces
+  const WHATSAPP = '923468485433';         // 0346 8485433 in international form
   const GREETING = 'Hello — I saw your website and would like to talk about a project.';
 
   const T = s => (window.DELang ? window.DELang.t(s) : s);

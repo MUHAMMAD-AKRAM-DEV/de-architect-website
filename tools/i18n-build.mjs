@@ -5,8 +5,9 @@
    translation, and the keys are content hashes nobody should be typing by
    hand. This maps one to the other using en.js, and says what is missing.
 
-       node tools/i18n-build.mjs          # build every language it finds
-       node tools/i18n-build.mjs de fr    # or just these
+       node tools/i18n-build.mjs           # build every language it finds
+       node tools/i18n-build.mjs de fr     # or just these
+       node tools/i18n-build.mjs --prune   # also drop translations the site no longer uses
 
    A string that has no translation is left out of the output rather than
    copied from English, so the runtime warns about it instead of quietly
@@ -24,7 +25,8 @@ const REV = new Map();
 for (const k of Object.keys(EN)) REV.set(EN[k], k);
 
 const dir = 'js/lang/src';
-const want = process.argv.slice(2);
+const prune = process.argv.includes('--prune');
+const want = process.argv.slice(2).filter(a => a !== '--prune');
 const files = fs.existsSync(dir)
   ? fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))
   : [];
@@ -59,7 +61,20 @@ for (const code of codes) {
   console.log(`  ${code}  ${Object.keys(out).length}/${Object.keys(EN).length} strings (${pct}%)` +
               (missing.length ? `, ${missing.length} untranslated` : ', complete') +
               (unknown.length ? `, ${unknown.length} stale entries no longer on the site` : ''));
-  if (unknown.length) unknown.slice(0, 3).forEach(u => console.log(`      stale: ${JSON.stringify(u.slice(0, 60))}`));
+  if (unknown.length) {
+    unknown.slice(0, 3).forEach(u => console.log(`      stale: ${JSON.stringify(u.slice(0, 60))}`));
+    if (prune) {
+      // A string the site no longer uses is dead weight in the source file,
+      // and makes it harder to see what still needs a translator's attention.
+      // Only drop them when asked — a reworded sentence looks exactly like a
+      // deleted one, and throwing the old translation away loses work.
+      for (const u of unknown) delete pairs[u];
+      fs.writeFileSync(file, JSON.stringify(pairs, null, 1), 'utf8');
+      console.log(`      pruned ${unknown.length} from ${file}`);
+    } else {
+      console.log('      (re-run with --prune to drop them)');
+    }
+  }
   if (missing.length && missing.length <= 5) missing.forEach(m => console.log(`      todo: ${JSON.stringify(EN[m].slice(0, 60))}`));
 }
 process.exit(bad ? 1 : 0);

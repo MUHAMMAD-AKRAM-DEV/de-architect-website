@@ -41,7 +41,7 @@ window.DE_CHAT_COPY = {
   alsoAsk:   'Fees and timescales are the two most common questions — ask me either.',
   reachUs:   'You can reach the studio directly:',
   ourHours:  'The studio is open:',
-  bothPlaces:'There are two studios:',
+  ourOffice: 'The studio is in Gilgit:',
   tourList:  'A few of these can be walked through in 3D, right in the browser:',
   seeAll:    'All of them are on the projects page.',
   toContact: 'The contact page has a short form — tell us what you are thinking of and one of us will reply.',
